@@ -9,12 +9,28 @@ export default config({
     posts: collection({
       label: 'Posts',
       entryLayout: 'content',
+      columns: ['title', 'date'],
+
+      //Slugfield
       slugField: 'title',
-      path: 'src/content/blog/*',
+
+      //Document_path
+      path: 'src/content/blog/**',
+      // path: url,
+
       format: { contentField: 'content' },
+
+      //Schema: Customize Fields here
       schema: {
         title: fields.slug({ name: { label: 'Title' } }),
-        pub_date: fields.date({
+        description: fields.text({ label: 'Post Description' }),
+        //Draft label
+        draft: fields.checkbox({
+          label: 'Draft',
+          description:
+            'Set this post as draft to prevent it from being published',
+        }),
+        date: fields.date({
           label: 'Date published',
         }),
         content: fields.mdx({ label: 'Content' }),

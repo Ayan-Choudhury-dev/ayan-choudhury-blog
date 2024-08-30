@@ -14,7 +14,6 @@ export async function getStaticPaths() {
     params: { slug: post.slug },
     props: post,
   }));
-
 }
 type Props = CollectionEntry<"blog">;
 
@@ -48,12 +47,7 @@ const { Content } = await post.render();
     </article>
     <div class="animate font-base text-black dark:text-white">
       Tagged:
-      
-      {post.data.tags.map(tag => <span>{tag} &nbsp;</span>)}
+      {post.data.tags}
     </div>
   </Container>
 </PageLayout>
-
-<div id="next_post">
-  <a href="#">Next Post</a>
-</div>
