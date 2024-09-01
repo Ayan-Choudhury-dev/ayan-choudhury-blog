@@ -34,10 +34,14 @@ export default config({
           label: 'Date published',
         }),
         content: fields.mdx({ label: 'Content' }),
-        tags: fields.array(fields.text({ label: 'Tag' }), {
-          label: 'Tags',
-          itemLabel: (props) => props.value,
-        }),
+        tags: fields.array(
+          fields.text({ label: 'Tags' }),
+          // Labelling options
+          {
+            label: 'Tags',
+            itemLabel: props => props.value
+          }
+        ),
         // richText: fields.mdx({
         //   label: 'Rich text',
         // }),

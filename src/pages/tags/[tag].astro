@@ -1,0 +1,55 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content';
+import PageLayout from '@layouts/PageLayout.astro';
+import Container from '@components/Container.astro';
+import { post_num } from '@pages/blog/[...page].astro';
+import ArrowCard from '@components/ArrowCard.astro';
+
+export async function getStaticPaths({}) {
+  var allPosts = (await getCollection('blog'))
+    .filter((post) => !post.data.draft)
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+  const allTags = new Set();
+  allPosts = allPosts.filter(function (post) {
+    return post.data.tags !== undefined;
+  });
+  allPosts.map((post) => {
+    post.data.tags && post.data.tags.map((tag) => allTags.add(tag));
+  });
+
+  return Array.from(allTags).map((tag) => {
+    const filteredPosts = allPosts.filter((post) =>
+      post.data.tags.includes(tag)
+    );
+    return {
+      params: { tag },
+      props: {
+        posts: filteredPosts,
+      },
+    };
+  });
+  // allPost.map(post => post.data.title);
+}
+
+const { tag } = Astro.params;
+const { posts } = Astro.props;
+---
+
+<PageLayout title={tag} description={tag}>
+  <Container>
+    <p>Posts tagged with {tag}</p>
+    <div class="mt-10 flex-col gap-16">
+      {
+        posts.map(
+          (post) =>
+          <ArrowCard entry={post}/>
+
+          // <article>
+          //     {post}
+          // </article>
+        )
+      }
+    </div>
+  </Container>
+</PageLayout>

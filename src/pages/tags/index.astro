@@ -1,0 +1,38 @@
+---
+import { type CollectionEntry, getCollection } from 'astro:content';
+import PageLayout from '@layouts/PageLayout.astro';
+import Container from '@components/Container.astro';
+
+let title = 'tags';
+
+const allPosts = (await getCollection('blog'))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+var tags = [
+  ...new Set(
+    [].concat.apply(
+      [],
+      allPosts.map((post) => post.data.tags)
+    )
+  ),
+];
+
+tags = tags.filter(function(tag){ return tag!== undefined});
+// console.log(tags)
+---
+
+<PageLayout title="Blog" description="Description">
+  <Container>
+    <!-- Listing out all tags -->
+    <h1>Tags</h1>
+
+    <div class="flex flex-row gap-12 mt-7">
+      {
+        tags.sort().map((tag) => (
+            <a href={`/tags/${tag}`}><span>#</span>{tag}</a>
+        ))
+      }
+    </div>
+  </Container>
+</PageLayout>
