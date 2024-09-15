@@ -39,7 +39,7 @@ export default config({
           // Labelling options
           {
             label: 'Tags',
-            itemLabel: props => props.value
+            itemLabel: (props) => props.value,
           }
         ),
         // richText: fields.mdx({

@@ -10,12 +10,13 @@ import { ContentSchemaContainsSlugError } from "node_modules/astro/dist/core/err
 import { cloudImage } from "node_modules/@keystatic/core/dist/declarations/src/content-components";
 import PostCard from "@components/PostCard.astro";
 import { BLOG } from "@consts";
+import Pagination from "@components/Pagination.astro";
 
 
 const blog = (await getCollection("blog"))
   .filter(post => !post.data.draft)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-  // .slice(0,SITE.NUM_POSTS_ON_HOMEPAGE);
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0,SITE.NUM_POSTS_ON_HOMEPAGE);
 
 const projects = (await getCollection("projects"))
   .filter(project => !project.data.draft)
@@ -74,6 +75,12 @@ const work = await Promise.all(
         </ul>
       </section>
 
+      <section>
+        <Link href={"/blog/2"} external aria-label={"Read older posts"}>
+          Read older Posts
+        </Link>
+      </section>
+
 
 
       
@@ -127,9 +134,7 @@ const work = await Promise.all(
       </section> -->
 
 
-
-
-
+      <!-- Contact Information -->
 
       <section class="animate space-y-4">
         <h5 class="font-semibold text-black dark:text-white">
@@ -157,6 +162,7 @@ const work = await Promise.all(
           </li>
         </ul>
       </section>
+
     </div>
   </Container>
 </PageLayout>
