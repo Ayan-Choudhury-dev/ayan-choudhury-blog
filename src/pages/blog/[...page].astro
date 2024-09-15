@@ -10,6 +10,7 @@ import PostCard from '@components/PostCard.astro';
 import Pagination from '@components/Pagination.astro';
 import { SITE } from "@consts";
 import { convertUrl } from '@lib/utils'
+import { Ast } from 'node_modules/@keystatic/core/dist/declarations/src/markdoc';
 
 
 
@@ -28,7 +29,7 @@ function generate_pagination_links(currentPage, totalPages, baseUrl) {
   for (let i = 1; i <= totalPages; i++) {
     links.push({
       page: i,
-      url: `${baseUrl}/${i}`,
+      url: i==1?`${Astro.url.origin}`:`${baseUrl}/${i}`,
       isCurrent: i === currentPage,
     });
   }
