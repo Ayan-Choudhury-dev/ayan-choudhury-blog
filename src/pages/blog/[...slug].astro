@@ -6,7 +6,7 @@ import FormattedDate from "@components/FormattedDate.astro";
 import { readingTime } from "@lib/utils";
 import BackToPrev from "@components/BackToPrev.astro";
 import Tag from "@components/Tag.astro";
-
+import type { GetStaticPaths } from "astro";
 
 export async function getStaticPaths() {
   const posts = (await getCollection("blog"))
@@ -22,9 +22,12 @@ type Props = CollectionEntry<"blog">;
 
 const post = Astro.props;
 const { Content } = await post.render();
+
+// Ensure description is always a string
+const description = post.data.description || "";
 ---
 
-<PageLayout title={post.data.title} description={post.data.description}>
+<PageLayout title={post.data.title} description={description}>
   <Container>
     <div class="animate">
       <BackToPrev href="/blog">
@@ -49,12 +52,16 @@ const { Content } = await post.render();
       <Content />
     </article>
     <div class="animate font-base text-black dark:text-white">
-      Tagged:
-      <!-- { post.data.tags ? post.data.tags.map(tag => <span>{tag} &nbsp;</span>) : <span>&nbsp;</span>} -->
-      <div class="flex flex-row mt-2 gap-2">
-      { post.data.tags ? post.data.tags.map(tag => <Tag entry={tag}/>) : <span>&nbsp;</span>}
-      </div>
+      { post.data.tags && post.data.tags.length > 0 && (
+        <>
+          Tagged:
+          <div class="flex flex-row mt-2 gap-2">
+            {post.data.tags.map(tag => <Tag entry={tag} />)}
+          </div>
+        </>
+      )}
     </div>
+    
   </Container>
 </PageLayout>
 

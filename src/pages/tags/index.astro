@@ -11,15 +11,13 @@ const allPosts = (await getCollection('blog'))
 
 var tags = [
   ...new Set(
-    [].concat.apply(
-      [],
-      allPosts.map((post) => post.data.tags)
-    )
+    allPosts
+      .map((post) => post.data.tags || []) // Ensure tags is always an array
+      .flat() // Flatten the array of arrays into a single array
   ),
 ];
 
-tags = tags.filter(function(tag){ return tag!== undefined});
-// console.log(tags)
+tags = tags.filter(function(tag){ return tag !== undefined && tag !== '' });
 ---
 
 <PageLayout title="Blog" description="Description">

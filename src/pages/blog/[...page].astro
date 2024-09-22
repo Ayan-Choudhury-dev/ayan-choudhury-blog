@@ -2,50 +2,50 @@
 import { type CollectionEntry, getCollection } from 'astro:content';
 import PageLayout from '@layouts/PageLayout.astro';
 import Container from '@components/Container.astro';
-import FormattedDate from '@components/FormattedDate.astro';
-import { readingTime } from '@lib/utils';
-import BackToPrev from '@components/BackToPrev.astro';
-import Pagination from '@components/Pagination.astro';
 import PostCard from '@components/PostCard.astro';
 import Pagination from '@components/Pagination.astro';
 import { SITE } from "@consts";
-import { convertUrl } from '@lib/utils'
-import { Ast } from 'node_modules/@keystatic/core/dist/declarations/src/markdoc';
-
-
 
 export const post_num = SITE.NUM_POSTS_ON_HOMEPAGE;
 
-export async function getStaticPaths({ paginate }) {
+type PaginateFunction = (posts: CollectionEntry<'blog'>[], options: { pageSize: number }) => any;
+
+export async function getStaticPaths({ paginate }: { paginate: PaginateFunction }) {
   const posts = (await getCollection('blog'))
     .filter((post) => !post.data.draft)
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   return paginate(posts, { pageSize: post_num });
 }
 
-function generate_pagination_links(currentPage, totalPages, baseUrl) {
+function generate_pagination_links(currentPage: number, totalPages: number, baseUrl: string) {
   const links = [];
 
   for (let i = 1; i <= totalPages; i++) {
     links.push({
       page: i,
-      url: i==1?`${Astro.url.origin}`:`${baseUrl}/${i}`,
+      url: i === 1 ? `${Astro.url.origin}` : `${baseUrl}/${i}`,
       isCurrent: i === currentPage,
     });
   }
   return links;
 }
 
-const { page } = Astro.props;
-const total_page_num = page.total / post_num;
+// Define the type for the page object
+interface Page {
+  total: number;
+  currentPage: number;
+  data: CollectionEntry<'blog'>[];
+}
+
+// Ensure Astro.props has the correct type
+const { page } = Astro.props as { page: Page };
+const total_page_num = Math.ceil(page.total / post_num);
 
 const paginationLinks = generate_pagination_links(
   page.currentPage,
   total_page_num,
   Astro.url.pathname.replace(/\/\d+$/, '')
 );
-
-
 
 ---
 
@@ -55,18 +55,20 @@ const paginationLinks = generate_pagination_links(
     <ul>
       {
         page.data.map((post) => (
-          <li key={post.slug}>
-            <article>
-              <PostCard entry={post} />
-            </article>
-          </li>
+          <Fragment key={post.id}>
+            <li>
+              <article>
+                <PostCard entry={post} />
+              </article>
+            </li>
+          </Fragment>
         ))
       }
     </ul>
 
     <!-- Pagination begins -->
 
-    <Pagination page = {page} post_num = {post_num} paginationLinks = {paginationLinks}/>
+    <Pagination page={page} post_num={post_num} paginationLinks={paginationLinks} />
 
   </Container>
 </PageLayout>
