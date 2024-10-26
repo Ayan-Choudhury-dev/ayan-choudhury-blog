@@ -1,0 +1,74 @@
+---
+// Component Imports
+import FormattedDate from './FormattedDate.astro';
+import { readingTime } from '@lib/utils';
+import type { CollectionEntry } from 'astro:content';
+import Image from 'astro/components/Image.astro';
+
+type Props = {
+  entry: CollectionEntry<'blog'>;
+};
+
+
+const { entry } = Astro.props;
+---
+
+<div id="header_container" class=" pb-16">
+  <div class="dark:text-terracotta-500 font-bold text-xl text-black">
+    <a href={`/${entry.collection}/${entry.slug}`} class="no-underline">
+      {entry.data.title}
+    </a>
+  </div>
+
+  <div class="text-sm animate text-gray-400 italic mt-2 mb-3">
+    {entry.data.description}
+  </div>
+
+  <div class="animate flex items-center gap-1.5 dark:text-gray-400 border-y border-gray-500 py-1">
+    <div class="font-base text-sm">
+      <FormattedDate date={entry.data.date} />
+    </div>
+    &bull;
+    <div class="font-base text-sm animate">
+      {readingTime(entry.body)}
+    </div>
+  </div>
+  
+
+  
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    class="absolute top-1/2 right-2 -translate-y-1/2 size-5 stroke-2 fill-none stroke-current"
+  >
+    <line
+      x1="5"
+      y1="12"
+      x2="19"
+      y2="12"
+      class="translate-x-3 group-hover:translate-x-0 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 ease-in-out"
+    ></line>
+    <!-- <polyline
+      points="12 5 19 12 12 19"
+      class="-translate-x-1 group-hover:translate-x-0 transition-transform duration-300 ease-in-out"
+    ></polyline> -->
+  </svg>
+</div>
+
+<div id="Cover" class="mb-10">
+  { entry.data.cover && 'src' in entry.data.cover &&  (
+      <div class="animate">
+        <Image
+          src={entry.data.cover}
+          quality={'mid'}
+          format="avif"
+          width={'800'}
+          class="rounded-lg"
+          alt={entry.data.title}
+        />
+      </div>
+    )
+  }
+</div>
+
+<!-- <hr> -->

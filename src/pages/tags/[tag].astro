@@ -3,6 +3,7 @@ import { type CollectionEntry, getCollection } from 'astro:content';
 import PageLayout from '@layouts/PageLayout.astro';
 import Container from '@components/Container.astro';
 import ArrowCard from '@components/ArrowCard.astro';
+import BackToPrev from '@components/BackToPrev.astro';
 
 export async function getStaticPaths() {
   const allPosts = (await getCollection('blog'))
@@ -28,11 +29,13 @@ const props = Astro.props as { posts: CollectionEntry<'blog'>[] };
 
 <PageLayout title={params.tag} description={params.tag}>
   <Container>
-    <p>Posts tagged with {params.tag}</p>
-    <div class="mt-10 flex-col gap-16">
-      {props.posts.map((post) => (
-        <ArrowCard entry={post} />
-      ))}
+    <p>Posts tagged with "<span class="font-extrabold">{params.tag}</span>"</p>
+    <div class="mt-10 flex flex-col gap-2">
+      {props.posts.map((post) => <ArrowCard entry={post} />)}
+    </div>
+
+    <div class="animate mt-4">
+      <BackToPrev href="/blog"> Back to home </BackToPrev>
     </div>
   </Container>
 </PageLayout>

@@ -14,10 +14,11 @@ import { SITE } from "@consts";
       </Link>
 
       <div class="flex flex-wrap gap-1 items-center">
+        
         <button
           id="light-theme-button"
           aria-label="Light theme"
-          class="group size-8 flex items-center justify-center rounded-full"
+          class="group size-8 flex items-center justify-center rounded-full opacity-40 hidden"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -63,9 +64,11 @@ import { SITE } from "@consts";
             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
           </svg>
         </button>
+
+
         <button
-          id="system-theme-button"
-          aria-label="System theme"
+          id="RSS-link-button"
+          aria-label="RSS Icon"
           class="group size-8 flex items-center justify-center rounded-full"
         >
           <svg
@@ -80,9 +83,7 @@ import { SITE } from "@consts";
             stroke-linejoin="round"
             class="group-hover:stroke-black group-hover:dark:stroke-white transition-colors duration-300 ease-in-out"
           >
-            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-            <line x1="8" y1="21" x2="16" y2="21"></line>
-            <line x1="12" y1="17" x2="12" y2="21"></line>
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12.75 19.5v-.75a7.5 7.5 0 0 0-7.5-7.5H4.5m0-6.75h.75c7.87 0 14.25 6.38 14.25 14.25v.75M6 18.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
           </svg>
         </button>
       </div>

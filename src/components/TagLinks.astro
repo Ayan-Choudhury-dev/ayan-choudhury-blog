@@ -1,0 +1,41 @@
+---
+// Component Imports
+import { any } from 'astro/zod';
+import Tag from './Tag.astro';
+import type { CollectionEntry } from 'astro:content';
+
+type Props = {
+  post: CollectionEntry<'blog'>;
+};
+
+// interface Props {
+//   post: any;
+// }
+
+
+const { post } = Astro.props;
+---
+
+<div class="animate flex items-baseline font-base text-black mt-10 dark:text-white">
+  {/* Check if the post has a 'tags' property */}
+  {post.data.tags && Array.isArray(post.data.tags) && post.data.tags.length > 0 && (
+    <>
+      <span class="pr-2">Tagged:</span>
+      <div class="flex mt-2 gap-2">
+        {post.data.tags.map(tag => <Tag entry={tag} />)}
+      </div>
+    </>
+  )}
+</div>
+
+
+<!-- <div class="animate flex items-baseline font-base text-black mt-10 dark:text-white">
+  { post.data.tags && post.data.tags.length > 0 && (
+    <>
+      <span class="pr-2">Tagged:</span>
+      <div class="flex mt-2 gap-2">
+        {post.data.tags.map(tag => <Tag entry={tag} />)}
+      </div>
+    </>
+    )}
+</div> -->

@@ -3,7 +3,7 @@ import { type CollectionEntry, getCollection } from 'astro:content';
 import PageLayout from '@layouts/PageLayout.astro';
 import Container from '@components/Container.astro';
 
-let title = 'tags';
+// let title = 'tags';
 
 const allPosts = (await getCollection('blog'))
   .filter((post) => !post.data.draft)

@@ -3,8 +3,8 @@
   "type": "module",
   "version": "1.0.0",
   "scripts": {
-    "start": "concurrently npm:watch:*",
-    "watch:prettier": "onchange \"**/*\" -- prettier --write --ignore-unknown {{changed}}",
+    "start": "concurrently \"npm run watch:prettier\" \"npm run watch:dev\"",
+    "watch:prettier": "onchange \"**/*.{js,ts,astro,mdx}\" -- echo 'File changed: {{changed}}' && prettier --write --ignore-unknown {{changed}}",
     "watch:dev": "astro dev",
     "dev": "astro dev",
     "dev:network": "astro dev --host",

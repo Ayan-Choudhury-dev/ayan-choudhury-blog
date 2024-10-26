@@ -6,12 +6,11 @@
     "plugins": [
       {
         "name": "@astrojs/ts-plugin"
-      },
+      }
     ],
     "paths": {
-      "@*": [
-        "./src/*"
-      ]
+      "@*": ["./src/*"],
+      "@assets/*": ["./src/assets/*"]
     },
     "jsx": "react-jsx",
     "jsxImportSource": "react"

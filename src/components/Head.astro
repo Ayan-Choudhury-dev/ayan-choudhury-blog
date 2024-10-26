@@ -11,6 +11,9 @@ import lora400 from "@fontsource/lora/files/lora-latin-400-normal.woff2";
 import lora600 from "@fontsource/lora/files/lora-latin-600-normal.woff2";
 import { ViewTransitions } from "astro:transitions";
 
+
+
+
 interface Props {
   title: string;
   description: string;
@@ -83,11 +86,12 @@ const { title, description, image = "/nano.png" } = Astro.props;
     const backToPrev = document.getElementById("back-to-prev");
     backToPrev?.addEventListener("click", () => window.history.back());
 
-    const lightThemeButton = document.getElementById("light-theme-button");
-    lightThemeButton?.addEventListener("click", () => {
-      localStorage.setItem("theme", "light");
-      toggleTheme(false);
-    });
+    // Light mode WIP
+    // const lightThemeButton = document.getElementById("light-theme-button");
+    // lightThemeButton?.addEventListener("click", () => {
+    //   localStorage.setItem("theme", "light");
+    //   toggleTheme(false);
+    // });
 
     const darkThemeButton = document.getElementById("dark-theme-button");
     darkThemeButton?.addEventListener("click", () => {
@@ -95,19 +99,25 @@ const { title, description, image = "/nano.png" } = Astro.props;
       toggleTheme(true);
     });
 
-    const systemThemeButton = document.getElementById("system-theme-button");
-    systemThemeButton?.addEventListener("click", () => {
-      localStorage.setItem("theme", "system");
-      toggleTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
+    const rssbutton = document.getElementById("RSS-link-button");
+    rssbutton?.addEventListener("click", () => {
+      window.open("rss.xml", '_blank');
     });
 
-    window.matchMedia("(prefers-color-scheme: dark)")
-      .addEventListener("change", event => {
-        if (localStorage.theme === "system") {
-          toggleTheme(event.matches);
-        }
-      }
-    );
+    // const systemThemeButton = document.getElementById("system-theme-button");
+    // systemThemeButton?.addEventListener("click", () => {
+    //   localStorage.setItem("theme", "system");
+    //   toggleTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
+    // });
+
+    // window.matchMedia("(prefers-color-scheme: dark)")
+    //   .addEventListener("change", event => {
+    //     if (localStorage.theme === "system") {
+    //       toggleTheme(event.matches);
+    //     }
+    //   }
+    // );
+
 
     document.addEventListener("scroll", onScroll);
   }

@@ -8,11 +8,16 @@
 const { entry } = Astro.props;
 ---
 
-
+<!-- 
 <a href={`/tags/${entry}`} class="relative group w-fit flex px-2 py-1.5 flex-nowrap rounded border border-black/15 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/5 hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out">
   <div class="flex flex-col flex-1 truncate">
     <div class="text-sm">
       #{entry}
     </div>
   </div>
+</a> -->
+
+<a href={`/tags/${entry}`} class=" no-underline text-gray-400 dark:hover:text-terracotta-500 transition-colors duration-300 ease-in-out">
+      {entry}
+      
 </a>

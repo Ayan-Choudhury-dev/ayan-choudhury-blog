@@ -2,15 +2,15 @@
 import { getCollection } from "astro:content";
 import Container from "@components/Container.astro";
 import PageLayout from "@layouts/PageLayout.astro";
-import ArrowCard from "@components/ArrowCard.astro";
-import Link from "@components/Link.astro";
-import { dateRange } from "@lib/utils";
-import { SITE, HOME, SOCIALS } from "@consts";
-import { ContentSchemaContainsSlugError } from "node_modules/astro/dist/core/errors/errors-data";
-import { cloudImage } from "node_modules/@keystatic/core/dist/declarations/src/content-components";
 import PostCard from "@components/PostCard.astro";
-import { BLOG } from "@consts";
-import Pagination from "@components/Pagination.astro";
+import Link from "@components/Link.astro";
+import { SITE, HOME, SOCIALS } from "@consts";
+// import ArrowCard from "@components/ArrowCard.astro";
+// import { dateRange } from "@lib/utils";
+// import { ContentSchemaContainsSlugError } from "node_modules/astro/dist/core/errors/errors-data";
+// import { cloudImage } from "node_modules/@keystatic/core/dist/declarations/src/content-components";
+// import { BLOG } from "@consts";
+// import Pagination from "@components/Pagination.astro";
 
 
 const blog = (await getCollection("blog"))
@@ -40,10 +40,10 @@ const work = await Promise.all(
 <PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION}>
   <Container>
     <div class="masthead">
-    <h4 class="animate font-semibold text-black dark:text-white text-center mb-10">
-      Dada's Sketchbook
+    <h4 class="animate text-black dark:text-white text-center mb-10">
+      <span class="dark:text-terracotta-500 text-xl font-bold">Dada's Sketchbook</span>
       <br>
-      but it's online
+      <span class="dark:text-gray-400">but it's online</span>
     </h4>
   </div>
 
@@ -58,7 +58,7 @@ const work = await Promise.all(
             See all posts
           </Link> -->
         </div>
-        <ul class="flex flex-col gap-4">
+        <ul class="flex flex-col gap-16">
           <!-- {blog.map(post => (
             <li>
               <ArrowCard entry={post} />
@@ -75,10 +75,16 @@ const work = await Promise.all(
         </ul>
       </section>
 
-      <section>
-
-        <Link href={"/blog/2"} aria-label={"Read older posts"}>
-          Read older Posts
+      <section class="border-y border-gray-600 py-4 text-terracotta-500">
+        <Link href={"/blog/2"} aria-label={"Read older posts"} underline={false}>
+          <div class="flex gap-2">
+            Read older Posts
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+            
+          </div>
+          
         </Link>
       </section>
 
