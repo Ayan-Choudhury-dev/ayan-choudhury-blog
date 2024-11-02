@@ -34,6 +34,9 @@ const work = await Promise.all(
   })
 );
 
+// const total_post_num = Object.keys(blog).length;
+const showOlderPosts = Object.keys(blog).length > SITE.NUM_POSTS_ON_HOMEPAGE;
+
 
 ---
 
@@ -66,27 +69,26 @@ const work = await Promise.all(
           ))} -->
           {blog.map(post=>(
             <article>
-              {/* <PostCard entry={post} /> */}
               <PostCard entry={post}/>
-
-                {/* <post.Content /> */}
               </article>
           ))}
         </ul>
       </section>
 
-      <section class="border-y border-gray-600 py-4 text-terracotta-500">
+      <!-- Read older posts link -->
+
+      {showOlderPosts && (
+
+      <section class="border-y border-gray-600 py-4 text-terracotta-500 flex justify-center">
         <Link href={"/blog/2"} aria-label={"Read older posts"} underline={false}>
-          <div class="flex gap-2">
-            Read older Posts
+          <div class="flex gap-2 w-fit mx-auto">
+            Read older posts
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
             </svg>
-            
           </div>
-          
         </Link>
-      </section>
+      </section>)}
 
 
 

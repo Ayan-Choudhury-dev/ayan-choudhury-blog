@@ -10,8 +10,8 @@ import vercel from "@astrojs/vercel/serverless";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://astro-nano-demo.vercel.app",
+  site: "https://blog.ayanchoudhury.in",
   integrations: [mdx(), sitemap(), tailwind(), react(), markdoc(), keystatic()],
   output: "hybrid",
-  adapter: vercel()
+  adapter: vercel(),
 });

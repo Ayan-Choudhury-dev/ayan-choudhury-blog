@@ -1,11 +1,11 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content';
-import PageLayout from '@layouts/PageLayout.astro';
-import Container from '@components/Container.astro';
+import { getCollection } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+import Container from "@components/Container.astro";
 
 // let title = 'tags';
 
-const allPosts = (await getCollection('blog'))
+const allPosts = (await getCollection("blog"))
   .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
@@ -17,7 +17,7 @@ var tags = [
   ),
 ];
 
-tags = tags.filter(function(tag){ return tag !== undefined && tag !== '' });
+tags = tags.filter(function(tag){ return tag !== undefined && tag !== ""; });
 ---
 
 <PageLayout title="Blog" description="Description">

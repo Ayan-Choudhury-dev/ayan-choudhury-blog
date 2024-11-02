@@ -26,7 +26,8 @@ export default {
       },
       fontFamily: {
         sans: ["Inter", ...defaultTheme.fontFamily.sans],
-        serif: ["Lora", ...defaultTheme.fontFamily.serif],
+        serif: ["Sentient-Variable", ...defaultTheme.fontFamily.serif],
+        // serif: ["Lora", ...defaultTheme.fontFamily.serif],
       },
     },
   },

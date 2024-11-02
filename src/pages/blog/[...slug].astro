@@ -2,7 +2,7 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 import PageLayout from "@layouts/PageLayout.astro";
 import Container from "@components/Container.astro";
-import PostHeader from "@components/PostHeader.astro";
+import PostHeader from "@components/PostHeader_experiment.astro";
 import TagLinks from "@components/TagLinks.astro";
 
 
@@ -44,12 +44,14 @@ const description = post.data.description || "";
       <Content />
     </article>
 
-    <hr class="animate">
+    <!-- <hr class="animate"> -->
     
     <TagLinks post={post}/>
 
   </Container>
 </PageLayout>
+
+
 <!-- 
 <div id="next_post">
   <a href="#">Next Post</a>

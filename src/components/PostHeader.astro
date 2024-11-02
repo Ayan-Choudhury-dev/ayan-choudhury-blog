@@ -9,22 +9,43 @@ type Props = {
   entry: CollectionEntry<'blog'>;
 };
 
-
 const { entry } = Astro.props;
 ---
 
-<div id="header_container" class=" pb-16">
-  <div class="dark:text-terracotta-500 font-bold text-xl text-black">
+<div id="header_container">
+
+  {
+    entry.data.cover && 'src' in entry.data.cover && (
+      <div id="Cover" class="mt-10 mb-10">
+        <div class="animate">
+          <Image
+            src={entry.data.cover}
+            quality={'mid'}
+            format="avif"
+            width={'800'}
+            class="rounded-lg"
+            alt={entry.data.title}
+          />
+        </div>
+      </div>
+            )
+  }
+
+  <div
+    class="dark:text-terracotta-500 mb-4 text-black child:font-serif child:font-normal text-xl"
+  >
     <a href={`/${entry.collection}/${entry.slug}`} class="no-underline">
       {entry.data.title}
     </a>
   </div>
 
-  <div class="text-sm animate text-gray-400 italic mt-2 mb-3">
+  <!-- <div class="text-sm animate text-gray-400 italic mt-2 mb-3">
     {entry.data.description}
-  </div>
+  </div> -->
 
-  <div class="animate flex items-center gap-1.5 dark:text-gray-400 border-y border-gray-500 py-1">
+  <div
+    class="animate flex items-center gap-1.5 dark:text-gray-400 border-y border-gray-500 py-1"
+  >
     <div class="font-base text-sm">
       <FormattedDate date={entry.data.date} />
     </div>
@@ -33,9 +54,7 @@ const { entry } = Astro.props;
       {readingTime(entry.body)}
     </div>
   </div>
-  
 
-  
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"
@@ -55,8 +74,10 @@ const { entry } = Astro.props;
   </svg>
 </div>
 
-<div id="Cover" class="mb-10">
-  { entry.data.cover && 'src' in entry.data.cover &&  (
+<!--
+{
+  entry.data.cover && 'src' in entry.data.cover && (
+    <div id="Cover" class="mt-10 mb-10">
       <div class="animate">
         <Image
           src={entry.data.cover}
@@ -67,8 +88,10 @@ const { entry } = Astro.props;
           alt={entry.data.title}
         />
       </div>
-    )
-  }
-</div>
+    </div>
+          )
+}
+-->
+
 
 <!-- <hr> -->

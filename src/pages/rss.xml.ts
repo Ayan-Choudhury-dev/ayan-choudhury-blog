@@ -1,13 +1,13 @@
-import rss from '@astrojs/rss';
-import { getCollection } from 'astro:content';
-import { HOME } from '@consts';
+import rss from "@astrojs/rss";
+import { getCollection } from "astro:content";
+import { HOME } from "@consts";
 
 type Context = {
   site: string;
 };
 
 export async function GET(context: Context) {
-  const blog = (await getCollection('blog')).filter((post) => !post.data.draft);
+  const blog = (await getCollection("blog")).filter((post) => !post.data.draft);
 
   // const projects = (await getCollection('projects')).filter(
   //   (project) => !project.data.draft

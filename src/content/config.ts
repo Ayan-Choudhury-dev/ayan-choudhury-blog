@@ -1,7 +1,7 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection, z } from "astro:content";
 
 const blog = defineCollection({
-  type: 'content',
+  type: "content",
   schema: ({ image }) =>
     z.object({
       title: z.string(),
@@ -9,7 +9,7 @@ const blog = defineCollection({
       date: z.coerce.date(),
       cover: image()
         .refine((img) => img.width >= 80, {
-          message: 'Cover image must be at least 80 pixels wide!',
+          message: "Cover image must be at least 80 pixels wide!",
         })
         .optional(),
       draft: z.boolean().optional(),
@@ -18,7 +18,7 @@ const blog = defineCollection({
 });
 
 const work = defineCollection({
-  type: 'content',
+  type: "content",
   schema: z.object({
     company: z.string(),
     role: z.string(),
@@ -28,7 +28,7 @@ const work = defineCollection({
 });
 
 const projects = defineCollection({
-  type: 'content',
+  type: "content",
   schema: z.object({
     title: z.string(),
     description: z.string(),
