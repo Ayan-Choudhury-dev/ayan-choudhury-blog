@@ -14,6 +14,7 @@ import inter600 from "@fontsource/inter/files/inter-latin-600-normal.woff2";
 
 
 
+
 import { ViewTransitions } from "astro:transitions";
 
 
@@ -40,10 +41,7 @@ const { title, description, image = "/nano.png" } = Astro.props;
 <!-- Font preloads -->
 <link rel="preload" href={inter400} as="font" type="font/woff2" crossorigin/>
 <link rel="preload" href={inter600} as="font" type="font/woff2" crossorigin/>
-<link rel="preload" href={sentinel} as="font" type="font/woff2" crossorigin/>
-<!-- <link rel="preload" href={lora600} as="font" type="font/woff2" crossorigin/> -->
-<!-- <link rel="preload" href={lora400} as="font" type="font/woff2" crossorigin/>
-<link rel="preload" href={lora600} as="font" type="font/woff2" crossorigin/> -->
+
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
