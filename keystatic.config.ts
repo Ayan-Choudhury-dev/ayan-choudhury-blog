@@ -7,8 +7,9 @@ export default config({
     kind: "github",
    repo: {
      owner: "Ayan-Choudhury-dev",
-     name: "ayan-choudhury-blog"
-   }
+     name: "ayan-choudhury-blog",
+   },
+   branchPrefix: 'keystatic-cms/'
   },
 
   collections: {
