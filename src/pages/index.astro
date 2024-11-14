@@ -11,7 +11,7 @@ import { SITE, HOME, SOCIALS } from "@consts";
 // import { cloudImage } from "node_modules/@keystatic/core/dist/declarations/src/content-components";
 // import { BLOG } from "@consts";
 // import Pagination from "@components/Pagination.astro";
-
+// 
 
 const blog = (await getCollection("blog"))
   .filter(post => !post.data.draft)
