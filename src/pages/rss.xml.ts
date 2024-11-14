@@ -1,31 +1,29 @@
 import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
-import { HOME } from "@consts";
+import { BLOG } from "@consts";
 
-type Context = {
-  site: string;
-};
+interface Context {
+  site: URL; // Use URL type for better compatibility
+}
 
-export async function GET(context: Context) {
-  const blog = (await getCollection("blog")).filter((post) => !post.data.draft);
+export async function GET({ site }: Context) {
+  const blogPosts = (await getCollection("blog")).filter((post) => !post.data.draft);
 
-  // const projects = (await getCollection('projects')).filter(
-  //   (project) => !project.data.draft
-  // );
-
-  const items = [...blog].sort(
-    (a, b) => new Date(b.data.date).valueOf() - new Date(a.data.date).valueOf()
+  // Sort blog posts by date, newest first
+  const sortedPosts = blogPosts.sort(
+    (a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime()
   );
 
+  // Generate RSS feed
   return rss({
-    title: HOME.TITLE,
-    description: HOME.DESCRIPTION,
-    site: context.site,
-    items: items.map((item) => ({
-      title: item.data.title,
-      description: item.data.description,
-      pubDate: item.data.date,
-      link: `/${item.collection}/${item.slug}/`,
+    title: BLOG.TITLE,
+    description: BLOG.DESCRIPTION,
+    site: site.toString(),
+    items: sortedPosts.map((post) => ({
+      title: post.data.title,
+      description: post.data.description,
+      pubDate: post.data.date,
+      link: `/${post.collection}/${post.slug}/`,
     })),
   });
 }
