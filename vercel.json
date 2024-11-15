@@ -1,0 +1,6 @@
+{
+    "redirects": [
+      { "source": "/rss", "destination": "/rss.xml", "permanent": true }
+    ]
+  }
+  
