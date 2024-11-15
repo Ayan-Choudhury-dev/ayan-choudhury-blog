@@ -24,6 +24,7 @@ export async function GET({ site }: Context) {
       description: post.data.description,
       pubDate: post.data.date,
       link: `/${post.collection}/${post.slug}/`,
+      customData: `<image>${post.data.cover}</image>`, // Add cover image field
     })),
   });
 }
