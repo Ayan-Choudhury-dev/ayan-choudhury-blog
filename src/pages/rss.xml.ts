@@ -19,12 +19,20 @@ export async function GET({ site }: Context) {
     title: BLOG.TITLE,
     description: BLOG.DESCRIPTION,
     site: site.toString(),
+    xmlns: {
+      media: "http://search.yahoo.com/mrss/",
+    },
     items: sortedPosts.map((post) => ({
       title: post.data.title,
       description: post.data.description,
       pubDate: post.data.date,
       link: `/${post.collection}/${post.slug}/`,
-      customData: `<image>${post.data.cover?.src}</image>`, // Add cover image field
+      
+      customData: `<media:content
+          type="image/${post.data.cover?.format == "jpg" ? "jpeg" : "png"}"
+          medium="image"
+          url="${post.data.cover?.src}" />
+      `,
     })),
   });
 }
