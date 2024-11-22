@@ -1,6 +1,7 @@
 import rss from "@astrojs/rss";
 import { getCollection } from "astro:content";
 import { BLOG } from "@consts";
+import { marked } from "marked";
 
 interface Context {
   site: URL; // Use URL type for better compatibility
@@ -12,18 +13,6 @@ function getFirstImageFromMarkdown(content: string): string | null {
   const imageRegex = /!\[.*?\]\((.*?)\)/;
   const match = content.match(imageRegex);
   return match ? match[1] : null; // Return the captured group with the image path
-}
-
-// Sanitize or format post content for RSS compatibility
-function formatContentForRSS(content: string): string {
-  // Basic sanitization and handling for HTML entities
-  return content
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#39;")
-    .replace(/\n/g, "<br />"); // Replace newlines with <br /> for better rendering
 }
 
 export async function GET({ site }: Context) {
@@ -55,9 +44,9 @@ export async function GET({ site }: Context) {
         imageUrl = getFirstImageFromMarkdown(post.body);
       }
 
-      // Format post content for RSS
-      const formattedContent = post.body
-        ? formatContentForRSS(post.body)
+      // Convert Markdown to HTML for RSS content
+      const htmlContent = post.body
+        ? marked(post.body) // Convert Markdown to HTML
         : post.data.description;
 
       // Return RSS item with or without the image
@@ -68,7 +57,7 @@ export async function GET({ site }: Context) {
         link: `/${post.collection}/${post.slug}/`,
         customData: `
           ${imageUrl ? `<media:content type="image/${imageUrl.endsWith(".jpg") ? "jpeg" : "png"}" medium="image" url="${imageUrl}" />` : ""}
-          <content:encoded><![CDATA[${formattedContent}]]></content:encoded>
+          <content:encoded><![CDATA[${htmlContent}]]></content:encoded>
         `,
       };
     }),
