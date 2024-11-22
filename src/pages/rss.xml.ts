@@ -3,32 +3,27 @@ import { getCollection } from "astro:content";
 import { BLOG } from "@consts";
 import { marked } from "marked";
 
-// Import Astro's `resolve` utility to resolve asset URLs
-import { resolve } from "astro:assets";
-
-interface Context {
-  site: URL; // Use URL type for better compatibility
-}
-
-// Function to extract the first image in Markdown content and resolve its URL
-async function getFirstImageFromMarkdown(content: string): Promise<string | null> {
+// Function to extract the first image in Markdown content and format the URL
+function getFirstImageFromMarkdown(content: string, siteOrigin: string): string | null {
   // Regex to match ![alt text](image-path)
   const imageRegex = /!\[.*?\]\((.*?)\)/;
   const match = content.match(imageRegex);
 
   if (match && match[1]) {
     const imagePath = match[1];
-    try {
-      // Resolve the image path to a final build URL
-      return await resolve(imagePath);
-    } catch {
-      return null; // If resolution fails, fallback to null
+
+    // Resolve "@assets" path to final URL
+    if (imagePath.startsWith("@assets/")) {
+      return `${siteOrigin}/_astro/${imagePath.replace("@assets/", "")}`;
     }
+
+    // Return the image path as is for non-@assets paths
+    return `${siteOrigin}${imagePath}`;
   }
   return null;
 }
 
-export async function GET({ site }: Context) {
+export async function GET({ site }: { site: URL }) {
   const blogPosts = (await getCollection("blog")).filter((post) => !post.data.draft);
 
   // Sort blog posts by date, newest first
@@ -45,46 +40,40 @@ export async function GET({ site }: Context) {
       media: "http://search.yahoo.com/mrss/",
       content: "http://purl.org/rss/1.0/modules/content/",
     },
-    items: await Promise.all(
-      sortedPosts.map(async (post) => {
-        let imageUrl: string | null = null;
+    items: sortedPosts.map((post) => {
+      let imageUrl: string | null = null;
 
-        // Rule 1: Use cover image if available
-        if (post.data.cover?.src) {
-          try {
-            imageUrl = await resolve(post.data.cover.src);
-          } catch {
-            imageUrl = null;
+      // Rule 1: Use cover image if available
+      if (post.data.cover?.src) {
+        imageUrl = `${site.origin}${post.data.cover.src}`;
+      } 
+      // Rule 2: Fallback to first image in content
+      else if (post.body) {
+        imageUrl = getFirstImageFromMarkdown(post.body, site.origin);
+      }
+
+      // Convert Markdown to HTML for RSS content
+      const htmlContent = post.body
+        ? marked(post.body) // Convert Markdown to HTML
+        : post.data.description;
+
+      // Return RSS item with or without the image
+      return {
+        title: post.data.title,
+        description: post.data.description,
+        pubDate: post.data.date,
+        link: `/${post.collection}/${post.slug}/`,
+        customData: `
+          ${
+            imageUrl
+              ? `<media:content type="image/${
+                  imageUrl.endsWith(".jpg") ? "jpeg" : "png"
+                }" medium="image" url="${imageUrl}" />`
+              : ""
           }
-        } 
-        // Rule 2: Fallback to first image in content
-        else if (post.body) {
-          imageUrl = await getFirstImageFromMarkdown(post.body);
-        }
-
-        // Convert Markdown to HTML for RSS content
-        const htmlContent = post.body
-          ? marked(post.body) // Convert Markdown to HTML
-          : post.data.description;
-
-        // Return RSS item with or without the image
-        return {
-          title: post.data.title,
-          description: post.data.description,
-          pubDate: post.data.date,
-          link: `/${post.collection}/${post.slug}/`,
-          customData: `
-            ${
-              imageUrl
-                ? `<media:content type="image/${
-                    imageUrl.endsWith(".jpg") ? "jpeg" : "png"
-                  }" medium="image" url="${site.origin}${imageUrl}" />`
-                : ""
-            }
-            <content:encoded><![CDATA[${htmlContent}]]></content:encoded>
-          `,
-        };
-      })
-    ),
+          <content:encoded><![CDATA[${htmlContent}]]></content:encoded>
+        `,
+      };
+    }),
   });
 }
