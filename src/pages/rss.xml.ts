@@ -39,7 +39,9 @@ export async function GET({ site }: { site: URL }) {
     xmlns: {
       media: "http://search.yahoo.com/mrss/",
       content: "http://purl.org/rss/1.0/modules/content/",
+      atom: "http://www.w3.org/2005/Atom",
     },
+    customData: `<atom:link href="${site}rss.xml" rel="self" type="application/rss+xml" />`,
     items: sortedPosts.map((post) => {
       let imageUrl: string | null = null;
 

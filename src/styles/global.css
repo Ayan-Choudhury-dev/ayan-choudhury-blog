@@ -27,9 +27,11 @@ body {
 }
 
 header {
-  @apply fixed top-0 left-0 right-0 z-50 py-5;
-  @apply bg-stone-100/75 dark:bg-stone-900/25;
-  @apply backdrop-blur-sm saturate-200;
+  /* @apply items-center; */
+    /* @apply flex mt-10 w-1/2 mx-auto rounded-[10em]; */
+    @apply fixed top-0 left-0 right-0 z-50 py-5;
+    @apply bg-stone-100/75 dark:bg-stone-900/25;
+    @apply backdrop-blur-xl;
 }
 
 main {
@@ -114,6 +116,6 @@ hr {
 }
 
 /* #mask-container{
-  background: linear-gradient(180deg, rgba(0,0,0,0) 16.26%, #000000 79.15%);
   background-blend-mode: normal;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 16.26%, #000000 79.15%);
 } */
