@@ -112,7 +112,6 @@ hr {
   @apply border;
   @apply border-black/15;
   @apply dark:border-white/20;
-  @apply p-[50px];
 }
 
 /* #mask-container{

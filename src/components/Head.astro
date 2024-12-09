@@ -106,6 +106,12 @@ const { title, description, image = "/nano.png" } = Astro.props;
       window.open("rss.xml", "_blank");
     });
 
+    const archivebutton = document.getElementById("Blog-archive-link-button");
+    archivebutton?.addEventListener("click", () => {
+      window.open("https://blogarchive.ayanchoudhury.in/", "_blank");
+    });
+
+
     // const systemThemeButton = document.getElementById("system-theme-button");
     // systemThemeButton?.addEventListener("click", () => {
     //   localStorage.setItem("theme", "system");

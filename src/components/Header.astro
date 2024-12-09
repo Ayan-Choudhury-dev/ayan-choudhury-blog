@@ -1,19 +1,53 @@
 ---
-import Container from "@components/Container.astro";
-import Link from "@components/Link.astro";
-import { SITE } from "@consts";
+import Container from '@components/Container.astro';
+import Link from '@components/Link.astro';
+import { SITE } from '@consts';
+
+import tippy from 'tippy.js';
+import 'tippy.js/dist/tippy.css'; // Import Tippy.js styles
+
 ---
 
 <header>
   <Container>
-    <div class="flex flex-wrap gap-y-2 justify-between items-center" id="hero_container">
+    <div
+      class="flex flex-wrap gap-y-2 justify-between items-center"
+      id="hero_container"
+    >
       <Link href="/" underline={false}>
-        <div class="font-semibold ">
+        <div class="font-semibold">
           {SITE.NAME}
         </div>
       </Link>
 
       <div class="flex flex-wrap gap-1 items-center">
+        <!-- Archive icon -->
+        <button
+          id="Blog-archive-link-button"
+          aria-label="Archive Icon"
+          class="group size-8 flex items-center justify-center rounded-full"
+          data-tippy-content="Go to Blog Archive"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="group-hover:stroke-black group-hover:dark:stroke-white transition-colors duration-300 ease-in-out"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M5.25 14.25h13.5m-13.5 0a3 3 0 0 1-3-3m3 3a3 3 0 1 0 0 6h13.5a3 3 0 1 0 0-6m-16.5-3a3 3 0 0 1 3-3h13.5a3 3 0 0 1 3 3m-19.5 0a4.5 4.5 0 0 1 .9-2.7L5.737 5.1a3.375 3.375 0 0 1 2.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 0 1 .9 2.7m0 0a3 3 0 0 1-3 3m0 3h.008v.008h-.008v-.008Zm0-6h.008v.008h-.008v-.008Zm-3 6h.008v.008h-.008v-.008Zm0-6h.008v.008h-.008v-.008Z"
+            ></path>
+          </svg>
+        </button>
+
         <!-- Dark and light mode buttons -->
         <button
           id="light-theme-button"
@@ -43,7 +77,7 @@ import { SITE } from "@consts";
             <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
           </svg>
         </button>
-        
+
         <button
           id="dark-theme-button"
           aria-label="Dark theme"
@@ -65,11 +99,12 @@ import { SITE } from "@consts";
           </svg>
         </button>
 
-
+        <!-- RSS Button -->
         <button
           id="RSS-link-button"
           aria-label="RSS Icon"
           class="group size-8 flex items-center justify-center rounded-full"
+          data-tippy-content="Open RSS Feed"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -83,11 +118,15 @@ import { SITE } from "@consts";
             stroke-linejoin="round"
             class="group-hover:stroke-black group-hover:dark:stroke-white transition-colors duration-300 ease-in-out"
           >
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12.75 19.5v-.75a7.5 7.5 0 0 0-7.5-7.5H4.5m0-6.75h.75c7.87 0 14.25 6.38 14.25 14.25v.75M6 18.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M12.75 19.5v-.75a7.5 7.5 0 0 0-7.5-7.5H4.5m0-6.75h.75c7.87 0 14.25 6.38 14.25 14.25v.75M6 18.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
+            ></path>
           </svg>
         </button>
       </div>
-<!--       
+      <!--       
       <nav class="flex gap-1">
         <Link href="/blog">
           blog
@@ -108,3 +147,10 @@ import { SITE } from "@consts";
     </div>
   </Container>
 </header>
+
+<script>
+  import tippy from 'tippy.js';
+
+  // Initialize Tippy.js for all elements with data-tippy-content
+  tippy('[data-tippy-content]');
+</script>
