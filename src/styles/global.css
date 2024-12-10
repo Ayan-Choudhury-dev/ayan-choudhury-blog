@@ -42,6 +42,7 @@ footer {
   @apply pb-10 text-sm;
 }
 
+
 article {
   @apply max-w-full prose dark:prose-invert prose-img:mx-auto prose-img:my-auto;
   @apply prose-headings:font-semibold prose-p:font-serif;
@@ -51,10 +52,19 @@ article {
     @apply rounded-lg;
     /* @apply w-full; */
   }
+
   hr {
     @apply w-1/3;
     @apply mx-auto;
     @apply my-20;
+  }
+
+  #Cover{
+    img{
+      @apply rounded-t-lg;
+      @apply rounded-b-none;
+      @apply border-b-2;
+    }
   }
 }
 
