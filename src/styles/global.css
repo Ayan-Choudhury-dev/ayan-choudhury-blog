@@ -26,6 +26,10 @@ body {
   @apply text-black/50 dark:text-white/75;
 }
 
+a{
+  @apply text-salmon_dark;
+}
+
 header {
   /* @apply items-center; */
     /* @apply flex mt-10 w-1/2 mx-auto rounded-[10em]; */
@@ -83,14 +87,19 @@ article {
 
 @layer utilities {
   article a {
-    @apply text-current underline underline-offset-2;
+    /* @apply text-salmon_light dark:text-salmon_dark underline underline-offset-2; */
+    @apply font-bold;
+    @apply text-current underline underline-offset-4;
     @apply decoration-black/15 dark:decoration-white/30;
-    @apply transition-colors duration-300 ease-in-out;
+    @apply transition-colors duration-500 ease-in-out;
   }
 
   article a:hover {
-    @apply text-black dark:text-white;
+    /* @apply text-black dark:text-white; */
+    @apply text-salmon_light dark:text-salmon_dark;
     @apply decoration-black/25 dark:decoration-white/50;
+    @apply transition duration-500 ease-in-out;
+    @apply underline-offset-4;
   }
 }
 
