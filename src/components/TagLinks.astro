@@ -21,7 +21,7 @@ const { post } = Astro.props;
   {post.data.tags && Array.isArray(post.data.tags) && post.data.tags.length > 0 && (
     <>
       <span class="mr-4">Tagged:</span>
-      <div class="flex mt-2 gap-2 child:font-serif tagged">
+      <div class=" mt-2 gap-2 child:font-serif tagged">
         {post.data.tags.map(tag => <Tag entry={tag} />)}
       </div>
     </>

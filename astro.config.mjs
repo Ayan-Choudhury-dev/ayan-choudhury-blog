@@ -12,6 +12,6 @@ import vercel from "@astrojs/vercel/serverless";
 export default defineConfig({
   site: "https://blog.ayanchoudhury.in",
   integrations: [mdx(), sitemap(), tailwind(), react(), markdoc(), keystatic()],
-  output: "hybrid",
+  output: "static",
   adapter: vercel(),
 });

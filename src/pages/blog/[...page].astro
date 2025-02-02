@@ -5,17 +5,23 @@ import Container from "@components/Container.astro";
 import PostCard from "@components/PostCard.astro";
 import Pagination from "@components/Pagination.astro";
 import { SITE } from "@consts";
+import { postcss } from "tailwindcss";
 
 export const post_num = SITE.NUM_POSTS_ON_HOMEPAGE;
+export var display_pagination = true;
 
+type display_pagination = boolean;
 type PaginateFunction = (posts: CollectionEntry<"blog">[], options: { pageSize: number }) => any;
 
 export async function getStaticPaths({ paginate }: { paginate: PaginateFunction }) {
   const posts = (await getCollection("blog"))
-    .filter((post) => !post.data.draft)
-    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  if(posts.length<post_num)
+    display_pagination = false;
   return paginate(posts, { pageSize: post_num });
 }
+
 
 function generate_pagination_links(currentPage: number, totalPages: number, baseUrl: string) {
   const links = [];
@@ -67,8 +73,9 @@ const paginationLinks = generate_pagination_links(
     </ul>
 
     <!-- Pagination begins -->
-
-    <Pagination page={page} post_num={post_num} paginationLinks={paginationLinks} />
-
+    <div class={display_pagination ? "block" : "hidden"}>
+      <Pagination page={page} post_num={post_num} paginationLinks={paginationLinks} />
+    </div>
+    <!-- <Pagination page={page} post_num={post_num} paginationLinks={paginationLinks} /> -->
   </Container>
 </PageLayout>
