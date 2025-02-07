@@ -28,6 +28,7 @@ body {
 
 a{
   @apply text-salmon_dark;
+  @apply break-words;
 }
 
 header {
