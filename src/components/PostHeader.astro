@@ -16,13 +16,13 @@ const { entry } = Astro.props;
   {
     entry.data.cover && 'src' in entry.data.cover && (
       <div id="Cover" class="rounded-t-lg">
-        <div class="animate">
+        <div id="cover-container">
           <Image
             src={entry.data.cover}
             quality={'mid'}
             format="avif"
             width={'800'}
-            class=""
+            class="motion-safe:animate-fade-up motion-safe:animate-duration-500"
             alt={entry.data.title}
           />
         </div>
