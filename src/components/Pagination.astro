@@ -1,5 +1,5 @@
 ---
-import { SITE } from "@consts";
+import { SITE } from '@consts';
 const { page, post_num, paginationLinks } = Astro.props;
 
 type Props = {
@@ -14,38 +14,37 @@ interface paginationLinks {
 ---
 
 <div
-id="Postcard"
-class="flex items-center justify-between px-4 py-3 sm:px-6 text-black/50 dark:text-white/75"
+  id="Postcard"
+  class="flex items-center justify-between px-4 py-3 sm:px-6 text-black/50 dark:text-white/75"
 >
-<div class="flex flex-1 justify-between sm:hidden">
-  <a
-  href={page.url.prev}
-  class="relative inline-flex items-center rounded-md bg-white px-4 py-2 text-sm font-medium hover:bg-gray-50"
-  >Previous</a
-  >
-  <a
-  href={page.url.next}
-  class="relative ml-3 inline-flex items-center rounded-md bg-white px-4 py-2 text-sm font-medium hover:bg-gray-50"
-  >Next</a
-  >
-</div>
-<div
-class="hidden flex-col gap-4 sm:flex sm:flex-1 sm:items-center sm:justify-between"
->
-
-<div>
-  <p class="text-sm text-white/40">
-    Showing
-    <span class="font-medium"
-    >{page.currentPage * post_num - post_num + 1}</span
+  <div class="flex flex-1 justify-between sm:hidden">
+    <a
+      href={page.url.prev}
+      class="relative inline-flex items-center rounded-md bg-white px-4 py-2 text-sm font-medium hover:bg-gray-50"
+      >Previous</a
     >
-    to
-    <span class="font-medium">{page.currentPage * post_num}</span>
-    of
-    <span class="font-medium">{page.total}</span>
-    posts
-  </p>
-</div>
+    <a
+      href={page.url.next}
+      class="relative ml-3 inline-flex items-center rounded-md bg-white px-4 py-2 text-sm font-medium hover:bg-gray-50"
+      >Next</a
+    >
+  </div>
+  <div
+    class="hidden flex-col gap-4 sm:flex sm:flex-1 sm:items-center sm:justify-between"
+  >
+    <div>
+      <p class="text-sm text-white/40">
+        Showing
+        <span class="font-medium"
+          >{page.currentPage * post_num - post_num + 1}</span
+        >
+        to
+        <span class="font-medium">{page.currentPage * post_num}</span>
+        of
+        <span class="font-medium">{page.total}</span>
+        posts
+      </p>
+    </div>
     <div id="pagination">
       <nav
         class="isolate inline-flex gap-2 -space-x-px rounded-md shadow-sm"
@@ -111,4 +110,3 @@ class="hidden flex-col gap-4 sm:flex sm:flex-1 sm:items-center sm:justify-betwee
     </div>
   </div>
 </div>
-

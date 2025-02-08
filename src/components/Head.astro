@@ -1,19 +1,15 @@
 ---
-import "../styles/global.css";
-
+import '../styles/global.css';
 
 // OLD FONTS
-import "@fontsource/inter/latin-400.css";
-import "@fontsource/inter/latin-600.css";
+import '@fontsource/inter/latin-400.css';
+import '@fontsource/inter/latin-600.css';
 // import "@fontsource/lora/400.css";
 // import "@fontsource/lora/600.css";
-import inter400 from "@fontsource/inter/files/inter-latin-400-normal.woff2";
-import inter600 from "@fontsource/inter/files/inter-latin-600-normal.woff2";
+import inter400 from '@fontsource/inter/files/inter-latin-400-normal.woff2';
+import inter600 from '@fontsource/inter/files/inter-latin-600-normal.woff2';
 
-
-
-import { ViewTransitions } from "astro:transitions";
-
+import { ViewTransitions } from 'astro:transitions';
 
 interface Props {
   title: string;
@@ -23,7 +19,7 @@ interface Props {
 
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 
-const { title, description, image = "/nano.png" } = Astro.props;
+const { title, description, image = '/nano.png' } = Astro.props;
 ---
 
 <!-- Global Metadata -->
@@ -32,13 +28,12 @@ const { title, description, image = "/nano.png" } = Astro.props;
 <!-- <link rel="icon" type="image/svg+xml" href="/favicon-dark.svg" media="(prefers-color-scheme: dark)">
 <link rel="icon" type="image/svg+xml" href="/favicon-light.svg" media="(prefers-color-scheme: light)">
 <link rel="icon" type="image/x-icon" href="/favicon-light.svg"> -->
-<link rel="icon" type="image/x-icon" href="/favicon.png">
+<link rel="icon" type="image/x-icon" href="/favicon.png" />
 <meta name="generator" content={Astro.generator} />
 
 <!-- Font preloads -->
-<link rel="preload" href={inter400} as="font" type="font/woff2" crossorigin/>
-<link rel="preload" href={inter600} as="font" type="font/woff2" crossorigin/>
-
+<link rel="preload" href={inter400} as="font" type="font/woff2" crossorigin />
+<link rel="preload" href={inter600} as="font" type="font/woff2" crossorigin />
 
 <!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
@@ -54,7 +49,7 @@ const { title, description, image = "/nano.png" } = Astro.props;
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={new URL(image, Astro.url)} />
-<meta property="og:site_name" content="Dada's Sketchbook">
+<meta property="og:site_name" content="Dada's Sketchbook" />
 
 <!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
@@ -63,14 +58,14 @@ const { title, description, image = "/nano.png" } = Astro.props;
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(image, Astro.url)} />
 
-<ViewTransitions  />
+<ViewTransitions />
 
 <script>
-  import type { TransitionBeforeSwapEvent } from "astro:transitions/client";
-  document.addEventListener("astro:before-swap", (e) =>
+  import type { TransitionBeforeSwapEvent } from 'astro:transitions/client';
+  document.addEventListener('astro:before-swap', (e) =>
     [
       ...(e as TransitionBeforeSwapEvent).newDocument.head.querySelectorAll(
-        "link[as=\"font\"]"
+        'link[as="font"]'
       ),
     ].forEach((link) => link.remove())
   );
@@ -82,11 +77,11 @@ const { title, description, image = "/nano.png" } = Astro.props;
     onScroll();
     animate();
 
-    const backToTop = document.getElementById("back-to-top");
-    backToTop?.addEventListener("click", (event) => scrollToTop(event));
+    const backToTop = document.getElementById('back-to-top');
+    backToTop?.addEventListener('click', (event) => scrollToTop(event));
 
-    const backToPrev = document.getElementById("back-to-prev");
-    backToPrev?.addEventListener("click", () => window.history.back());
+    const backToPrev = document.getElementById('back-to-prev');
+    backToPrev?.addEventListener('click', () => window.history.back());
 
     // Light mode WIP
     // const lightThemeButton = document.getElementById("light-theme-button");
@@ -95,22 +90,21 @@ const { title, description, image = "/nano.png" } = Astro.props;
     //   toggleTheme(false);
     // });
 
-    const darkThemeButton = document.getElementById("dark-theme-button");
-    darkThemeButton?.addEventListener("click", () => {
-      localStorage.setItem("theme", "dark");
+    const darkThemeButton = document.getElementById('dark-theme-button');
+    darkThemeButton?.addEventListener('click', () => {
+      localStorage.setItem('theme', 'dark');
       toggleTheme(true);
     });
 
-    const rssbutton = document.getElementById("RSS-link-button");
-    rssbutton?.addEventListener("click", () => {
-      window.open("rss.xml", "_blank");
+    const rssbutton = document.getElementById('RSS-link-button');
+    rssbutton?.addEventListener('click', () => {
+      window.open('rss.xml', '_blank');
     });
 
-    const archivebutton = document.getElementById("Blog-archive-link-button");
-    archivebutton?.addEventListener("click", () => {
-      window.open("https://blogarchive.ayanchoudhury.in/", "_blank");
+    const archivebutton = document.getElementById('Blog-archive-link-button');
+    archivebutton?.addEventListener('click', () => {
+      window.open('https://blogarchive.ayanchoudhury.in/', '_blank');
     });
-
 
     // const systemThemeButton = document.getElementById("system-theme-button");
     // systemThemeButton?.addEventListener("click", () => {
@@ -126,25 +120,24 @@ const { title, description, image = "/nano.png" } = Astro.props;
     //   }
     // );
 
-
-    document.addEventListener("scroll", onScroll);
+    document.addEventListener('scroll', onScroll);
   }
 
   function animate() {
-    const animateElements = document.querySelectorAll(".animate");
+    const animateElements = document.querySelectorAll('.animate');
 
     animateElements.forEach((element, index) => {
       setTimeout(() => {
-        element.classList.add("show");
+        element.classList.add('show');
       }, index * 150);
     });
   }
 
   function onScroll() {
     if (window.scrollY > 0) {
-      document.documentElement.classList.add("scrolled");
+      document.documentElement.classList.add('scrolled');
     } else {
-      document.documentElement.classList.remove("scrolled");
+      document.documentElement.classList.remove('scrolled');
     }
   }
 
@@ -152,12 +145,12 @@ const { title, description, image = "/nano.png" } = Astro.props;
     event.preventDefault();
     window.scrollTo({
       top: 0,
-      behavior: "smooth"
+      behavior: 'smooth',
     });
   }
 
-function toggleTheme(dark) {
-    const css = document.createElement("style");
+  function toggleTheme(dark) {
+    const css = document.createElement('style');
 
     css.appendChild(
       document.createTextNode(
@@ -168,33 +161,33 @@ function toggleTheme(dark) {
              -ms-transition: none !important;
              transition: none !important;
           }
-        `,
+        `
       )
     );
 
     document.head.appendChild(css);
 
     if (dark) {
-      document.documentElement.classList.add("dark");
+      document.documentElement.classList.add('dark');
     } else {
-      document.documentElement.classList.remove("dark");
+      document.documentElement.classList.remove('dark');
     }
 
-  window.getComputedStyle(css).opacity;
+    window.getComputedStyle(css).opacity;
     document.head.removeChild(css);
   }
 
   function preloadTheme() {
     const userTheme = localStorage.theme;
 
-    if (userTheme === "light" || userTheme === "dark") {
-      toggleTheme(userTheme === "dark");
+    if (userTheme === 'light' || userTheme === 'dark') {
+      toggleTheme(userTheme === 'dark');
     } else {
-      toggleTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
+      toggleTheme(window.matchMedia('(prefers-color-scheme: dark)').matches);
     }
   }
 
-  document.addEventListener("DOMContentLoaded", () => init());
-  document.addEventListener("astro:after-swap", () => init());
+  document.addEventListener('DOMContentLoaded', () => init());
+  document.addEventListener('astro:after-swap', () => init());
   preloadTheme();
 </script>

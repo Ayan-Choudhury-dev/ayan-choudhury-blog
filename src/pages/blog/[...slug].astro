@@ -1,14 +1,13 @@
 ---
-import { type CollectionEntry, getCollection } from "astro:content";
-import PageLayout from "@layouts/PageLayout.astro";
-import Container from "@components/Container.astro";
-import PostHeader from "@components/PostHeader.astro";
-import TagLinks from "@components/TagLinks.astro";
-
+import { type CollectionEntry, getCollection } from 'astro:content';
+import PageLayout from '@layouts/PageLayout.astro';
+import Container from '@components/Container.astro';
+import PostHeader from '@components/PostHeader.astro';
+import TagLinks from '@components/TagLinks.astro';
 
 export async function getStaticPaths() {
-  const posts = (await getCollection("blog"))
-    .filter(post => !post.data.draft)
+  const posts = (await getCollection('blog'))
+    .filter((post) => !post.data.draft)
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   return posts.map((post) => ({
     params: { slug: post.slug },
@@ -16,17 +15,13 @@ export async function getStaticPaths() {
   }));
 }
 
-
-type Props = CollectionEntry<"blog">;
-
+type Props = CollectionEntry<'blog'>;
 
 const post = Astro.props;
 const { Content } = await post.render();
 
-
 // Ensure description is always a string
-const description = post.data.description || "";
-
+const description = post.data.description || '';
 ---
 
 <PageLayout title={post.data.title} description={description}>
@@ -36,19 +31,16 @@ const description = post.data.description || "";
         Back to blog
       </BackToPrev>
     </div> -->
-    
-    <PostHeader entry={post}/>
+
+    <PostHeader entry={post} />
 
     <!-- Content of blog begins here -->
     <article class="px-4 sm:px-[50px] mb-16">
       <Content />
-      <TagLinks post={post}/>
+      <TagLinks post={post} />
     </article>
-    
-
   </Container>
 </PageLayout>
-
 
 <!-- 
 <div id="next_post">

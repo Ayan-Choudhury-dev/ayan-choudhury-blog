@@ -1,6 +1,6 @@
 ---
-import Container from "@components/Container.astro";
-import { SITE } from "@consts";
+import Container from '@components/Container.astro';
+import { SITE } from '@consts';
 
 const year = new Date().getFullYear();
 ---
@@ -14,9 +14,9 @@ const year = new Date().getFullYear();
     </div> -->
     <div class="flex justify-between items-center">
       <div class="mx-auto opacity-40 font-semibold">
-        &copy; {year} {SITE.AUTHOR}
+        &copy; {year}
+        {SITE.AUTHOR}
       </div>
-      
     </div>
   </Container>
 </footer>

@@ -13,7 +13,9 @@
     "preview:network": "astro preview --host",
     "astro": "astro",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,md,mdx,astro,json,css}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,md,mdx,astro,json,css}\""
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
@@ -55,6 +57,7 @@
     "vercel": "^39.0.2"
   },
   "devDependencies": {
-    "prettier": "3.3.2"
+    "prettier": "3.3.2",
+    "prettier-plugin-astro": "^0.14.1"
   }
 }

@@ -1,10 +1,10 @@
 ---
-import { getCollection } from "astro:content";
-import Container from "@components/Container.astro";
-import PageLayout from "@layouts/PageLayout.astro";
-import PostCard from "@components/PostCard.astro";
-import Link from "@components/Link.astro";
-import { SITE, HOME, SOCIALS } from "@consts";
+import { getCollection } from 'astro:content';
+import Container from '@components/Container.astro';
+import PageLayout from '@layouts/PageLayout.astro';
+import PostCard from '@components/PostCard.astro';
+import Link from '@components/Link.astro';
+import { SITE, HOME, SOCIALS } from '@consts';
 // import ArrowCard from "@components/ArrowCard.astro";
 // import { dateRange } from "@lib/utils";
 // import { ContentSchemaContainsSlugError } from "node_modules/astro/dist/core/errors/errors-data";
@@ -12,19 +12,23 @@ import { SITE, HOME, SOCIALS } from "@consts";
 // import { BLOG } from "@consts";
 // import Pagination from "@components/Pagination.astro";
 
-const blog = (await getCollection("blog"))
-  .filter(post => !post.data.draft)
+const blog = (await getCollection('blog'))
+  .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0,SITE.NUM_POSTS_ON_HOMEPAGE);
+  .slice(0, SITE.NUM_POSTS_ON_HOMEPAGE);
 
-const projects = (await getCollection("projects"))
-  .filter(project => !project.data.draft)
+const projects = (await getCollection('projects'))
+  .filter((project) => !project.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0,SITE.NUM_PROJECTS_ON_HOMEPAGE);
+  .slice(0, SITE.NUM_PROJECTS_ON_HOMEPAGE);
 
-const allwork = (await getCollection("work"))
-  .sort((a, b) => new Date(b.data.dateStart).valueOf() - new Date(a.data.dateStart).valueOf())
-  .slice(0,SITE.NUM_WORKS_ON_HOMEPAGE);
+const allwork = (await getCollection('work'))
+  .sort(
+    (a, b) =>
+      new Date(b.data.dateStart).valueOf() -
+      new Date(a.data.dateStart).valueOf()
+  )
+  .slice(0, SITE.NUM_WORKS_ON_HOMEPAGE);
 
 const work = await Promise.all(
   allwork.map(async (item) => {
@@ -35,19 +39,19 @@ const work = await Promise.all(
 
 // const total_post_num = Object.keys(blog).length;
 const showOlderPosts = Object.keys(blog).length > SITE.NUM_POSTS_ON_HOMEPAGE;
-
-
 ---
 
 <PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION}>
   <Container>
-    <div class="masthead">
-    <h4 class="animate text-black dark:text-white text-center mb-10">
-      <span class="dark:text-terracotta-500 text-xl font-bold">Dada's Sketchbook</span>
-      <br>
-      <span class="dark:text-gray-400">but it's online</span>
-    </h4>
-  </div>
+    <!-- <div class="masthead">
+      <h4 class="animate text-black dark:text-white text-center mb-10">
+        <span class="dark:text-terracotta-500 text-xl font-bold"
+          >Dada's Sketchbook</span
+        >
+        <br />
+        <span class="dark:text-gray-400">but it's online</span>
+      </h4>
+    </div> -->
 
     <div class="space-y-16">
       <!-- Posts -->
@@ -66,34 +70,49 @@ const showOlderPosts = Object.keys(blog).length > SITE.NUM_POSTS_ON_HOMEPAGE;
               <ArrowCard entry={post} />
             </li>
           ))} -->
-          {blog.map(post=>(
-            <article>
-              <PostCard entry={post}/>
+          {
+            blog.map((post) => (
+              <article>
+                <PostCard entry={post} />
               </article>
-          ))}
+            ))
+          }
         </ul>
       </section>
 
       <!-- Read older posts link -->
 
-      {showOlderPosts && (
+      {
+        showOlderPosts && (
+          <section class="border-y border-gray-600 py-4 text-terracotta-500 flex justify-center">
+            <Link
+              href={'/blog/2'}
+              aria-label={'Read older posts'}
+              underline={false}
+            >
+              <div class="flex gap-2 w-fit mx-auto">
+                Read older posts
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="size-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                  />
+                </svg>
+              </div>
+            </Link>
+          </section>
+        )
+      }
 
-      <section class="border-y border-gray-600 py-4 text-terracotta-500 flex justify-center">
-        <Link href={"/blog/2"} aria-label={"Read older posts"} underline={false}>
-          <div class="flex gap-2 w-fit mx-auto">
-            Read older posts
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-            </svg>
-          </div>
-        </Link>
-      </section>)}
-
-
-
-      
-
-<!--       
+      <!--       
       <section class="animate space-y-6">
         <div class="flex flex-wrap gap-y-2 items-center justify-between">
           <h5 class="font-semibold text-black dark:text-white">
@@ -141,36 +160,41 @@ const showOlderPosts = Object.keys(blog).length > SITE.NUM_POSTS_ON_HOMEPAGE;
         </ul>
       </section> -->
 
-
       <!-- Contact Information -->
 
       <section class="animate space-y-4">
-        <h5 class="font-semibold text-black dark:text-white">
-          Let's Connect
-        </h5>
+        <h5 class="font-semibold text-black dark:text-white">Let's Connect</h5>
         <article>
           <p>
-            If you want to get in touch with me about something or just to say hi,
-            reach out on social media or send me an email.
+            If you want to get in touch with me about something or just to say
+            hi, reach out on social media or send me an email.
           </p>
         </article>
         <ul class="flex flex-wrap gap-2">
-          {SOCIALS.map(SOCIAL => (
-            <li class="flex gap-x-2 text-nowrap">
-              <Link href={SOCIAL.HREF} external aria-label={`${SITE.NAME} on ${SOCIAL.NAME}`}>
-                {SOCIAL.NAME}
-              </Link>
-              {"/"}
-            </li>
-          ))}
+          {
+            SOCIALS.map((SOCIAL) => (
+              <li class="flex gap-x-2 text-nowrap">
+                <Link
+                  href={SOCIAL.HREF}
+                  external
+                  aria-label={`${SITE.NAME} on ${SOCIAL.NAME}`}
+                >
+                  {SOCIAL.NAME}
+                </Link>
+                {'/'}
+              </li>
+            ))
+          }
           <li class="line-clamp-1">
-            <Link href={`mailto:${SITE.EMAIL}`} aria-label={`Email ${SITE.NAME}`}>
+            <Link
+              href={`mailto:${SITE.EMAIL}`}
+              aria-label={`Email ${SITE.NAME}`}
+            >
               {SITE.EMAIL}
             </Link>
           </li>
         </ul>
       </section>
-
     </div>
   </Container>
 </PageLayout>

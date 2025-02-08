@@ -6,3 +6,8 @@ dist
 .vscode
 public
 .astro
+.env*
+.git
+pnpm-lock.yaml
+package-lock.json
+yarn.lock

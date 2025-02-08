@@ -19,7 +19,7 @@ const { entry } = Astro.props;
       class="absolute w-full h-full backdrop-blur-3xl z-10"
     >
     </div>
-    <div id="mask-container" class=" absolute w-full h-full"></div>
+    <div id="mask-container" class="absolute w-full h-full"></div>
 
     {
       entry.data.cover && 'src' in entry.data.cover && (
@@ -38,24 +38,24 @@ const { entry } = Astro.props;
       )
     }
 
-    <div id="frontmatter-container" class=" absolute ml-10 mb-10 bottom-0 z-20">
-    <div
-      class="dark:text-terracotta-500 text-black child:font-serif child:font-normal text-xl"
-    >
-      <a href={`/${entry.collection}/${entry.slug}`} class="no-underline">
-        {entry.data.title}
-      </a>
-    </div>
+    <div id="frontmatter-container" class="absolute ml-10 mb-10 bottom-0 z-20">
+      <div
+        class="dark:text-terracotta-500 text-black child:font-serif child:font-normal text-xl"
+      >
+        <a href={`/${entry.collection}/${entry.slug}`} class="no-underline">
+          {entry.data.title}
+        </a>
+      </div>
 
-    <div class="animate flex items-center gap-1.5 dark:text-gray-400 py-1">
-      <div class="font-base text-sm">
-        <FormattedDate date={entry.data.date} />
-      </div>
-      &bull;
-      <div class="font-base text-sm animate">
-        {readingTime(entry.body)}
+      <div class="animate flex items-center gap-1.5 dark:text-gray-400 py-1">
+        <div class="font-base text-sm">
+          <FormattedDate date={entry.data.date} />
+        </div>
+        &bull;
+        <div class="font-base text-sm animate">
+          {readingTime(entry.body)}
+        </div>
       </div>
     </div>
-  </div>
   </div>
 </div>

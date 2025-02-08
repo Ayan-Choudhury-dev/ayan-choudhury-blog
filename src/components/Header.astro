@@ -3,20 +3,25 @@ import Container from '@components/Container.astro';
 import Link from '@components/Link.astro';
 import { SITE } from '@consts';
 
-import tippy from 'tippy.js';
-import 'tippy.js/dist/tippy.css'; // Import Tippy.js styles
-
+// import tippy from 'tippy.js';
 ---
 
-<header>
-  <Container>
+<header
+  class="transition-all duration-300 ease-in-out fixed left-1/2 -translate-x-1/2 w-full border-2 border-transparent"
+  id="main-header"
+>
+  <Container class="transition-all duration-300 ease-in-out w-full max-w-2xl mx-auto">
     <div
       class="flex flex-wrap gap-y-2 justify-between items-center"
       id="hero_container"
     >
       <Link href="/" underline={false}>
         <div class="font-semibold">
-          {SITE.NAME}
+          <span class="dark:text-salmon_dark text-salmon_light" id="site-name">{SITE.NAME}</span>
+          <br />
+          <span id="tagline" class="text-sm font-normal transition-all duration-500 ease-in-out">
+            {SITE.TAGLINE}
+          </span>
         </div>
       </Link>
 
@@ -126,31 +131,86 @@ import 'tippy.js/dist/tippy.css'; // Import Tippy.js styles
           </svg>
         </button>
       </div>
-      <!--       
-      <nav class="flex gap-1">
-        <Link href="/blog">
-          blog
-        </Link>
-        <span>
-          {`/`}
-        </span>
-        <Link href="/work">
-          work
-        </Link>
-        <span>
-          {`/`}
-        </span>
-        <Link href="/projects">
-          projects
-        </Link> 
-        </nav> -->
     </div>
   </Container>
 </header>
 
 <script>
   import tippy from 'tippy.js';
+  import 'tippy.js/dist/tippy.css';
 
-  // Initialize Tippy.js for all elements with data-tippy-content
-  tippy('[data-tippy-content]');
+  const initializeHeader = () => {
+    tippy('[data-tippy-content]');
+
+    const SCROLL_THRESHOLD = 100;
+    const SCROLL_CLASSES = [
+      'top-4',
+      'rounded-2xl',
+      'border-white/20',
+      'dark:border-white/10',
+      'shadow-lg',
+      'z-50',
+      'py-2',
+      'w-[80%]',
+      'md:w-1/3',
+      'sm:w-1/2',
+    ];
+
+    const header = document.getElementById('main-header');
+    const container = header?.querySelector('.max-w-2xl');
+    const tagline = document.getElementById('tagline');
+    const siteName = document.getElementById('site-name');
+
+    // Add initial classes
+    header?.classList.add('py-5', 'top-0');
+
+    // Function to handle scroll state
+    const handleScroll = () => {
+      const currentScroll = window.pageYOffset;
+
+      if (currentScroll > SCROLL_THRESHOLD) {
+        header?.classList.add(...SCROLL_CLASSES);
+        header?.classList.remove('py-5', 'top-0', 'w-full');
+        container?.classList.add('max-w-xl');
+        tagline?.classList.add('hidden', 'h-0', 'overflow-hidden');
+        siteName?.classList.remove('dark:text-salmon_dark', 'text-salmon_light');
+        siteName?.classList.add('text-white');
+      } else {
+        header?.classList.remove(...SCROLL_CLASSES);
+        header?.classList.add('py-5', 'top-0', 'w-full');
+        container?.classList.remove('max-w-xl');
+        tagline?.classList.remove('hidden', 'h-0', 'overflow-hidden');
+        siteName?.classList.add('dark:text-salmon_dark', 'text-salmon_light');
+        siteName?.classList.remove('text-white');
+      }
+    };
+
+    // Check scroll position on page load
+    handleScroll();
+
+    // Add scroll event listener
+    window.addEventListener('scroll', handleScroll);
+
+    // Handle site name click
+    const siteNameLink = document.querySelector('a[href="/"]');
+    siteNameLink?.addEventListener('click', (e) => {
+      if (window.location.pathname === '/') {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+  };
+
+  // Initialize on page load
+  initializeHeader();
+
+  // Re-initialize on view transitions
+  document.addEventListener('astro:page-load', initializeHeader);
 </script>
+
+<style>
+  header {
+    transform-origin: top center;
+    border-width: 2px;
+  }
+</style>
