@@ -2,14 +2,20 @@
 import { config, fields, collection } from '@keystatic/core';
 
 export default config({
+  // storage: {
+  //   kind: 'github',
+  //   repo: {
+  //     owner: 'Ayan-Choudhury-dev',
+  //     name: 'ayan-choudhury-blog',
+  //   },
+  //   branchPrefix: 'keystatic-cms/',
+  // },
+
   storage: {
-    // kind: 'local',
-    kind: 'github',
-    repo: {
-      owner: 'Ayan-Choudhury-dev',
-      name: 'ayan-choudhury-blog',
-    },
-    branchPrefix: 'keystatic-cms/',
+    kind: 'cloud',
+  },
+  cloud: {
+    project: 'solo-blogger/ayan-choudhury-blog',
   },
 
   collections: {
