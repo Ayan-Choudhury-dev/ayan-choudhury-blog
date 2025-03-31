@@ -5,6 +5,7 @@ import PageLayout from '@layouts/PageLayout.astro';
 import PostCardMini from '@components/PostCardMini.astro';
 import Link from '@components/Link.astro';
 import { SITE, HOME, SOCIALS } from '@consts';
+import { Mail } from 'lucide-astro';
 // import ArrowCard from "@components/ArrowCard.astro";
 // import { dateRange } from "@lib/utils";
 // import { ContentSchemaContainsSlugError } from "node_modules/astro/dist/core/errors/errors-data";
@@ -154,7 +155,11 @@ const showOlderPosts = Object.keys(blog).length > SITE.NUM_POSTS_ON_HOMEPAGE;
       <!-- Contact Information -->
 
       <section class="animate space-y-4">
-        <h5 class="font-semibold text-black dark:text-white">Let's Connect</h5>
+      <div class="flex gap-2">
+        <Mail/>      
+        <h5 class="font-semibold text-black dark:text-white">  Let's Connect</h5>
+      </div>
+      
         <article>
           <p>
             If you want to get in touch with me about something or just to say

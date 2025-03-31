@@ -2,6 +2,7 @@
 import type { CollectionEntry } from 'astro:content';
 import FormattedDate from './FormattedDate.astro';
 
+
 type Props = {
   entry: CollectionEntry<'blog'> | CollectionEntry<'projects'>;
 };
@@ -14,7 +15,7 @@ const { entry } = Astro.props;
   class="relative group flex flex-nowrap py-3 px-4 pr-10 rounded-lg border border-black/15 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/5 hover:text-black dark:hover:text-white transition-colors duration-300 ease-in-out"
 >
   <div class="flex flex-col flex-1 truncate">
-    <div class="font-semibold">
+    <div class="font-semibold truncate">
       {entry.data.title}
     </div>
     <!-- <div class="text-sm">
