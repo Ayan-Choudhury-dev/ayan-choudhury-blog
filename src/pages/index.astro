@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 import Container from '@components/Container.astro';
 import PageLayout from '@layouts/PageLayout.astro';
-import PostCard from '@components/PostCard.astro';
+import PostCardMini from '@components/PostCardMini.astro';
 import Link from '@components/Link.astro';
 import { SITE, HOME, SOCIALS } from '@consts';
 // import ArrowCard from "@components/ArrowCard.astro";
@@ -43,15 +43,6 @@ const showOlderPosts = Object.keys(blog).length > SITE.NUM_POSTS_ON_HOMEPAGE;
 
 <PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION}>
   <Container>
-    <!-- <div class="masthead">
-      <h4 class="animate text-black dark:text-white text-center mb-10">
-        <span class="dark:text-terracotta-500 text-xl font-bold"
-          >Dada's Sketchbook</span
-        >
-        <br />
-        <span class="dark:text-gray-400">but it's online</span>
-      </h4>
-    </div> -->
 
     <div class="space-y-16">
       <!-- Posts -->
@@ -73,7 +64,7 @@ const showOlderPosts = Object.keys(blog).length > SITE.NUM_POSTS_ON_HOMEPAGE;
           {
             blog.map((post) => (
               <article>
-                <PostCard entry={post} />
+                <PostCardMini entry={post} />
               </article>
             ))
           }

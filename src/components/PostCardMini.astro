@@ -1,0 +1,31 @@
+---
+// Component Imports
+import type { CollectionEntry } from 'astro:content';
+import PostHeaderMini from './PostHeaderMini.astro';
+import TagLinks from './TagLinks.astro';
+
+type Props = {
+  entry: CollectionEntry<'blog'>;
+};
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+---
+
+<div id="Postcard" class="mb-2 shadow-2xl dark:bg-zinc-800">
+  <PostHeaderMini entry={entry} />
+  <article class="px-4 sm:px-[50px] mb-8">
+    
+    <!-- Concatinated content -->
+    <div class="prose dark:prose-invert max-w-none line-clamp-6">
+      <Content />
+    </div>
+
+    <!-- <TagLinks post={entry} /> -->
+
+     <button onclick={`window.location.href = '/${entry.collection}/${entry.slug}'`} class="animate mt-8 px-4 py-1 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:text-terracotta-500 dark:hover:text-terracotta-400 transition-colors">
+      Keep reading
+     </button>
+
+  </article>
+</div>
