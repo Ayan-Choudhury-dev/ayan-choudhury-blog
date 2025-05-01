@@ -4,20 +4,30 @@ import PageLayout from '@layouts/PageLayout.astro';
 import Container from '@components/Container.astro';
 import PostHeader from '@components/PostHeader.astro';
 import TagLinks from '@components/TagLinks.astro';
+import NextPost from '@components/NextPost.astro';
 
 export async function getStaticPaths() {
   const posts = (await getCollection('blog'))
     .filter((post) => !post.data.draft)
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-  return posts.map((post) => ({
-    params: { slug: post.slug },
-    props: post,
-  }));
+  
+  return posts.map((post, index) => {
+    // Get the next post (if available)
+    const nextPost = index < posts.length - 1 ? posts[index + 1] : null;
+    
+    return {
+      params: { slug: post.slug },
+      props: { post, nextPost },
+    };
+  });
 }
 
-type Props = CollectionEntry<'blog'>;
+type Props = {
+  post: CollectionEntry<'blog'>;
+  nextPost: CollectionEntry<'blog'> | null;
+};
 
-const post = Astro.props;
+const { post, nextPost } = Astro.props;
 const { Content } = await post.render();
 
 // Ensure description is always a string
@@ -38,6 +48,7 @@ const description = post.data.description || '';
     <article class="px-4 mb-16">
       <Content />
       <TagLinks post={post} />
+      {nextPost && <NextPost nextPost={nextPost} />}
     </article>
   </Container>
 </PageLayout>

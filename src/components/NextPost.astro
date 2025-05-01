@@ -1,0 +1,51 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Image from 'astro/components/Image.astro';
+
+type Props = {
+  nextPost: CollectionEntry<'blog'>;
+};
+
+const { nextPost } = Astro.props;
+const { Content } = await nextPost.render();
+---
+
+<div class="mt-16 border-t border-gray-200 dark:border-gray-800 pt-8">
+  <h2 class="text-sm tracking-wider uppercase text-gray-500 dark:text-gray-400 mb-6 font-sans">Read next</h2>
+  <!-- Component goes brr -->
+  <div  id="NextPost" class="shadow-zinc-950 shadow-2xl dark:border-zinc-900 rounded-xl overflow-hidden border border-gray-300 dark:border-gray-700">
+    <a
+      href={`/blog/${nextPost.slug}`}
+      class="group block no-underline"
+    >
+    <!-- Image -->
+      <div class="flex flex-col md:flex-row  md:h-[240px]">
+        {
+          nextPost.data.cover && 'src' in nextPost.data.cover && (
+            <div class="relative w-full aspect-[16/9] md:w-1/2 md:aspect-auto overflow-hidden">
+              <Image
+                src={nextPost.data.cover}
+                quality={'mid'}
+                format="avif"
+                width={800}
+                height={450}
+                class="object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500 ease-in-out rounded-none"
+                alt={nextPost.data.title}
+              />
+            </div>
+          )
+        }
+        <!-- Heading -->
+        <div class="flex flex-col justify-center p-6 md:p-8 md:w-[50%] h-full">
+          <h3 class="dark:text-terracotta-500 font-normal child:font-serif text-xl m-0">
+            {nextPost.data.title}
+          </h3>
+          <!-- Text  -->
+          <div class="prose dark:prose-invert max-w-none line-clamp-2">
+            <Content />
+          </div>
+        </div>
+      </div>
+    </a>
+  </div>
+</div> 
