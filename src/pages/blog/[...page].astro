@@ -51,6 +51,10 @@ interface Page {
   total: number;
   currentPage: number;
   data: CollectionEntry<'blog'>[];
+  url: {
+    prev: string;
+    next: string;
+  };
 }
 
 // Ensure Astro.props has the correct type
