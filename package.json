@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "start": "concurrently \"npm run watch:prettier\" \"npm run watch:dev\"",
-    "watch:prettier": "onchange \"**/*.{js,ts,astro,mdx}\" -- echo 'File changed: {{changed}}' && prettier --write --ignore-unknown {{changed}}",
+    "watch:prettier": "onchange \"**/*.{js,ts,astro,mdx,json,css}\" -- prettier --write --ignore-unknown {{changed}}",
     "watch:dev": "astro dev --host",
     "dev": "astro dev --host",
     "dev:network": "astro dev --host",

@@ -6,6 +6,7 @@ import PostCard from '@components/PostCard.astro';
 import Pagination from '@components/Pagination.astro';
 import { SITE } from '@consts';
 import { postcss } from 'tailwindcss';
+import PostCardMini from '@components/PostCardMini.astro';
 
 export const post_num = SITE.NUM_POSTS_ON_HOMEPAGE;
 export var display_pagination = true;
@@ -66,16 +67,12 @@ const paginationLinks = generate_pagination_links(
 <PageLayout title="Blog" description="Description">
   <Container>
     <!-- Listing Posts -->
-    <ul>
+    <ul class="flex flex-col gap-16 mb-16">
       {
         page.data.map((post) => (
-          <Fragment key={post.id}>
-            <li>
-              <article>
-                <PostCard entry={post} />
-              </article>
-            </li>
-          </Fragment>
+          <article>
+            <PostCardMini entry={post} />
+          </article>
         ))
       }
     </ul>

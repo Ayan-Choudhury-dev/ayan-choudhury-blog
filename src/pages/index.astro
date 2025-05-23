@@ -13,7 +13,10 @@ import { Mail } from 'lucide-astro';
 // import { BLOG } from "@consts";
 // import Pagination from "@components/Pagination.astro";
 
-const blog = (await getCollection('blog'))
+const allPosts = await getCollection('blog');
+const totalPosts = allPosts.filter((post) => !post.data.draft).length;
+
+const blog = allPosts
   .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, SITE.NUM_POSTS_ON_HOMEPAGE);
@@ -38,8 +41,8 @@ const work = await Promise.all(
   })
 );
 
-// const total_post_num = Object.keys(blog).length;
-const showOlderPosts = Object.keys(blog).length > SITE.NUM_POSTS_ON_HOMEPAGE;
+const showOlderPosts = totalPosts > SITE.NUM_POSTS_ON_HOMEPAGE
+// const showOlderPosts = true;
 ---
 
 <PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION}>
@@ -71,6 +74,7 @@ const showOlderPosts = Object.keys(blog).length > SITE.NUM_POSTS_ON_HOMEPAGE;
           }
         </ul>
       </section>
+
 
       <!-- Read older posts link -->
 
