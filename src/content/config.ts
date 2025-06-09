@@ -13,6 +13,20 @@ const blog = defineCollection({
     }),
 });
 
+const music = defineCollection({
+  type: 'data',
+  schema: z.object({
+    type: z.string(),
+    name: z.string(),
+    artist: z.string(),
+    date: z.coerce.date(),
+    draft: z.boolean(),
+    artURL: z.string(),
+    trackURL: z.string(),
+    spoURL: z.string().optional(),
+  }),
+});
+
 const work = defineCollection({
   type: 'content',
   schema: z.object({
@@ -35,5 +49,5 @@ const projects = defineCollection({
   }),
 });
 
-export const collections = { blog, work, projects };
+export const collections = { blog, music, work, projects };
 // export const collections = { blog };

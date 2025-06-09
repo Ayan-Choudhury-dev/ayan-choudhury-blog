@@ -26,6 +26,32 @@ import { SITE } from '@consts';
       </Link>
 
       <div class="flex flex-wrap gap-1 items-center">
+        <!-- Music icon -->
+        <button
+          id="Music-link-button"
+          aria-label="Music Icon"
+          class="group size-8 flex items-center justify-center rounded-full data-[active=true]:bg-white/10 data-[active=true]:cursor-default"
+          data-tippy-content=" What I'm listening to"
+          data-active={Astro.url.pathname === '/music'}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="group-hover:stroke-black group-hover:dark:stroke-white transition-colors duration-300 ease-in-out"
+          >
+            <path d="M9 18V5l12-2v13"></path>
+            <circle cx="6" cy="18" r="3"></circle>
+            <circle cx="18" cy="16" r="3"></circle>
+          </svg>
+        </button>
+
         <!-- Archive icon -->
         <button
           id="Blog-archive-link-button"
@@ -197,6 +223,15 @@ import { SITE } from '@consts';
       if (window.location.pathname === '/') {
         e.preventDefault();
         window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    });
+
+    // Handle music button click
+    const musicButton = document.getElementById('Music-link-button');
+    musicButton?.addEventListener('click', () => {
+      // Only navigate if not already on music page
+      if (window.location.pathname !== '/music') {
+        window.location.href = '/music';
       }
     });
   };

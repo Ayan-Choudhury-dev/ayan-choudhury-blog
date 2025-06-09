@@ -12,15 +12,15 @@ export default config({
   // },
 
   storage: {
-    kind: 'cloud',
+    kind: 'local',
   },
-  cloud: {
-    project: 'solo-blogger/ayan-choudhury-blog',
-  },
+  // cloud: {
+  //   project: 'solo-blogger/ayan-choudhury-blog',
+  // },
 
   collections: {
     posts: collection({
-      label: 'Posts',
+      label: '✍️ Posts',
       entryLayout: 'content',
       columns: ['title', 'date'],
 
@@ -73,7 +73,63 @@ export default config({
           itemLabel: (props) => props.value,
         }),
       },
+
     }),
+    music: collection({
+      label: '🎧 Jukebox',
+      slugField: 'name',
+      columns: ['name', 'date'],
+
+      //Document_path
+      path: 'src/content/music/**',
+
+      schema: {
+
+        type: fields.select({
+          label: 'Type',
+          description: 'Select whether this is an album or a track',
+          options: [
+            { label: 'Album', value: 'album' },
+            { label: 'Track', value: 'track' }
+          ],
+          defaultValue: 'track'
+        }),
+
+        name: fields.slug({ name: { label: 'Name' } }),
+        
+        artist: fields.text({ 
+          label: 'Artist Name',
+        }),
+
+
+        date: fields.date({
+          label: 'Added',
+          description: 'Track added on'
+        }),
+
+        draft: fields.checkbox({
+          label: 'Draft',
+          description: 'Set this entry as draft to prevent it from being published',
+        }),
+
+        artURL: fields.text({ 
+          label: 'Art URL',
+          description: 'URL for the album/song artwork'
+        }),
+
+        trackURL: fields.text({ 
+          label: 'Track URL',
+          description: 'URL for the music track'
+        }),
+
+        spoURL: fields.text({ 
+          label: 'Spo URL',
+          description: 'Spo URL for the track'
+        }),
+
+      }
+    }),
+
   },
   //UI PARAMETERS FOR CMS
   ui: {
