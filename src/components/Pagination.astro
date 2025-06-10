@@ -99,7 +99,7 @@ const pageNumberClasses = (isCurrent: boolean) =>
         Showing
         <span class="font-medium">{page.currentPage * post_num - post_num + 1}</span>
         to
-        <span class="font-medium">{page.currentPage * post_num}</span>
+        <span class="font-medium">{page.currentPage * post_num - 1}</span>
         of
         <span class="font-medium">{page.total}</span>
         posts
