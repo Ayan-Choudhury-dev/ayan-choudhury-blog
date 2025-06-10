@@ -118,173 +118,159 @@ const {
 </style>
 
 <script>
+  interface CardStack {
+    container: HTMLElement;
+    cards: HTMLElement[];
+    isDragging: boolean;
+    currentCard: HTMLElement | null;
+    startPos: { x: number; y: number };
+    currentPos: { x: number; y: number };
+    sensitivity: number;
+    randomRotation: boolean;
+    sendToBackOnClick: boolean;
+    animationConfig: { stiffness: number; damping: number };
+  }
+
   class CardStack {
-    constructor(element) {
+    container: HTMLElement;
+    cards: HTMLElement[];
+    isDragging: boolean;
+    currentCard: HTMLElement | null;
+    startPos: { x: number; y: number };
+    currentPos: { x: number; y: number };
+    sensitivity: number;
+    randomRotation: boolean;
+    sendToBackOnClick: boolean;
+    animationConfig: { stiffness: number; damping: number };
+
+    constructor(element: HTMLElement) {
       this.container = element;
       this.cards = Array.from(element.querySelectorAll('.card-rotate'));
-      this.sensitivity = parseInt(element.dataset.sensitivity) || 200;
-      this.sendToBackOnClick = element.dataset.sendToBackOnClick === 'true';
+      this.sensitivity = parseInt(element.dataset.sensitivity || '200');
       this.randomRotation = element.dataset.randomRotation === 'true';
-      
+      this.sendToBackOnClick = element.dataset.sendToBackOnClick === 'true';
       this.isDragging = false;
       this.currentCard = null;
       this.startPos = { x: 0, y: 0 };
       this.currentPos = { x: 0, y: 0 };
-      
+      this.animationConfig = { stiffness: 260, damping: 20 };
+
       this.init();
     }
 
-    init() {
-      this.cards.forEach(card => {
-        // Mouse events
+    private init(): void {
+      this.cards.forEach((card: HTMLElement) => {
+        this.resetCardPosition(card);
         card.addEventListener('mousedown', this.handleStart.bind(this));
-        card.addEventListener('mousemove', this.handleMove.bind(this));
-        card.addEventListener('mouseup', this.handleEnd.bind(this));
-        card.addEventListener('mouseleave', this.handleEnd.bind(this));
-        
-        // Touch events
         card.addEventListener('touchstart', this.handleStart.bind(this));
-        card.addEventListener('touchmove', this.handleMove.bind(this));
-        card.addEventListener('touchend', this.handleEnd.bind(this));
-        
-        // Click event
-        if (this.sendToBackOnClick) {
-          card.addEventListener('click', (e) => {
+      });
+
+      if (this.sendToBackOnClick) {
+        this.cards.forEach((card: HTMLElement) => {
+          card.addEventListener('click', () => {
             if (!this.isDragging) {
-              this.sendToBack(parseInt(card.dataset.cardId));
+              const cardId = card.dataset.cardId;
+              if (cardId) {
+                this.sendToBack(cardId);
+              }
             }
           });
-        }
-      });
-      
-      // Global mouse events
-      document.addEventListener('mousemove', this.handleGlobalMove.bind(this));
-      document.addEventListener('mouseup', this.handleGlobalEnd.bind(this));
-    }
-
-    getEventPos(e) {
-      if (e.touches && e.touches[0]) {
-        return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+        });
       }
-      return { x: e.clientX, y: e.clientY };
+
+      document.addEventListener('mousemove', this.handleGlobalMove.bind(this));
+      document.addEventListener('touchmove', this.handleGlobalMove.bind(this));
+      document.addEventListener('mouseup', this.handleEnd.bind(this));
+      document.addEventListener('touchend', this.handleEnd.bind(this));
     }
 
-    handleStart(e) {
-      e.preventDefault();
-      const pos = this.getEventPos(e);
+    private getEventPos(e: MouseEvent | TouchEvent): { x: number; y: number } {
+      if ('touches' in e) {
+        return {
+          x: e.touches[0].clientX,
+          y: e.touches[0].clientY
+        };
+      }
+      return {
+        x: e.clientX,
+        y: e.clientY
+      };
+    }
+
+    private handleStart(e: MouseEvent | TouchEvent): void {
       this.isDragging = true;
-      this.currentCard = e.currentTarget;
+      this.currentCard = e.currentTarget as HTMLElement;
+      const pos = this.getEventPos(e);
       this.startPos = pos;
       this.currentPos = { x: 0, y: 0 };
-      
       this.currentCard.classList.add('dragging');
       this.currentCard.style.zIndex = '1000';
     }
 
-    handleMove(e) {
+    private handleMove(e: MouseEvent | TouchEvent): void {
       if (!this.isDragging || !this.currentCard) return;
-      
-      e.preventDefault();
-      this.handleGlobalMove(e);
-    }
-
-    handleGlobalMove(e) {
-      if (!this.isDragging || !this.currentCard) return;
-      
       const pos = this.getEventPos(e);
       this.currentPos = {
         x: pos.x - this.startPos.x,
         y: pos.y - this.startPos.y
       };
-      
-      // Apply 3D rotation based on position
       const rotateX = (this.currentPos.y / 100) * -60;
       const rotateY = (this.currentPos.x / 100) * 60;
-      
       this.currentCard.style.transform = `
-        translate(${this.currentPos.x}px, ${this.currentPos.y}px) 
-        rotateX(${rotateX}deg) 
+        translate(${this.currentPos.x}px, ${this.currentPos.y}px)
+        rotateX(${rotateX}deg)
         rotateY(${rotateY}deg)
         scale(${this.getCardScale(this.currentCard)})
       `;
     }
 
-    handleEnd(e) {
+    private handleGlobalMove(e: MouseEvent | TouchEvent): void {
       if (!this.isDragging || !this.currentCard) return;
-      
-      e.preventDefault();
-      this.handleGlobalEnd();
+      this.handleMove(e);
     }
 
-    handleGlobalEnd() {
+    private handleEnd(e: MouseEvent | TouchEvent): void {
       if (!this.isDragging || !this.currentCard) return;
-      
       const card = this.currentCard;
       const offset = this.currentPos;
-      
-      // Check if drag distance exceeds sensitivity
       if (Math.abs(offset.x) > this.sensitivity || Math.abs(offset.y) > this.sensitivity) {
-        this.sendToBack(parseInt(card.dataset.cardId));
+        this.sendToBack(card.dataset.cardId || '');
       } else {
-        // Snap back to original position
         this.resetCardPosition(card);
       }
-      
-      // Clean up
-      card.classList.remove('dragging');
       this.isDragging = false;
       this.currentCard = null;
       this.currentPos = { x: 0, y: 0 };
     }
 
-    resetCardPosition(card) {
-      card.classList.add('animating');
-      const index = parseInt(card.dataset.index);
-      const rotation = this.getCardRotation(index);
-      const scale = this.getCardScale(card);
-      
-      card.style.transform = `rotateZ(${rotation}deg) scale(${scale})`;
-      card.style.transformOrigin = '90% 90%';
-      card.style.zIndex = this.cards.length - index;
-      
-      setTimeout(() => {
-        card.classList.remove('animating');
-      }, 500);
+    private resetCardPosition(card: HTMLElement): void {
+      const index = this.cards.indexOf(card);
+      card.style.zIndex = (this.cards.length - index).toString();
+      card.style.transform = `
+        translate(0, 0)
+        rotate(${this.getCardRotation(index)}deg)
+        scale(${this.getCardScale(card)})
+      `;
+      card.classList.remove('dragging');
     }
 
-    getCardRotation(index) {
+    private getCardRotation(index: number): number {
       const randomRotate = this.randomRotation ? Math.random() * 10 - 5 : 0;
       return (this.cards.length - index - 1) * 4 + randomRotate;
     }
 
-    getCardScale(card) {
-      const index = parseInt(card.dataset.index);
+    private getCardScale(card: HTMLElement): number {
+      const index = this.cards.indexOf(card);
       return 1 + index * 0.06 - this.cards.length * 0.06;
     }
 
-    sendToBack(cardId) {
-      const cardElement = this.container.querySelector(`[data-card-id="${cardId}"]`);
+    private sendToBack(cardId: string): void {
+      const cardElement = this.container.querySelector(`[data-card-id="${cardId}"]`) as HTMLElement;
       if (!cardElement) return;
-      
-      // Move to back in DOM
       this.container.insertBefore(cardElement, this.container.firstChild);
-      
-      // Update all card indices and styles
-      this.cards = Array.from(this.container.querySelectorAll('.card-rotate'));
+      this.cards = Array.from(this.container.querySelectorAll('.card-rotate')) as HTMLElement[];
       this.cards.forEach((card, newIndex) => {
-        card.dataset.index = newIndex;
-        card.classList.add('animating');
-        
-        const rotation = this.getCardRotation(newIndex);
-        const scale = this.getCardScale(card);
-        
-        card.style.transform = `rotateZ(${rotation}deg) scale(${scale})`;
-        card.style.transformOrigin = '90% 90%';
-        card.style.zIndex = this.cards.length - newIndex;
-        
-        setTimeout(() => {
-          card.classList.remove('animating');
-        }, 500);
+        card.style.zIndex = (this.cards.length - newIndex).toString();
       });
     }
   }
@@ -292,12 +278,12 @@ const {
   // Initialize all card stacks on the page
   document.addEventListener('DOMContentLoaded', () => {
     const stacks = document.querySelectorAll('.card-stack');
-    stacks.forEach(stack => new CardStack(stack));
+    stacks.forEach(stack => new CardStack(stack as HTMLElement));
   });
 
   // Re-initialize if the page is navigated to via Astro's client-side routing
   document.addEventListener('astro:page-load', () => {
     const stacks = document.querySelectorAll('.card-stack');
-    stacks.forEach(stack => new CardStack(stack));
+    stacks.forEach(stack => new CardStack(stack as HTMLElement));
   });
 </script>

@@ -35,13 +35,6 @@ const allwork = (await getCollection('work'))
   )
   .slice(0, SITE.NUM_WORKS_ON_HOMEPAGE);
 
-const work = await Promise.all(
-  allwork.map(async (item) => {
-    const { Content } = await item.render();
-    return { ...item, Content };
-  })
-);
-
 ---
 
 <PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION}>

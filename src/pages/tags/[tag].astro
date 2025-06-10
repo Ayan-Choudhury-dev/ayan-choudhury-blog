@@ -4,7 +4,6 @@ import PageLayout from '@layouts/PageLayout.astro';
 import Container from '@components/Container.astro';
 import ArrowCard from '@components/ArrowCard.astro';
 import BackToPrev from '@components/BackToPrev.astro';
-import PostCardMini from '@components/PostCardMini.astro';
 
 export async function getStaticPaths() {
   const allPosts = (await getCollection('blog'))

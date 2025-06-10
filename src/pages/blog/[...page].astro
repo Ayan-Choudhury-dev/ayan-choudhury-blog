@@ -2,10 +2,8 @@
 import { type CollectionEntry, getCollection } from 'astro:content';
 import PageLayout from '@layouts/PageLayout.astro';
 import Container from '@components/Container.astro';
-import PostCard from '@components/PostCard.astro';
 import Pagination from '@components/Pagination.astro';
 import { SITE } from '@consts';
-import { postcss } from 'tailwindcss';
 import PostCardMini from '@components/PostCardMini.astro';
 
 export const post_num = SITE.NUM_POSTS_ON_HOMEPAGE;
