@@ -1,0 +1,303 @@
+---
+interface Props {
+  randomRotation?: boolean;
+  sensitivity?: number;
+  cardDimensions?: { width: number; height: number };
+  sendToBackOnClick?: boolean;
+  cardsData?: { id: number; img: string }[];
+  animationConfig?: { stiffness: number; damping: number };
+}
+
+const {
+  randomRotation = false,
+  sensitivity = 200,
+  cardDimensions = { width: 208, height: 208 },
+  cardsData = [
+    {
+      id: 1,
+      img: "https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?q=80&w=500&auto=format",
+    },
+    {
+      id: 2,
+      img: "https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=500&auto=format",
+    },
+    {
+      id: 3,
+      img: "https://images.unsplash.com/photo-1452626212852-811d58933cae?q=80&w=500&auto=format",
+    },
+    {
+      id: 4,
+      img: "https://images.unsplash.com/photo-1572120360610-d971b9d7767c?q=80&w=500&auto=format",
+    },
+  ],
+  animationConfig = { stiffness: 260, damping: 20 },
+  sendToBackOnClick = false,
+} = Astro.props;
+---
+
+<div 
+  class="card-stack" 
+  data-sensitivity={sensitivity}
+  data-send-to-back-on-click={sendToBackOnClick}
+  data-random-rotation={randomRotation}
+  style={`width: ${cardDimensions.width}px; height: ${cardDimensions.height}px; perspective: 600px;`}
+>
+  {cardsData.map((card, index) => {
+    const randomRotate = randomRotation ? Math.random() * 10 - 5 : 0;
+    const rotation = (cardsData.length - index - 1) * 4 + randomRotate;
+    const scale = 1 + index * 0.06 - cardsData.length * 0.06;
+    
+    return (
+      <div 
+        class="card-rotate"
+        data-card-id={card.id}
+        data-index={index}
+        style={`
+          width: ${cardDimensions.width}px; 
+          height: ${cardDimensions.height}px;
+          transform: rotateZ(${rotation}deg) scale(${scale});
+          transform-origin: 90% 90%;
+          z-index: ${cardsData.length - index};
+        `}
+      >
+        <div class="card-content">
+          <img
+            src={card.img}
+            alt={`card-${card.id}`}
+            class="card-image"
+            draggable="false"
+          />
+        </div>
+      </div>
+    );
+  })}
+</div>
+
+<style>
+  .card-stack {
+    position: relative;
+    transform-style: preserve-3d;
+  }
+
+  .card-rotate {
+    position: absolute;
+    cursor: grab;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-style: preserve-3d;
+  }
+
+  .card-rotate:active {
+    cursor: grabbing;
+  }
+
+  .card-rotate.dragging {
+    transition: none;
+    z-index: 1000 !important;
+  }
+
+  .card-content {
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 4px solid white;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  }
+
+  .card-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    pointer-events: none;
+    user-select: none;
+  }
+
+  .card-rotate.animating {
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+</style>
+
+<script>
+  class CardStack {
+    constructor(element) {
+      this.container = element;
+      this.cards = Array.from(element.querySelectorAll('.card-rotate'));
+      this.sensitivity = parseInt(element.dataset.sensitivity) || 200;
+      this.sendToBackOnClick = element.dataset.sendToBackOnClick === 'true';
+      this.randomRotation = element.dataset.randomRotation === 'true';
+      
+      this.isDragging = false;
+      this.currentCard = null;
+      this.startPos = { x: 0, y: 0 };
+      this.currentPos = { x: 0, y: 0 };
+      
+      this.init();
+    }
+
+    init() {
+      this.cards.forEach(card => {
+        // Mouse events
+        card.addEventListener('mousedown', this.handleStart.bind(this));
+        card.addEventListener('mousemove', this.handleMove.bind(this));
+        card.addEventListener('mouseup', this.handleEnd.bind(this));
+        card.addEventListener('mouseleave', this.handleEnd.bind(this));
+        
+        // Touch events
+        card.addEventListener('touchstart', this.handleStart.bind(this));
+        card.addEventListener('touchmove', this.handleMove.bind(this));
+        card.addEventListener('touchend', this.handleEnd.bind(this));
+        
+        // Click event
+        if (this.sendToBackOnClick) {
+          card.addEventListener('click', (e) => {
+            if (!this.isDragging) {
+              this.sendToBack(parseInt(card.dataset.cardId));
+            }
+          });
+        }
+      });
+      
+      // Global mouse events
+      document.addEventListener('mousemove', this.handleGlobalMove.bind(this));
+      document.addEventListener('mouseup', this.handleGlobalEnd.bind(this));
+    }
+
+    getEventPos(e) {
+      if (e.touches && e.touches[0]) {
+        return { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      }
+      return { x: e.clientX, y: e.clientY };
+    }
+
+    handleStart(e) {
+      e.preventDefault();
+      const pos = this.getEventPos(e);
+      this.isDragging = true;
+      this.currentCard = e.currentTarget;
+      this.startPos = pos;
+      this.currentPos = { x: 0, y: 0 };
+      
+      this.currentCard.classList.add('dragging');
+      this.currentCard.style.zIndex = '1000';
+    }
+
+    handleMove(e) {
+      if (!this.isDragging || !this.currentCard) return;
+      
+      e.preventDefault();
+      this.handleGlobalMove(e);
+    }
+
+    handleGlobalMove(e) {
+      if (!this.isDragging || !this.currentCard) return;
+      
+      const pos = this.getEventPos(e);
+      this.currentPos = {
+        x: pos.x - this.startPos.x,
+        y: pos.y - this.startPos.y
+      };
+      
+      // Apply 3D rotation based on position
+      const rotateX = (this.currentPos.y / 100) * -60;
+      const rotateY = (this.currentPos.x / 100) * 60;
+      
+      this.currentCard.style.transform = `
+        translate(${this.currentPos.x}px, ${this.currentPos.y}px) 
+        rotateX(${rotateX}deg) 
+        rotateY(${rotateY}deg)
+        scale(${this.getCardScale(this.currentCard)})
+      `;
+    }
+
+    handleEnd(e) {
+      if (!this.isDragging || !this.currentCard) return;
+      
+      e.preventDefault();
+      this.handleGlobalEnd();
+    }
+
+    handleGlobalEnd() {
+      if (!this.isDragging || !this.currentCard) return;
+      
+      const card = this.currentCard;
+      const offset = this.currentPos;
+      
+      // Check if drag distance exceeds sensitivity
+      if (Math.abs(offset.x) > this.sensitivity || Math.abs(offset.y) > this.sensitivity) {
+        this.sendToBack(parseInt(card.dataset.cardId));
+      } else {
+        // Snap back to original position
+        this.resetCardPosition(card);
+      }
+      
+      // Clean up
+      card.classList.remove('dragging');
+      this.isDragging = false;
+      this.currentCard = null;
+      this.currentPos = { x: 0, y: 0 };
+    }
+
+    resetCardPosition(card) {
+      card.classList.add('animating');
+      const index = parseInt(card.dataset.index);
+      const rotation = this.getCardRotation(index);
+      const scale = this.getCardScale(card);
+      
+      card.style.transform = `rotateZ(${rotation}deg) scale(${scale})`;
+      card.style.transformOrigin = '90% 90%';
+      card.style.zIndex = this.cards.length - index;
+      
+      setTimeout(() => {
+        card.classList.remove('animating');
+      }, 500);
+    }
+
+    getCardRotation(index) {
+      const randomRotate = this.randomRotation ? Math.random() * 10 - 5 : 0;
+      return (this.cards.length - index - 1) * 4 + randomRotate;
+    }
+
+    getCardScale(card) {
+      const index = parseInt(card.dataset.index);
+      return 1 + index * 0.06 - this.cards.length * 0.06;
+    }
+
+    sendToBack(cardId) {
+      const cardElement = this.container.querySelector(`[data-card-id="${cardId}"]`);
+      if (!cardElement) return;
+      
+      // Move to back in DOM
+      this.container.insertBefore(cardElement, this.container.firstChild);
+      
+      // Update all card indices and styles
+      this.cards = Array.from(this.container.querySelectorAll('.card-rotate'));
+      this.cards.forEach((card, newIndex) => {
+        card.dataset.index = newIndex;
+        card.classList.add('animating');
+        
+        const rotation = this.getCardRotation(newIndex);
+        const scale = this.getCardScale(card);
+        
+        card.style.transform = `rotateZ(${rotation}deg) scale(${scale})`;
+        card.style.transformOrigin = '90% 90%';
+        card.style.zIndex = this.cards.length - newIndex;
+        
+        setTimeout(() => {
+          card.classList.remove('animating');
+        }, 500);
+      });
+    }
+  }
+
+  // Initialize all card stacks on the page
+  document.addEventListener('DOMContentLoaded', () => {
+    const stacks = document.querySelectorAll('.card-stack');
+    stacks.forEach(stack => new CardStack(stack));
+  });
+
+  // Re-initialize if the page is navigated to via Astro's client-side routing
+  document.addEventListener('astro:page-load', () => {
+    const stacks = document.querySelectorAll('.card-stack');
+    stacks.forEach(stack => new CardStack(stack));
+  });
+</script>

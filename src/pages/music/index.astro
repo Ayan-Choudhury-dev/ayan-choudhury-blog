@@ -1,24 +1,34 @@
 ---
+// Import necessary dependencies
 import { getCollection } from 'astro:content';
 import PageLayout from '@layouts/PageLayout.astro';
 import Container from '@components/Container.astro';
 import MusicCard from '@components/MusicCard.astro';
+import Stack from '@components/Stack.astro'
 import { AudioWaveform, List, LayoutGrid } from 'lucide-astro';
 
+// Fetch and sort music tracks
+// Filter out draft tracks and sort by date (newest first)
 const tracks = (await getCollection('music'))
   .filter((track) => !track.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+  const customCards = [
+  { id: 1, img: "https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?q=80&w=500&auto=format" },
+  { id: 2, img: "https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=500&auto=format" },
+];
 ---
 
 <PageLayout title="Music" description="My music collection">
   <Container>
     <div class="space-y-10">
+      {/* Header section with title and view toggle buttons */}
       <div class="animate flex items-center justify-between">
         <div class="font-bold text-xl text-black dark:text-white">
           <AudioWaveform class="inline-block" />
           Playlist
         </div>
-        <!-- View Toggle - Only visible on mobile -->
+        {/* Mobile-only view toggle buttons */}
         <div class="md:hidden flex items-center gap-2">
           <button
             id="list-view-btn"
@@ -36,10 +46,12 @@ const tracks = (await getCollection('music'))
           </button>
         </div>
       </div>
+
+      {/* Main content section */}
       {
         tracks.length > 0 ? (
           <div id="music-container" class="animate">
-            <!-- List View -->
+            {/* List View - Default view for mobile */}
             <ul id="list-view" class="flex flex-col gap-[3em]">
               {
                 tracks.map((track) => (
@@ -49,25 +61,24 @@ const tracks = (await getCollection('music'))
                 ))
               }
             </ul>
-            <!-- Grid View -->
-            <div id="grid-view" class="hidden">
-              <div class="relative">
+            {/* Grid View - Alternative view for mobile */}
+            <div id="grid-view" class="hidden fixed inset-0 bg-white dark:bg-black z-50">
+              <div class="card-stack">
                 {
                   tracks.map((track, index) => (
                     <div 
-                      class="absolute w-full transition-all duration-500 ease-out"
-                      style={`transform: translateY(${index * 20}px); z-index: ${tracks.length - index};`}
+                      class="card absolute w-full aspect-square cursor-grab active:cursor-grabbing"
+                      data-index={index}
                     >
                       <MusicCard entry={track} />
                     </div>
                   ))
                 }
-                {/* Spacer to account for stacked cards */}
-                <div style={`height: ${tracks.length * 20 + 400}px`}></div>
               </div>
             </div>
           </div>
         ) : (
+          // Empty state when no tracks are available
           <div class="animate flex flex-col items-center justify-center py-20">
             <div class="text-4xl font-bold text-black/10 dark:text-white/10 select-none">
               <span class="relative inline-block">
@@ -84,31 +95,79 @@ const tracks = (await getCollection('music'))
 </PageLayout>
 
 <script>
-  // View toggle functionality
+  import { gsap } from 'gsap';
+  import { Draggable } from 'gsap/Draggable';
+
+  // Register GSAP plugins
+  gsap.registerPlugin(Draggable);
+
+  // DOM Elements
   const listViewBtn = document.getElementById('list-view-btn');
   const gridViewBtn = document.getElementById('grid-view-btn');
   const listView = document.getElementById('list-view');
   const gridView = document.getElementById('grid-view');
-  const musicContainer = document.getElementById('music-container');
+  const cards = document.querySelectorAll('.card');
 
-  // Set initial view based on screen size
+  /**
+   * Sets the initial view based on screen size
+   * On mobile (< 768px): Shows list view
+   * On desktop: Shows grid view
+   */
   const setInitialView = () => {
     if (window.innerWidth < 768) { // md breakpoint
       listView?.classList.remove('hidden');
       gridView?.classList.add('hidden');
       listViewBtn?.classList.add('bg-white/10');
       gridViewBtn?.classList.remove('bg-white/10');
-      musicContainer?.setAttribute('data-view', 'list');
     }
   };
 
-  // Toggle between views
+  // Initialize draggable cards
+  const initDraggableCards = () => {
+    cards.forEach((card, index) => {
+      // Set initial position and z-index
+      gsap.set(card, {
+        zIndex: cards.length - index,
+        y: index * 2, // Slight offset for stack effect
+        scale: 1 - (index * 0.02), // Slight scale decrease for stack effect
+      });
+
+      // Create draggable instance
+      Draggable.create(card, {
+        type: "x,y",
+        inertia: true,
+        bounds: {
+          minX: -window.innerWidth,
+          maxX: window.innerWidth,
+          minY: -window.innerHeight,
+          maxY: window.innerHeight
+        },
+        onDragStart: function() {
+          // Bring dragged card to front
+          gsap.set(this.target, { zIndex: cards.length + 1 });
+        },
+        onDragEnd: function() {
+          // Move card to back of stack
+          const currentIndex = parseInt(this.target.dataset.index);
+          gsap.to(this.target, {
+            duration: 0.3,
+            x: 0,
+            y: currentIndex * 2,
+            scale: 1 - (currentIndex * 0.02),
+            zIndex: cards.length - currentIndex,
+            ease: "power2.out"
+          });
+        }
+      });
+    });
+  };
+
+  // Event Listeners for view toggle buttons
   listViewBtn?.addEventListener('click', () => {
     listView?.classList.remove('hidden');
     gridView?.classList.add('hidden');
     listViewBtn?.classList.add('bg-white/10');
     gridViewBtn?.classList.remove('bg-white/10');
-    musicContainer?.setAttribute('data-view', 'list');
   });
 
   gridViewBtn?.addEventListener('click', () => {
@@ -116,43 +175,43 @@ const tracks = (await getCollection('music'))
     gridView?.classList.remove('hidden');
     listViewBtn?.classList.remove('bg-white/10');
     gridViewBtn?.classList.add('bg-white/10');
-    musicContainer?.setAttribute('data-view', 'grid');
+    // Initialize draggable cards when switching to grid view
+    initDraggableCards();
   });
 
-  // Set initial view on page load
+  // Initialize view on page load
   setInitialView();
 
-  // Update view on window resize
+  // Update view when window is resized
   window.addEventListener('resize', setInitialView);
-
-  // Handle scroll animation for grid view
-  const handleScroll = () => {
-    if (musicContainer?.getAttribute('data-view') === 'grid') {
-      const cards = gridView?.querySelectorAll('.music-card');
-      const scrollPosition = window.scrollY;
-      
-      cards?.forEach((card, index) => {
-        const cardTop = card.getBoundingClientRect().top;
-        const triggerPoint = window.innerHeight * 0.8;
-        
-        if (cardTop < triggerPoint) {
-          card.style.transform = `translateY(${Math.max(0, scrollPosition * 0.1 - index * 20)}px)`;
-        }
-      });
-    }
-  };
-
-  window.addEventListener('scroll', handleScroll);
 </script>
 
 <style>
-  /* Add smooth transitions for view switching */
+  /* Smooth transition effect when switching between views */
   #list-view, #grid-view {
     transition: opacity 0.3s ease-in-out;
   }
 
-  /* Stacked card animations */
-  .music-card {
-    transition: transform 0.3s ease-out;
+  /* Card stack styles */
+  .card-stack {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    perspective: 1000px;
+    overflow: hidden;
+  }
+
+  .card {
+    transform-origin: center center;
+    will-change: transform;
+    touch-action: none;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Prevent scrolling when in grid view */
+  body.grid-view-active {
+    overflow: hidden;
   }
 </style> 
