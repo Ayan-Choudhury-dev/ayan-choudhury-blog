@@ -11,7 +11,7 @@ import vercel from "@astrojs/vercel/serverless";
 // https://astro.build/config
 export default defineConfig({
   site: "https://blog.ayanchoudhury.in",
-  integrations: [mdx(), sitemap(), tailwind(), react(), markdoc(), keystatic()],
+  integrations: [mdx(), sitemap(), tailwind(), react({experimentalReactChildren:true,}), markdoc(), keystatic()],
   output: "static",
   adapter: vercel(),
 });

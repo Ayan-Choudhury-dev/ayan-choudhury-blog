@@ -1,211 +1,77 @@
 ---
+/**
+ * Music Index Page
+ * Displays a collection of music tracks in a responsive grid layout
+ */
+
 // Import necessary dependencies
 import { getCollection } from 'astro:content';
 import PageLayout from '@layouts/PageLayout.astro';
 import Container from '@components/Container.astro';
 import MusicCard from '@components/MusicCard.astro';
-import { AudioWaveform, List, LayoutGrid } from 'lucide-astro';
+import { AudioWaveform } from 'lucide-astro';
+import Stack from '@components/Stack';
 
-// Fetch and sort music tracks
-// Filter out draft tracks and sort by date (newest first)
+/**
+ * Fetch and process music tracks
+ * - Filters out draft tracks
+ * - Sorts by date (newest first)
+ */
 const tracks = (await getCollection('music'))
   .filter((track) => !track.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// Transform tracks into the format expected by Stack component
+const trackCards = tracks.map((track, index) => ({
+  id: index + 1,
+  img: track.data.artURL,
+  track: track.data.name,
+  artist: track.data.artist,
+  url: track.data.trackURL
+}));
 ---
 
 <PageLayout title="Music" description="My music collection">
   <Container>
     <div class="space-y-10">
-      {/* Header section with title and view toggle buttons */}
-      <div class="animate flex items-center justify-between">
+      {/* Header section with title */}
+      <div class="animate flex items-center">
         <div class="font-bold text-xl text-black dark:text-white">
           <AudioWaveform class="inline-block" />
           Playlist
         </div>
-        {/* Mobile-only view toggle buttons */}
-        <div class="md:hidden flex items-center gap-2">
-          <button
-            id="list-view-btn"
-            class="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
-            aria-label="List view"
-          >
-            <List class="size-5" />
-          </button>
-          <button
-            id="grid-view-btn"
-            class="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
-            aria-label="Grid view"
-          >
-            <LayoutGrid class="size-5" />
-          </button>
-        </div>
       </div>
 
-      {/* Main content section */}
-      {
-        tracks.length > 0 ? (
-          <div id="music-container" class="animate">
-            {/* List View - Default view for mobile */}
-            <ul id="list-view" class="flex flex-col gap-[3em]">
-              {
-                tracks.map((track) => (
-                  <li>
-                    <MusicCard entry={track} />
-                  </li>
-                ))
-              }
-            </ul>
-            {/* Grid View - Alternative view for mobile */}
-            <div id="grid-view" class="hidden fixed inset-0 bg-white dark:bg-black z-50">
-              <div class="card-stack">
-                {
-                  tracks.map((track, index) => (
-                    <div 
-                      class="card absolute w-full aspect-square cursor-grab active:cursor-grabbing"
-                      data-index={index}
-                    >
-                      <MusicCard entry={track} />
-                    </div>
-                  ))
-                }
-              </div>
+      {/* Mobile Stack View */}
+      <div class="md:hidden">
+        <Stack
+          client:load
+          randomRotation={true}
+          sensitivity={120}
+          sendToBackOnClick={false}
+          cardDimensions={{ width: 300, height: 300 }}
+          cardsData={trackCards}
+        />
+      </div>
+      
+      {/* Desktop List View */}
+      <div id="music-container" class="animate hidden md:block">
+        {/* List layout for music tracks */}
+        <div class="flex flex-col gap-8">
+          {tracks.map((track) => (
+            <div class="w-full">
+              <MusicCard entry={track} />
             </div>
-          </div>
-        ) : (
-          // Empty state when no tracks are available
-          <div class="animate flex flex-col items-center justify-center py-20">
-            <div class="text-4xl font-bold text-black/10 dark:text-white/10 select-none">
-              <span class="relative inline-block">
-                <span class="relative z-10">No tracks yet</span>
-                <span class="absolute inset-0 bg-gradient-to-b from-white/20 to-black/20 dark:from-white/10 dark:to-black/10 blur-sm -z-10"></span>
-              </span>
-            </div>
-            <p class="mt-4 text-sm text-black/40 dark:text-white/40">Check back later for updates</p>
-          </div>
-        )
-      }
+          ))}
+        </div>
+      </div>
     </div>
   </Container>
 </PageLayout>
 
-<script>
-  import { gsap } from 'gsap';
-  import { Draggable } from 'gsap/Draggable';
-
-  // Register GSAP plugins
-  gsap.registerPlugin(Draggable);
-
-  // DOM Elements
-  const listViewBtn = document.getElementById('list-view-btn');
-  const gridViewBtn = document.getElementById('grid-view-btn');
-  const listView = document.getElementById('list-view');
-  const gridView = document.getElementById('grid-view');
-  const cards = document.querySelectorAll('.card');
-
-  /**
-   * Sets the initial view based on screen size
-   * On mobile (< 768px): Shows list view
-   * On desktop: Shows grid view
-   */
-  const setInitialView = () => {
-    if (window.innerWidth < 768) { // md breakpoint
-      listView?.classList.remove('hidden');
-      gridView?.classList.add('hidden');
-      listViewBtn?.classList.add('bg-white/10');
-      gridViewBtn?.classList.remove('bg-white/10');
-    }
-  };
-
-  // Initialize draggable cards
-  const initDraggableCards = () => {
-    cards.forEach((card, index) => {
-      // Set initial position and z-index
-      gsap.set(card, {
-        zIndex: cards.length - index,
-        y: index * 2, // Slight offset for stack effect
-        scale: 1 - (index * 0.02), // Slight scale decrease for stack effect
-      });
-
-      // Create draggable instance
-      Draggable.create(card, {
-        type: "x,y",
-        inertia: true,
-        bounds: {
-          minX: -window.innerWidth,
-          maxX: window.innerWidth,
-          minY: -window.innerHeight,
-          maxY: window.innerHeight
-        },
-        onDragStart: function() {
-          // Bring dragged card to front
-          gsap.set(this.target, { zIndex: cards.length + 1 });
-        },
-        onDragEnd: function() {
-          // Move card to back of stack
-          const currentIndex = parseInt(this.target.dataset.index);
-          gsap.to(this.target, {
-            duration: 0.3,
-            x: 0,
-            y: currentIndex * 2,
-            scale: 1 - (currentIndex * 0.02),
-            zIndex: cards.length - currentIndex,
-            ease: "power2.out"
-          });
-        }
-      });
-    });
-  };
-
-  // Event Listeners for view toggle buttons
-  listViewBtn?.addEventListener('click', () => {
-    listView?.classList.remove('hidden');
-    gridView?.classList.add('hidden');
-    listViewBtn?.classList.add('bg-white/10');
-    gridViewBtn?.classList.remove('bg-white/10');
-  });
-
-  gridViewBtn?.addEventListener('click', () => {
-    listView?.classList.add('hidden');
-    gridView?.classList.remove('hidden');
-    listViewBtn?.classList.remove('bg-white/10');
-    gridViewBtn?.classList.add('bg-white/10');
-    // Initialize draggable cards when switching to grid view
-    initDraggableCards();
-  });
-
-  // Initialize view on page load
-  setInitialView();
-
-  // Update view when window is resized
-  window.addEventListener('resize', setInitialView);
-</script>
-
 <style>
-  /* Smooth transition effect when switching between views */
-  #list-view, #grid-view {
+  /* Smooth transition effects */
+  #music-container {
     transition: opacity 0.3s ease-in-out;
   }
-
-  /* Card stack styles */
-  .card-stack {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    perspective: 1000px;
-    overflow: hidden;
-  }
-
-  .card {
-    transform-origin: center center;
-    will-change: transform;
-    touch-action: none;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  /* Prevent scrolling when in grid view */
-  body.grid-view-active {
-    overflow: hidden;
-  }
-</style> 
+</style>
