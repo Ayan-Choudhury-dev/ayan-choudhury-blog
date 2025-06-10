@@ -12,11 +12,11 @@ export default config({
   // },
 
   storage: {
-    kind: 'local',
+    kind: 'cloud',
   },
-  // cloud: {
-  //   project: 'solo-blogger/ayan-choudhury-blog',
-  // },
+  cloud: {
+    project: 'solo-blogger/ayan-choudhury-blog',
+  },
 
   collections: {
     posts: collection({
