@@ -1,18 +1,28 @@
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useState } from "react";
 
+// Props interface for the CardRotate component
 interface CardRotateProps {
   children: React.ReactNode;
   onSendToBack: () => void;
   sensitivity: number;
 }
 
+/**
+ * CardRotate Component
+ * Handles the 3D rotation effect of individual cards based on drag interactions
+ * Uses Framer Motion for smooth animations and transformations
+ */
 function CardRotate({ children, onSendToBack, sensitivity }: CardRotateProps) {
+  // Motion values for tracking x and y positions during drag
   const x = useMotionValue(0);
   const y = useMotionValue(0);
+  
+  // Transform drag values into rotation angles for 3D effect
   const rotateX = useTransform(y, [-100, 100], [60, -60]);
   const rotateY = useTransform(x, [-100, 100], [-60, 60]);
 
+  // Handle drag end event - determines if card should be sent to back
   function handleDragEnd(_: never, info: { offset: { x: number; y: number } }) {
     if (
       Math.abs(info.offset.x) > sensitivity ||
@@ -20,6 +30,7 @@ function CardRotate({ children, onSendToBack, sensitivity }: CardRotateProps) {
     ) {
       onSendToBack();
     } else {
+      // Reset position if drag distance is below sensitivity threshold
       x.set(0);
       y.set(0);
     }
@@ -40,15 +51,21 @@ function CardRotate({ children, onSendToBack, sensitivity }: CardRotateProps) {
   );
 }
 
+// Props interface for the main Stack component
 interface StackProps {
-  randomRotation?: boolean;
-  sensitivity?: number;
-  cardDimensions?: { width: number; height: number };
-  sendToBackOnClick?: boolean;
-  cardsData?: { id: number; img: string; track?: string; artist?: string; url?: string }[];
-  animationConfig?: { stiffness: number; damping: number };
+  randomRotation?: boolean;  // Enable random rotation for cards
+  sensitivity?: number;      // Drag sensitivity threshold
+  cardDimensions?: { width: number; height: number };  // Card size
+  sendToBackOnClick?: boolean;  // Enable sending card to back on click
+  cardsData?: { id: number; img: string; track?: string; artist?: string; url?: string }[];  // Card data
+  animationConfig?: { stiffness: number; damping: number };  // Animation spring configuration
 }
 
+/**
+ * Stack Component
+ * Creates a stack of cards with 3D effects and interactive animations
+ * Supports drag interactions, card rotation, and optional click behavior
+ */
 export default function Stack({
   randomRotation = false,
   sensitivity = 200,
@@ -57,29 +74,10 @@ export default function Stack({
   animationConfig = { stiffness: 260, damping: 20 },
   sendToBackOnClick = false,
 }: StackProps) {
-  const [cards, setCards] = useState(
-    cardsData.length
-      ? cardsData
-      : [
-          {
-            id: 1,
-            img: "https://images.unsplash.com/photo-1480074568708-e7b720bb3f09?q=80&w=500&auto=format",
-          },
-          {
-            id: 2,
-            img: "https://images.unsplash.com/photo-1449844908441-8829872d2607?q=80&w=500&auto=format",
-          },
-          {
-            id: 3,
-            img: "https://images.unsplash.com/photo-1452626212852-811d58933cae?q=80&w=500&auto=format",
-          },
-          {
-            id: 4,
-            img: "https://images.unsplash.com/photo-1572120360610-d971b9d7767c?q=80&w=500&auto=format",
-          },
-        ]
-  );
+  // Initialize cards state with provided data
+  const [cards, setCards] = useState(cardsData);
 
+  // Function to move a card to the back of the stack
   const sendToBack = (id: number) => {
     setCards((prev) => {
       const newCards = [...prev];
@@ -92,14 +90,15 @@ export default function Stack({
 
   return (
     <div
-      className="relative"
+      className="relative mx-auto"
       style={{
         width: cardDimensions.width,
         height: cardDimensions.height,
-        perspective: 600,
+        perspective: 600,  // 3D perspective for the stack
       }}
     >
       {cards.map((card, index) => {
+        // Calculate random rotation if enabled
         const randomRotate = randomRotation ? Math.random() * 10 - 5 : 0;
 
         return (
@@ -118,8 +117,9 @@ export default function Stack({
                   window.open(card.url, '_blank');
                 }
               }}
+              // Animate card position and rotation
               animate={{
-                rotateZ: (cards.length - index - 1) * 4 + randomRotate,
+                rotateZ: (cards.length - index - 1) * 3 + randomRotate,
                 scale: 1 + index * 0.06 - cards.length * 0.06,
                 transformOrigin: "90% 90%",
               }}
@@ -128,17 +128,20 @@ export default function Stack({
                 type: "spring",
                 stiffness: animationConfig.stiffness,
                 damping: animationConfig.damping,
+                bounce: 20,
               }}
               style={{
                 width: cardDimensions.width,
                 height: cardDimensions.height,
               }}
             >
+              {/* Card Image */}
               <img
                 src={card.img}
                 alt={card.track || `card-${card.id}`}
                 className="w-full h-full object-cover pointer-events-none"
               />
+              {/* Card Info Overlay (for music/video cards) */}
               {(card.track || card.artist) && (
                 <div className="absolute inset-x-0 bottom-0 p-4">
                   <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 blur-sm" />
@@ -147,6 +150,7 @@ export default function Stack({
                       {card.track && <div className="font-bold text-lg truncate">{card.track}</div>}
                       {card.artist && <div className="text-sm opacity-80">{card.artist}</div>}
                     </div>
+                    {/* Play Button (for music/video cards) */}
                     {card.url && (
                       <button 
                         onClick={(e) => {
@@ -155,6 +159,7 @@ export default function Stack({
                         }}
                         className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
                       >
+                        {/* Spotify or YouTube icon based on URL */}
                         {card.url.includes('spotify.com') ? (
                           <svg
                             xmlns="http://www.w3.org/2000/svg"
