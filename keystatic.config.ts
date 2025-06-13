@@ -48,8 +48,7 @@ export default config({
         //Draft label
         draft: fields.checkbox({
           label: 'Draft',
-          description:
-            'Set this post as draft to prevent it from being published',
+          description: 'Set this post as draft to prevent it from being published',
         }),
 
         date: fields.date({
@@ -73,7 +72,6 @@ export default config({
           itemLabel: (props) => props.value,
         }),
       },
-
     }),
     music: collection({
       label: '🎧 Jukebox',
@@ -84,27 +82,25 @@ export default config({
       path: 'src/content/music/**',
 
       schema: {
-
         type: fields.select({
           label: 'Type',
           description: 'Select whether this is an album or a track',
           options: [
             { label: 'Album', value: 'album' },
-            { label: 'Track', value: 'track' }
+            { label: 'Track', value: 'track' },
           ],
-          defaultValue: 'track'
+          defaultValue: 'track',
         }),
 
         name: fields.slug({ name: { label: 'Name' } }),
-        
-        artist: fields.text({ 
+
+        artist: fields.text({
           label: 'Artist Name',
         }),
 
-
         date: fields.date({
           label: 'Added',
-          description: 'Track added on'
+          description: 'Track added on',
         }),
 
         draft: fields.checkbox({
@@ -112,24 +108,22 @@ export default config({
           description: 'Set this entry as draft to prevent it from being published',
         }),
 
-        artURL: fields.text({ 
+        artURL: fields.text({
           label: 'Art URL',
-          description: 'URL for the album/song artwork'
+          description: 'URL for the album/song artwork',
         }),
 
-        trackURL: fields.text({ 
+        trackURL: fields.text({
           label: 'Track URL',
-          description: 'URL for the music track'
+          description: 'URL for the music track',
         }),
 
-        spoURL: fields.text({ 
+        spoURL: fields.text({
           label: 'Spo URL',
-          description: 'Spo URL for the track'
+          description: 'Spo URL for the track',
         }),
-
-      }
+      },
     }),
-
   },
   //UI PARAMETERS FOR CMS
   ui: {
