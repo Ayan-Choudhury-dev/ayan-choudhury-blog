@@ -7,14 +7,11 @@ import { SITE } from '@consts';
 ---
 
 <header
-  class="transition-all duration-300 ease-in-out fixed left-1/2 -translate-x-1/2 w-full border-2 border-transparent"
+  class="fixed left-1/2 -translate-x-1/2 w-full border-2 border-transparent transition-[background-color,border-color,width,top,padding] duration-300 ease-in-out"
   id="main-header"
 >
-  <Container class="transition-all duration-300 ease-in-out w-full max-w-2xl mx-auto">
-    <div
-      class="flex flex-wrap gap-y-2 justify-between items-center"
-      id="hero_container"
-    >
+  <Container class="w-full max-w-2xl mx-auto transition-[max-width] duration-300 ease-in-out">
+    <div class="flex flex-wrap gap-y-2 justify-between items-center" id="hero_container">
       <Link href="/" underline={false}>
         <div class="font-semibold">
           <span class="dark:text-salmon_dark text-salmon_light" id="site-name">{SITE.NAME}</span>
