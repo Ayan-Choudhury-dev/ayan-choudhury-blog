@@ -11,7 +11,7 @@ Regular commits not guaranteed.
 | -------------------------------- | ------- |
 | Fix RSS Feed                     | Done ✅ |
 | Add Bio                          | Pending |
-| Add 'Now Listening'              | Pending |
+| Add 'Now Listening'              | Done ✅ |
 | Implement dynamic OpenGraph data | Pending |
 
 ---

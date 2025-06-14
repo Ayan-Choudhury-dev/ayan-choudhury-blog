@@ -21,29 +21,81 @@ const tracks = (await getCollection('music'))
   .filter((track) => !track.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
+// Group tracks by year
+const tracksByYear = tracks.reduce(
+  (acc, track) => {
+    const year = track.data.date.getFullYear();
+    if (!acc[year]) {
+      acc[year] = [];
+    }
+    acc[year].push(track);
+    return acc;
+  },
+  {} as Record<number, typeof tracks>
+);
+
+// Get unique years sorted in descending order
+const years = Object.keys(tracksByYear)
+  .map(Number)
+  .sort((a, b) => b - a);
+
 // Transform tracks into the format expected by Stack component
 const trackCards = tracks.map((track, index) => ({
   id: index + 1,
   img: track.data.artURL,
   track: track.data.name,
   artist: track.data.artist,
-  url: track.data.trackURL
+  url: track.data.trackURL,
+  date: track.data.date,
 }));
+
+// Serialize tracks for client-side filtering
+const serializedTracks = JSON.stringify(
+  tracks.map((track) => ({
+    data: {
+      name: track.data.name,
+      artist: track.data.artist,
+      artURL: track.data.artURL,
+      trackURL: track.data.trackURL,
+      date: track.data.date.toISOString(),
+    },
+  }))
+);
 ---
 
 <PageLayout title="Music" description="My music collection">
   <Container>
-    <div class="space-y-10">
-      {/* Header section with title */}
-      <div class="animate flex items-center">
+    <div class="space-y-20">
+      {/* Header section with title and year filter */}
+      <div class="animate flex items-center justify-between">
         <div class="font-bold text-xl text-black dark:text-white">
           <AudioWaveform class="inline-block" />
           Playlist
         </div>
+        <div class="relative w-32">
+          <select
+            id="year-select"
+            class="w-full px-3 py-1.5 text-sm rounded-lg border border-black/15 dark:border-white/20 bg-white dark:bg-black/40 text-black dark:text-white hover:bg-black/5 dark:hover:bg-white/5 transition-colors duration-300 ease-in-out appearance-none cursor-pointer"
+          >
+            {years.map((year) => <option value={year}>{year}</option>)}
+          </select>
+          <div
+            class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-black/50 dark:text-white/50"
+          >
+            <svg
+              class="fill-current h-4 w-4"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+            >
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+              ></path>
+            </svg>
+          </div>
+        </div>
       </div>
 
       {/* Mobile Stack View */}
-      <div class="md:hidden">
+      <div class="md:hidden flex items-center justify-center">
         <Stack
           client:load
           randomRotation={true}
@@ -53,16 +105,18 @@ const trackCards = tracks.map((track, index) => ({
           cardsData={trackCards}
         />
       </div>
-      
+
       {/* Desktop List View */}
       <div id="music-container" class="animate hidden md:block">
         {/* List layout for music tracks */}
         <div class="flex flex-col gap-8">
-          {tracks.map((track) => (
-            <div class="w-full">
-              <MusicCard entry={track} />
-            </div>
-          ))}
+          {
+            tracks.map((track) => (
+              <div class="w-full">
+                <MusicCard entry={track} />
+              </div>
+            ))
+          }
         </div>
       </div>
     </div>
@@ -75,3 +129,101 @@ const trackCards = tracks.map((track, index) => ({
     transition: opacity 0.3s ease-in-out;
   }
 </style>
+
+<script>
+  // Make trackCards available to the window object
+  declare global {
+    interface Window {
+      trackCards: Array<{
+        id: number;
+        img: string;
+        track?: string;
+        artist?: string;
+        url?: string;
+        date: Date;
+      }>;
+      serializedTracks: string;
+    }
+  }
+
+  // Set trackCards and serializedTracks on window object
+  window.trackCards = JSON.parse('{JSON.stringify(trackCards)}');
+  window.serializedTracks = '{serializedTracks}';
+
+  // Year pagination functionality
+  const yearSelect = document.getElementById('year-select') as HTMLSelectElement;
+  const stack = document.querySelector('stack-component');
+  const musicContainer = document.getElementById('music-container');
+
+  if (yearSelect) {
+    yearSelect.addEventListener('change', () => {
+      const year = yearSelect.value;
+      if (year && window.trackCards) {
+        const filteredCards = window.trackCards.filter(
+          (card: { date: Date }) => new Date(card.date).getFullYear() === parseInt(year)
+        );
+
+        // Update stack with filtered cards
+        if (stack) {
+          stack.setAttribute('cards-data', JSON.stringify(filteredCards));
+        }
+
+        // Update desktop view
+        if (musicContainer) {
+          const tracks = JSON.parse(window.serializedTracks);
+          const filteredTracks = tracks.filter(
+            (track: { data: { date: string } }) =>
+              new Date(track.data.date).getFullYear() === parseInt(year)
+          );
+
+          musicContainer.innerHTML = `
+            <div class="flex flex-col gap-8">
+              ${filteredTracks
+                .map(
+                  (track: { data: any }) => `
+                <div class="w-full">
+                  <div class="relative flex flex-col md:flex-row items-center w-full max-w-2xl mx-auto min-h-[110px] rounded-2xl shadow-2xl overflow-hidden p-4 md:p-0 group">
+                    <div class="w-full md:w-[110px] h-[110px] relative">
+                      <img
+                        src="${track.data.artURL}"
+                        alt="${track.data.name}"
+                        class="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div class="flex-1 p-4 md:p-6">
+                      <h3 class="text-lg font-semibold text-black dark:text-white">${track.data.name}</h3>
+                      <p class="text-black/60 dark:text-white/60">${track.data.artist}</p>
+                    </div>
+                    <div class="absolute right-4 md:right-6 top-1/2 -translate-y-1/2">
+                      <a
+                        href="${track.data.trackURL}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="flex items-center justify-center w-10 h-10 rounded-full bg-black/10 dark:bg-white/10 hover:bg-black/20 dark:hover:bg-white/20 transition-colors duration-300"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="w-5 h-5 text-black dark:text-white"
+                        >
+                          <polygon points="5 3 19 12 5 21 5 3" />
+                        </svg>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              `
+                )
+                .join('')}
+            </div>
+          `;
+        }
+      }
+    });
+  }
+</script>

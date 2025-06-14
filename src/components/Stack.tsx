@@ -57,7 +57,7 @@ interface StackProps {
   sensitivity?: number;      // Drag sensitivity threshold
   cardDimensions?: { width: number; height: number };  // Card size
   sendToBackOnClick?: boolean;  // Enable sending card to back on click
-  cardsData?: { id: number; img: string; track?: string; artist?: string; url?: string }[];  // Card data
+  cardsData?: { id: number; img: string; track?: string; artist?: string; url?: string; date?: Date }[];  // Card data
   animationConfig?: { stiffness: number; damping: number };  // Animation spring configuration
 }
 
@@ -144,11 +144,19 @@ export default function Stack({
               {/* Card Info Overlay (for music/video cards) */}
               {(card.track || card.artist) && (
                 <div className="absolute inset-x-0 bottom-0 p-4">
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/80 blur-sm" />
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/95 blur-sm" />
                   <div className="relative text-white flex items-end justify-between">
                     <div>
                       {card.track && <div className="font-bold text-lg truncate">{card.track}</div>}
                       {card.artist && <div className="text-sm opacity-80">{card.artist}</div>}
+                      {card.date && (
+                        <div className="text-xs opacity-60 mt-1">
+                          {new Date(card.date).toLocaleDateString('en-US', {
+                            day: 'numeric',
+                            month: 'long'
+                          })}
+                        </div>
+                      )}
                     </div>
                     {/* Play Button (for music/video cards) */}
                     {card.url && (
