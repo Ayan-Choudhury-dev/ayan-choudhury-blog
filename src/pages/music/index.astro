@@ -11,6 +11,7 @@ import Container from '@components/Container.astro';
 import MusicCard from '@components/MusicCard.astro';
 import { AudioWaveform } from 'lucide-astro';
 import Stack from '@components/Stack';
+import StackCounter from '@components/StackCounter';
 
 /**
  * Fetch and process music tracks
@@ -19,7 +20,7 @@ import Stack from '@components/Stack';
  */
 const tracks = (await getCollection('music'))
   .filter((track) => !track.data.draft)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  .sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
 
 // Group tracks by year
 const tracksByYear = tracks.reduce(
@@ -95,7 +96,7 @@ const serializedTracks = JSON.stringify(
       </div>
 
       {/* Mobile Stack View */}
-      <div class="md:hidden flex items-center justify-center">
+      <div class="md:hidden flex flex-col items-center justify-center gap-4">
         <Stack
           client:load
           randomRotation={true}
