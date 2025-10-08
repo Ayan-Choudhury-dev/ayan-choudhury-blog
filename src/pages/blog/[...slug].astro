@@ -32,9 +32,12 @@ const { Content } = await post.render();
 
 // Ensure description is always a string
 const description = post.data.description || '';
+
+// Get cover image if it exists
+const coverImage = post.data.cover?.src;
 ---
 
-<PageLayout title={post.data.title} description={description}>
+<PageLayout title={post.data.title} description={description} image={coverImage}>
   <Container>
     <!-- <div class="animate">
       <BackToPrev href="/blog">
