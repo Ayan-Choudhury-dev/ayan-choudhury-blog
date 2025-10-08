@@ -1,7 +1,7 @@
-import rss from '@astrojs/rss';
-import { getCollection } from 'astro:content';
-import { BLOG } from '@consts';
-import { marked } from 'marked';
+import rss from "@astrojs/rss";
+import { getCollection } from "astro:content";
+import { BLOG } from "@consts";
+import { marked } from "marked";
 
 // Function to extract the first image in Markdown content and format the URL
 function getFirstImageFromMarkdown(
@@ -16,8 +16,8 @@ function getFirstImageFromMarkdown(
     const imagePath = match[1];
 
     // Resolve "@assets" path to final URL
-    if (imagePath.startsWith('@assets/')) {
-      return `${siteOrigin}/_astro/${imagePath.replace('@assets/', '')}`;
+    if (imagePath.startsWith("@assets/")) {
+      return `${siteOrigin}/_astro/${imagePath.replace("@assets/", "")}`;
     }
 
     // Return the image path as is for non-@assets paths
@@ -27,7 +27,7 @@ function getFirstImageFromMarkdown(
 }
 
 export async function GET({ site }: { site: URL }) {
-  const blogPosts = (await getCollection('blog')).filter(
+  const blogPosts = (await getCollection("blog")).filter(
     (post) => !post.data.draft
   );
 
@@ -42,9 +42,9 @@ export async function GET({ site }: { site: URL }) {
     description: BLOG.DESCRIPTION,
     site: site.toString(),
     xmlns: {
-      media: 'http://search.yahoo.com/mrss/',
-      content: 'http://purl.org/rss/1.0/modules/content/',
-      atom: 'http://www.w3.org/2005/Atom',
+      media: "http://search.yahoo.com/mrss/",
+      content: "http://purl.org/rss/1.0/modules/content/",
+      atom: "http://www.w3.org/2005/Atom",
     },
     customData: `<atom:link href="${site}rss.xml" rel="self" type="application/rss+xml" />`,
     items: sortedPosts.map((post) => {
@@ -74,9 +74,9 @@ export async function GET({ site }: { site: URL }) {
           ${
             imageUrl
               ? `<media:content type="image/${
-                  imageUrl.endsWith('.jpg') ? 'jpeg' : 'png'
+                  imageUrl.endsWith(".jpg") ? "jpeg" : "png"
                 }" medium="image" url="${imageUrl}" />`
-              : ''
+              : ""
           }
           <content:encoded><![CDATA[${htmlContent}]]></content:encoded>
         `,

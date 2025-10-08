@@ -1,6 +1,6 @@
 import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useState, useEffect } from "react";
-import StackCounter from './StackCounter';
+import StackCounter from "./StackCounter";
 
 // Props interface for the CardRotate component
 interface CardRotateProps {
@@ -120,7 +120,7 @@ export default function Stack({
                     sendToBack(card.id);
                   }
                   if (card.url) {
-                    window.open(card.url, '_blank');
+                    window.open(card.url, "_blank");
                   }
                 }}
                 // Animate card position and rotation
@@ -157,9 +157,9 @@ export default function Stack({
                         {card.artist && <div className="text-sm opacity-80">{card.artist}</div>}
                         {card.date && (
                           <div className="text-xs opacity-60 mt-1">
-                            {new Date(card.date).toLocaleDateString('en-US', {
-                              day: 'numeric',
-                              month: 'long'
+                            {new Date(card.date).toLocaleDateString("en-US", {
+                              day: "numeric",
+                              month: "long"
                             })}
                           </div>
                         )}
@@ -169,12 +169,12 @@ export default function Stack({
                         <button 
                           onClick={(e) => {
                             e.stopPropagation();
-                            window.open(card.url, '_blank');
+                            window.open(card.url, "_blank");
                           }}
                           className="flex items-center gap-1.5 px-2 py-1 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
                         >
                           {/* Spotify or YouTube icon based on URL */}
-                          {card.url.includes('spotify.com') ? (
+                          {card.url.includes("spotify.com") ? (
                             <svg
                               xmlns="http://www.w3.org/2000/svg"
                               width="14"

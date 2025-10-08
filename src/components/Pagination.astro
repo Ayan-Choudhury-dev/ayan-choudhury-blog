@@ -1,5 +1,5 @@
 ---
-import { SITE } from '@consts';
+import { SITE } from "@consts";
 
 // Improved TypeScript types
 interface PageInfo {
@@ -31,10 +31,10 @@ const totalPages = Math.ceil(page.total / post_num);
 
 // Helper functions
 const getPreviousPageUrl = (currentPage: number, prevUrl: string) => 
-  currentPage === 2 ? '/' : prevUrl;
+  currentPage === 2 ? "/" : prevUrl;
 
 const getPageUrl = (link: PaginationLink) => 
-  link.page === 1 ? '/' : link.url;
+  link.page === 1 ? "/" : link.url;
 
 // Component classes
 const buttonBaseClasses = "relative inline-flex items-center rounded-full px-6 py-3 text-base font-medium transition-colors";
@@ -43,8 +43,8 @@ const disabledButtonClasses = "opacity-10 cursor-not-allowed text-gray-400";
 const desktopButtonClasses = "relative inline-flex items-center rounded-r-md px-2 py-2 focus:z-20 focus:outline-offset-0";
 const pageNumberClasses = (isCurrent: boolean) => 
   isCurrent
-    ? 'relative z-10 inline-flex items-center rounded-full px-4 py-2 text-sm font-bold text-terracotta-600 focus:z-20'
-    : 'relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-400 hover:text-terracotta-500';
+    ? "relative z-10 inline-flex items-center rounded-full px-4 py-2 text-sm font-bold text-terracotta-600 focus:z-20"
+    : "relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-400 hover:text-terracotta-500";
 ---
 
 <!-- Main pagination container -->
@@ -147,7 +147,7 @@ const pageNumberClasses = (isCurrent: boolean) =>
         <!-- Next page arrow -->
         <a
           href={page.url.next}
-          class={`${desktopButtonClasses} ${isLastPage ? disabledButtonClasses : 'dark:text-white hover:text-orange-400'}`}
+          class={`${desktopButtonClasses} ${isLastPage ? disabledButtonClasses : "dark:text-white hover:text-orange-400"}`}
           aria-disabled={isLastPage}
         >
           <span class="sr-only">Next</span>

@@ -1,13 +1,13 @@
-import rss from '@astrojs/rss';
-import { getCollection } from 'astro:content';
-import { BLOG } from '@consts';
+import rss from "@astrojs/rss";
+import { getCollection } from "astro:content";
+import { BLOG } from "@consts";
 
 interface Context {
   site: URL; // Use URL type for better compatibility
 }
 
 export async function GET({ site }: Context) {
-  const blogPosts = (await getCollection('blog')).filter(
+  const blogPosts = (await getCollection("blog")).filter(
     (post) => !post.data.draft
   );
 
@@ -22,7 +22,7 @@ export async function GET({ site }: Context) {
     description: BLOG.DESCRIPTION,
     site: site.toString(),
     xmlns: {
-      media: 'http://search.yahoo.com/mrss/',
+      media: "http://search.yahoo.com/mrss/",
     },
     items: sortedPosts.map((post) => ({
       title: post.data.title,
@@ -31,7 +31,7 @@ export async function GET({ site }: Context) {
       link: `/${post.collection}/${post.slug}/`,
 
       customData: `<media:content
-          type="image/${post.data.cover?.format == 'jpg' ? 'jpeg' : 'png'}"
+          type="image/${post.data.cover?.format == "jpg" ? "jpeg" : "png"}"
           medium="image"
           url="${post.data.cover?.src}" />
       `,

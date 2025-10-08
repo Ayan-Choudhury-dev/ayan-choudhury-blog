@@ -1,5 +1,5 @@
 // keystatic.config.ts
-import { config, fields, collection } from '@keystatic/core';
+import { config, fields, collection } from "@keystatic/core";
 
 export default config({
   // storage: {
@@ -12,115 +12,115 @@ export default config({
   // },
 
   storage: {
-    kind: 'cloud',
+    kind: "cloud",
   },
   cloud: {
-    project: 'solo-blogger/ayan-choudhury-blog',
+    project: "solo-blogger/ayan-choudhury-blog",
   },
 
   collections: {
     posts: collection({
-      label: '✍️ Posts',
-      entryLayout: 'content',
-      columns: ['title', 'date'],
+      label: "✍️ Posts",
+      entryLayout: "content",
+      columns: ["title", "date"],
 
       //Slugfield
-      slugField: 'title',
+      slugField: "title",
 
       //Document_path
-      path: 'src/content/blog/**',
+      path: "src/content/blog/**",
       // path: url,
 
-      format: { contentField: 'content' },
+      format: { contentField: "content" },
 
       //Schema: Customize Fields here
       schema: {
-        title: fields.slug({ name: { label: 'Title' } }),
+        title: fields.slug({ name: { label: "Title" } }),
         // description: fields.text({ label: "Post Description" }),
 
         cover: fields.image({
-          label: 'Cover Image (Optional)',
-          directory: 'src/assets/images/posts',
+          label: "Cover Image (Optional)",
+          directory: "src/assets/images/posts",
           // Use the @assets path alias
-          publicPath: '/src/assets/images/posts/',
+          publicPath: "/src/assets/images/posts/",
         }),
 
         //Draft label
         draft: fields.checkbox({
-          label: 'Draft',
-          description: 'Set this post as draft to prevent it from being published',
+          label: "Draft",
+          description: "Set this post as draft to prevent it from being published",
         }),
 
         date: fields.date({
-          label: 'Date published',
+          label: "Date published",
         }),
 
         content: fields.markdoc({
-          label: 'Content',
+          label: "Content",
           options: {
             image: {
-              directory: 'src/assets/images/posts',
+              directory: "src/assets/images/posts",
               // Use the @assets path alias
-              publicPath: '@assets/images/posts/',
+              publicPath: "@assets/images/posts/",
             },
           },
         }),
 
         //Tags
-        tags: fields.array(fields.text({ label: 'Tags' }), {
-          label: 'Tags',
+        tags: fields.array(fields.text({ label: "Tags" }), {
+          label: "Tags",
           itemLabel: (props) => props.value,
         }),
       },
     }),
     music: collection({
-      label: '🎧 Jukebox',
-      slugField: 'name',
-      columns: ['name', 'date'],
+      label: "🎧 Jukebox",
+      slugField: "name",
+      columns: ["name", "date"],
 
       //Document_path
-      path: 'src/content/music/**',
+      path: "src/content/music/**",
 
       schema: {
         type: fields.select({
-          label: 'Type',
-          description: 'Select whether this is an album or a track',
+          label: "Type",
+          description: "Select whether this is an album or a track",
           options: [
-            { label: 'Album', value: 'album' },
-            { label: 'Track', value: 'track' },
+            { label: "Album", value: "album" },
+            { label: "Track", value: "track" },
           ],
-          defaultValue: 'track',
+          defaultValue: "track",
         }),
 
-        name: fields.slug({ name: { label: 'Name' } }),
+        name: fields.slug({ name: { label: "Name" } }),
 
         artist: fields.text({
-          label: 'Artist Name',
+          label: "Artist Name",
         }),
 
         date: fields.date({
-          label: 'Added',
-          description: 'Track added on',
+          label: "Added",
+          description: "Track added on",
         }),
 
         draft: fields.checkbox({
-          label: 'Draft',
-          description: 'Set this entry as draft to prevent it from being published',
+          label: "Draft",
+          description: "Set this entry as draft to prevent it from being published",
         }),
 
         artURL: fields.text({
-          label: 'Art URL',
-          description: 'URL for the album/song artwork',
+          label: "Art URL",
+          description: "URL for the album/song artwork",
         }),
 
         trackURL: fields.text({
-          label: 'Track URL',
-          description: 'URL for the music track',
+          label: "Track URL",
+          description: "URL for the music track",
         }),
 
         spoURL: fields.text({
-          label: 'Spo URL',
-          description: 'Spo URL for the track',
+          label: "Spo URL",
+          description: "Spo URL for the track",
         }),
       },
     }),

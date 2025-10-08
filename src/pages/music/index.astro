@@ -5,20 +5,20 @@
  */
 
 // Import necessary dependencies
-import { getCollection } from 'astro:content';
-import PageLayout from '@layouts/PageLayout.astro';
-import Container from '@components/Container.astro';
-import MusicCard from '@components/MusicCard.astro';
-import { AudioWaveform } from 'lucide-astro';
-import Stack from '@components/Stack';
-import StackCounter from '@components/StackCounter';
+import { getCollection } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+import Container from "@components/Container.astro";
+import MusicCard from "@components/MusicCard.astro";
+import { AudioWaveform } from "lucide-astro";
+import Stack from "@components/Stack";
+import StackCounter from "@components/StackCounter";
 
 /**
  * Fetch and process music tracks
  * - Filters out draft tracks
  * - Sorts by date (newest first)
  */
-const tracks = (await getCollection('music'))
+const tracks = (await getCollection("music"))
   .filter((track) => !track.data.draft)
   .sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
 
@@ -148,16 +148,16 @@ const serializedTracks = JSON.stringify(
   }
 
   // Set trackCards and serializedTracks on window object
-  window.trackCards = JSON.parse('{JSON.stringify(trackCards)}');
-  window.serializedTracks = '{serializedTracks}';
+  window.trackCards = JSON.parse("{JSON.stringify(trackCards)}");
+  window.serializedTracks = "{serializedTracks}";
 
   // Year pagination functionality
-  const yearSelect = document.getElementById('year-select') as HTMLSelectElement;
-  const stack = document.querySelector('stack-component');
-  const musicContainer = document.getElementById('music-container');
+  const yearSelect = document.getElementById("year-select") as HTMLSelectElement;
+  const stack = document.querySelector("stack-component");
+  const musicContainer = document.getElementById("music-container");
 
   if (yearSelect) {
-    yearSelect.addEventListener('change', () => {
+    yearSelect.addEventListener("change", () => {
       const year = yearSelect.value;
       if (year && window.trackCards) {
         const filteredCards = window.trackCards.filter(
@@ -166,7 +166,7 @@ const serializedTracks = JSON.stringify(
 
         // Update stack with filtered cards
         if (stack) {
-          stack.setAttribute('cards-data', JSON.stringify(filteredCards));
+          stack.setAttribute("cards-data", JSON.stringify(filteredCards));
         }
 
         // Update desktop view
@@ -220,7 +220,7 @@ const serializedTracks = JSON.stringify(
                 </div>
               `
                 )
-                .join('')}
+                .join("")}
             </div>
           `;
         }

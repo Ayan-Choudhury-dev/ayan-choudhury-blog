@@ -1,12 +1,12 @@
 ---
 // Component Imports
-import FormattedDate from './FormattedDate.astro';
-import { readingTime } from '@lib/utils';
-import type { CollectionEntry } from 'astro:content';
-import Image from 'astro/components/Image.astro';
+import FormattedDate from "./FormattedDate.astro";
+import { readingTime } from "@lib/utils";
+import type { CollectionEntry } from "astro:content";
+import Image from "astro/components/Image.astro";
 
 type Props = {
-  entry: CollectionEntry<'blog'>;
+  entry: CollectionEntry<"blog">;
 };
 
 const { entry } = Astro.props;
@@ -14,14 +14,14 @@ const { entry } = Astro.props;
 
 <div id="header_container">
   {
-    entry.data.cover && 'src' in entry.data.cover && (
+    entry.data.cover && "src" in entry.data.cover && (
       <div id="Cover" class="rounded-t-lg">
         <div id="cover-container">
           <Image
             src={entry.data.cover}
-            quality={'mid'}
+            quality={"mid"}
             format="avif"
-            width={'800'}
+            width={"800"}
             class="motion-safe:animate-fade-up motion-safe:animate-duration-500"
             alt={entry.data.title}
           />

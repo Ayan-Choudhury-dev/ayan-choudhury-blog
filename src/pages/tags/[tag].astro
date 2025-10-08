@@ -1,12 +1,12 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content';
-import PageLayout from '@layouts/PageLayout.astro';
-import Container from '@components/Container.astro';
-import ArrowCard from '@components/ArrowCard.astro';
-import BackToPrev from '@components/BackToPrev.astro';
+import { type CollectionEntry, getCollection } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+import Container from "@components/Container.astro";
+import ArrowCard from "@components/ArrowCard.astro";
+import BackToPrev from "@components/BackToPrev.astro";
 
 export async function getStaticPaths() {
-  const allPosts = (await getCollection('blog'))
+  const allPosts = (await getCollection("blog"))
     .filter((post) => !post.data.draft)
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
@@ -24,7 +24,7 @@ export async function getStaticPaths() {
 }
 
 const params = Astro.params as { tag: string };
-const props = Astro.props as { posts: CollectionEntry<'blog'>[] };
+const props = Astro.props as { posts: CollectionEntry<"blog">[] };
 ---
 
 <PageLayout title={params.tag} description={params.tag}>

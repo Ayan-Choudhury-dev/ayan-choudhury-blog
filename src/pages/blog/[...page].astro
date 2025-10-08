@@ -1,17 +1,17 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content';
-import PageLayout from '@layouts/PageLayout.astro';
-import Container from '@components/Container.astro';
-import Pagination from '@components/Pagination.astro';
-import { SITE } from '@consts';
-import PostCardMini from '@components/PostCardMini.astro';
+import { type CollectionEntry, getCollection } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+import Container from "@components/Container.astro";
+import Pagination from "@components/Pagination.astro";
+import { SITE } from "@consts";
+import PostCardMini from "@components/PostCardMini.astro";
 
 export const post_num = SITE.NUM_POSTS_ON_HOMEPAGE;
 export var display_pagination = true;
 
 type display_pagination = boolean;
 type PaginateFunction = (
-  posts: CollectionEntry<'blog'>[],
+  posts: CollectionEntry<"blog">[],
   options: { pageSize: number }
 ) => any;
 
@@ -20,7 +20,7 @@ export async function getStaticPaths({
 }: {
   paginate: PaginateFunction;
 }) {
-  const posts = (await getCollection('blog'))
+  const posts = (await getCollection("blog"))
     .filter((post) => !post.data.draft)
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
   if (posts.length < post_num) display_pagination = false;
@@ -48,7 +48,7 @@ function generate_pagination_links(
 interface Page {
   total: number;
   currentPage: number;
-  data: CollectionEntry<'blog'>[];
+  data: CollectionEntry<"blog">[];
   url: {
     prev: string;
     next: string;
@@ -62,7 +62,7 @@ const total_page_num = Math.ceil(page.total / post_num);
 const paginationLinks = generate_pagination_links(
   page.currentPage,
   total_page_num,
-  Astro.url.pathname.replace(/\/\d+$/, '')
+  Astro.url.pathname.replace(/\/\d+$/, "")
 );
 ---
 
@@ -80,7 +80,7 @@ const paginationLinks = generate_pagination_links(
     </ul>
 
     <!-- Pagination begins -->
-    <div class={display_pagination ? 'block' : 'hidden'}>
+    <div class={display_pagination ? "block" : "hidden"}>
       <Pagination
         page={page}
         post_num={post_num}

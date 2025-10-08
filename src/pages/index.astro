@@ -1,11 +1,11 @@
 ---
-import { getCollection } from 'astro:content';
-import Container from '@components/Container.astro';
-import PageLayout from '@layouts/PageLayout.astro';
-import PostCardMini from '@components/PostCardMini.astro';
-import Link from '@components/Link.astro';
-import { SITE, HOME, SOCIALS } from '@consts';
-import { Mail } from 'lucide-astro';
+import { getCollection } from "astro:content";
+import Container from "@components/Container.astro";
+import PageLayout from "@layouts/PageLayout.astro";
+import PostCardMini from "@components/PostCardMini.astro";
+import Link from "@components/Link.astro";
+import { SITE, HOME, SOCIALS } from "@consts";
+import { Mail } from "lucide-astro";
 // import ArrowCard from "@components/ArrowCard.astro";
 // import { dateRange } from "@lib/utils";
 // import { ContentSchemaContainsSlugError } from "node_modules/astro/dist/core/errors/errors-data";
@@ -13,7 +13,7 @@ import { Mail } from 'lucide-astro';
 // import { BLOG } from "@consts";
 // import Pagination from "@components/Pagination.astro";
 
-const allPosts = await getCollection('blog');
+const allPosts = await getCollection("blog");
 const totalPosts = allPosts.filter((post) => !post.data.draft).length;
 const showOlderPosts = totalPosts > SITE.NUM_POSTS_ON_HOMEPAGE;
 
@@ -22,12 +22,12 @@ const blog = allPosts
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, SITE.NUM_POSTS_ON_HOMEPAGE);
 
-const projects = (await getCollection('projects'))
+const projects = (await getCollection("projects"))
   .filter((project) => !project.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, SITE.NUM_PROJECTS_ON_HOMEPAGE);
 
-const allwork = (await getCollection('work'))
+const allwork = (await getCollection("work"))
   .sort(
     (a, b) =>
       new Date(b.data.dateStart).valueOf() -
@@ -74,8 +74,8 @@ const allwork = (await getCollection('work'))
         showOlderPosts && (
           <section class="border-y border-gray-600 py-4 text-terracotta-500 flex justify-center">
             <Link
-              href={'/blog/2'}
-              aria-label={'Read older posts'}
+              href={"/blog/2"}
+              aria-label={"Read older posts"}
               underline={false}
             >
               <div class="flex gap-2 w-fit mx-auto">
@@ -173,7 +173,7 @@ const allwork = (await getCollection('work'))
                 >
                   {SOCIAL.NAME}
                 </Link>
-                {'/'}
+                {"/"}
               </li>
             ))
           }

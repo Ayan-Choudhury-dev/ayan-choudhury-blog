@@ -1,10 +1,10 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import { readingTime } from '@lib/utils';
-import Image from 'astro/components/Image.astro';
+import type { CollectionEntry } from "astro:content";
+import { readingTime } from "@lib/utils";
+import Image from "astro/components/Image.astro";
 
 type Props = {
-  nextPost: CollectionEntry<'blog'>;
+  nextPost: CollectionEntry<"blog">;
 };
 
 const { nextPost } = Astro.props;
@@ -23,10 +23,10 @@ const { Content } = await nextPost.render();
       <div class="flex flex-col md:flex-1 md:flex-row  md:h-[240px]">
         <div class="relative  w-full h-full aspect-[16/9] md:aspect-auto overflow-hidden md:p-4">
           <div class="md:rounded-lg overflow-clip h-full">
-            {nextPost.data.cover && 'src' in nextPost.data.cover ? (
+            {nextPost.data.cover && "src" in nextPost.data.cover ? (
               <Image
                 src={nextPost.data.cover}
-                quality={'mid'}
+                quality={"mid"}
                 format="avif"
                 width={800}
                 height={450}
@@ -36,7 +36,7 @@ const { Content } = await nextPost.render();
             ) : (
               <Image
                 src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGdyYWRpZW50fGVufDB8fDB8fHww"
-                quality={'mid'}
+                quality={"mid"}
                 format="avif"
                 width={800}
                 height={450}
