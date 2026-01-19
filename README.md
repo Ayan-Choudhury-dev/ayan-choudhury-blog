@@ -1,6 +1,6 @@
 ## Where I drop fresh updates to my blog
 
-A _simple_ blog built on Astro, Markdoc and Keystatic CMS.
+A _simple_ blog built on Astro, Markdoc and Keystatic CMS hosted on Vercel.
 Regular commits not guaranteed.
 
 ---
@@ -9,9 +9,8 @@ Regular commits not guaranteed.
 
 | Feature                          | Status  |
 | -------------------------------- | ------- |
-| Fix RSS Feed                     | Done ✅ |
+| Fix RSS Feed                     | Pending |
 | Add Bio                          | Pending |
-| Add 'Now Listening'              | Done ✅ |
 | Implement dynamic OpenGraph data | Pending |
 
 ---

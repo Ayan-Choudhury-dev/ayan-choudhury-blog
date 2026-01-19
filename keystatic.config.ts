@@ -22,7 +22,7 @@ export default config({
     posts: collection({
       label: "✍️ Posts",
       entryLayout: "content",
-      columns: ["title", "date"],
+      columns: ["date", "title"],
 
       //Slugfield
       slugField: "title",

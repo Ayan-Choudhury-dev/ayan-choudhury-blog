@@ -1,0 +1,103 @@
+---
+import PageLayout from '@layouts/PageLayout.astro';
+import Container from '@components/Container.astro';
+import { SITE } from '@consts';
+
+const rssUrl = new URL('/rss.xml', Astro.site || Astro.url.origin).toString();
+---
+
+<PageLayout title="Subscribe" description="How to subscribe to Dada's Sketchbook">
+  <Container>
+    <div class="space-y-10">
+      <div class="animate font-semibold text-black dark:text-white">Subscribe</div>
+
+      <div class="space-y-4">
+        <p class="animate">
+          The best way to keep up with my new posts is via RSS. It allows you to get updates
+          delivered directly to you without any algorithms getting in the way.
+        </p>
+
+        <div
+          class="animate border border-black/15 dark:border-white/20 rounded-lg p-4 bg-black/5 dark:bg-white/5 space-y-2"
+        >
+          <p class="text-sm font-semibold">Your Feed URL:</p>
+          <div class="flex gap-2 items-center">
+            <code
+              class="flex-1 bg-white/50 dark:bg-black/50 p-2 rounded text-sm font-mono overflow-x-auto whitespace-nowrap"
+            >
+              {rssUrl}
+            </code>
+            <button
+              id="copy-rss"
+              class="px-3 py-2 bg-black dark:bg-white text-white dark:text-black text-sm font-medium rounded hover:opacity-80 transition-opacity"
+              aria-label="Copy RSS URL"
+            >
+              Copy
+            </button>
+          </div>
+        </div>
+
+        <div class="animate space-y-2">
+          <h3 class="font-semibold text-black dark:text-white">How do I use this?</h3>
+          <p class="">
+            If you’re using Telegram, there’s a nifty way:
+            <br />
+            ✦ Start a new chat with the RSS to Telegram bot — @rss2tg_bot ✦ Copy and paste this link
+            in the chat: https://blog.ayanchoudhury.in/rss
+            <br />
+            ✦ On successfully adding the link, the bot starts fetching the feed.
+            <br />
+            👏 That’s it! You’re subscribed! No mailer lists, no spam, no phishing!
+            <br />
+            <br />
+          </p>
+          <p>If you need an RSS reader app. Here are some excellent options:</p>
+          <ul class="list-disc list-inside space-y-1 ml-2">
+            <li>
+              <a
+                href="https://netnewswire.com/"
+                target="_blank"
+                class="underline hover:text-black dark:hover:text-white transition-colors"
+                >NetNewsWire</a
+              > (Mac/iOS)
+            </li>
+            <li>
+              <a
+                href="https://feedly.com/"
+                target="_blank"
+                class="underline hover:text-black dark:hover:text-white transition-colors">Feedly</a
+              > (Web/Mobile)
+            </li>
+            <li>
+              <a
+                href="https://reederapp.com/"
+                target="_blank"
+                class="underline hover:text-black dark:hover:text-white transition-colors">Reeder</a
+              > (Mac/iOS)
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </Container>
+</PageLayout>
+
+<script>
+  const copyButton = document.getElementById('copy-rss');
+  const codeElement = copyButton?.previousElementSibling;
+
+  copyButton?.addEventListener('click', async () => {
+    if (codeElement && codeElement.textContent) {
+      try {
+        await navigator.clipboard.writeText(codeElement.textContent.trim());
+        const originalText = copyButton.textContent;
+        copyButton.textContent = 'Copied!';
+        setTimeout(() => {
+          copyButton.textContent = originalText;
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy options', err);
+      }
+    }
+  });
+</script>

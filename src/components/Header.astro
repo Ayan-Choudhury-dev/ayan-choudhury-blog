@@ -1,7 +1,7 @@
 ---
-import Container from "@components/Container.astro";
-import Link from "@components/Link.astro";
-import { SITE } from "@consts";
+import Container from '@components/Container.astro';
+import Link from '@components/Link.astro';
+import { SITE } from '@consts';
 
 // import tippy from 'tippy.js';
 ---
@@ -23,13 +23,13 @@ import { SITE } from "@consts";
       </Link>
 
       <div class="flex flex-wrap gap-1 items-center">
-        <!-- Music icon -->
+        <!-- Music icon hidden-->
         <button
           id="Music-link-button"
           aria-label="Music Icon"
-          class="group size-8 flex items-center justify-center rounded-full data-[active=true]:bg-black/10 dark:data-[active=true]:bg-white/10 data-[active=true]:cursor-default"
+          class="hidden group size-8 flex items-center justify-center rounded-full data-[active=true]:bg-black/10 dark:data-[active=true]:bg-white/10 data-[active=true]:cursor-default"
           data-tippy-content="Now I'm listening to"
-          data-active={Astro.url.pathname === "/music"}
+          data-active={Astro.url.pathname === '/music'}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -49,11 +49,11 @@ import { SITE } from "@consts";
           </svg>
         </button>
 
-        <!-- Archive icon -->
+        <!-- Archive icon hidden -->
         <button
           id="Blog-archive-link-button"
           aria-label="Archive Icon"
-          class="group size-8 flex items-center justify-center rounded-full"
+          class="hidden group size-8 flex items-center justify-center rounded-full"
           data-tippy-content="Go to Blog Archive"
         >
           <svg
@@ -76,7 +76,7 @@ import { SITE } from "@consts";
           </svg>
         </button>
 
-        <!-- Dark and light mode buttons -->
+        <!-- Dark and light mode buttons hidden-->
         <button
           id="light-theme-button"
           aria-label="Light theme"
@@ -128,23 +128,26 @@ import { SITE } from "@consts";
         </button>
 
         <!-- RSS Button -->
-        <button
-          id="RSS-link-button"
+        <!-- RSS Button -->
+        <a
+          href="/subscribe"
+          id="rss-subscribe-link"
           aria-label="RSS Icon"
-          class="group size-8 flex items-center justify-center rounded-full"
+          class="group size-8 flex items-center justify-center rounded-xl w-full bg-salmon_dark/80 px-4 gap-1"
           data-tippy-content="Open RSS Feed"
         >
+          <span class="text-xs font-bold text-white">SUBSCRIBE</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
+            width="15"
+            height="15"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            stroke-width="1.5"
+            stroke-width="3"
             stroke-linecap="round"
             stroke-linejoin="round"
-            class="group-hover:stroke-black group-hover:dark:stroke-white transition-colors duration-300 ease-in-out"
+            class="group-hover:stroke-black stroke-white group-hover:dark:stroke-white transition-colors duration-300 ease-in-out"
           >
             <path
               stroke-linecap="round"
@@ -152,40 +155,40 @@ import { SITE } from "@consts";
               d="M12.75 19.5v-.75a7.5 7.5 0 0 0-7.5-7.5H4.5m0-6.75h.75c7.87 0 14.25 6.38 14.25 14.25v.75M6 18.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
             ></path>
           </svg>
-        </button>
+        </a>
       </div>
     </div>
   </Container>
 </header>
 
 <script>
-  import tippy from "tippy.js";
-  import "tippy.js/dist/tippy.css";
+  import tippy from 'tippy.js';
+  import 'tippy.js/dist/tippy.css';
 
   const initializeHeader = () => {
-    tippy("[data-tippy-content]");
+    tippy('[data-tippy-content]');
 
     const SCROLL_THRESHOLD = 100;
     const SCROLL_CLASSES = [
-      "top-4",
-      "rounded-2xl",
-      "border-white/20",
-      "dark:border-white/10",
-      "shadow-lg",
-      "z-50",
-      "py-2",
-      "w-[80%]",
-      "md:w-1/3",
-      "sm:w-1/2",
+      'top-4',
+      'rounded-2xl',
+      'border-white/20',
+      'dark:border-white/10',
+      'shadow-lg',
+      'z-50',
+      'py-2',
+      'w-[80%]',
+      'md:w-1/3',
+      'sm:w-1/2',
     ];
 
-    const header = document.getElementById("main-header");
-    const container = header?.querySelector(".max-w-2xl");
-    const tagline = document.getElementById("tagline");
-    const siteName = document.getElementById("site-name");
+    const header = document.getElementById('main-header');
+    const container = header?.querySelector('.max-w-2xl');
+    const tagline = document.getElementById('tagline');
+    const siteName = document.getElementById('site-name');
 
     // Add initial classes
-    header?.classList.add("py-5", "top-0");
+    header?.classList.add('py-5', 'top-0');
 
     // Function to handle scroll state
     const handleScroll = () => {
@@ -193,18 +196,18 @@ import { SITE } from "@consts";
 
       if (currentScroll > SCROLL_THRESHOLD) {
         header?.classList.add(...SCROLL_CLASSES);
-        header?.classList.remove("py-5", "top-0", "w-full");
-        container?.classList.add("max-w-xl");
-        tagline?.classList.add("hidden", "h-0", "overflow-hidden");
-        siteName?.classList.remove("dark:text-salmon_dark", "text-salmon_light");
-        siteName?.classList.add("text-white");
+        header?.classList.remove('py-5', 'top-0', 'w-full');
+        container?.classList.add('max-w-xl');
+        tagline?.classList.add('hidden', 'h-0', 'overflow-hidden');
+        siteName?.classList.remove('dark:text-salmon_dark', 'text-salmon_light');
+        siteName?.classList.add('text-white');
       } else {
         header?.classList.remove(...SCROLL_CLASSES);
-        header?.classList.add("py-5", "top-0", "w-full");
-        container?.classList.remove("max-w-xl");
-        tagline?.classList.remove("hidden", "h-0", "overflow-hidden");
-        siteName?.classList.add("dark:text-salmon_dark", "text-salmon_light");
-        siteName?.classList.remove("text-white");
+        header?.classList.add('py-5', 'top-0', 'w-full');
+        container?.classList.remove('max-w-xl');
+        tagline?.classList.remove('hidden', 'h-0', 'overflow-hidden');
+        siteName?.classList.add('dark:text-salmon_dark', 'text-salmon_light');
+        siteName?.classList.remove('text-white');
       }
     };
 
@@ -212,23 +215,14 @@ import { SITE } from "@consts";
     handleScroll();
 
     // Add scroll event listener
-    window.addEventListener("scroll", handleScroll);
-
-    // Handle site name click
-    const siteNameLink = document.querySelector("a[href=\"/\"]");
-    siteNameLink?.addEventListener("click", (e) => {
-      if (window.location.pathname === "/") {
-        e.preventDefault();
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }
-    });
+    window.addEventListener('scroll', handleScroll);
 
     // Handle music button click
-    const musicButton = document.getElementById("Music-link-button");
-    musicButton?.addEventListener("click", () => {
+    const musicButton = document.getElementById('Music-link-button');
+    musicButton?.addEventListener('click', () => {
       // Only navigate if not already on music page
-      if (window.location.pathname !== "/music") {
-        window.location.href = "/music";
+      if (window.location.pathname !== '/music') {
+        window.location.href = '/music';
       }
     });
   };
@@ -237,7 +231,7 @@ import { SITE } from "@consts";
   initializeHeader();
 
   // Re-initialize on view transitions
-  document.addEventListener("astro:page-load", initializeHeader);
+  document.addEventListener('astro:page-load', initializeHeader);
 </script>
 
 <style>
