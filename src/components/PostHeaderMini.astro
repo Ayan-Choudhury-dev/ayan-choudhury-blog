@@ -10,34 +10,6 @@ type Props = {
 };
 
 const { entry } = Astro.props;
-
-import fs from 'node:fs';
-import path from 'node:path';
-
-let useOptimizedImage = true;
-const LIMIT = 4 * 1024 * 1024; // 4MB
-
-if (entry.data.cover && typeof entry.data.cover === 'object' && 'src' in entry.data.cover) {
-  try {
-    const src = entry.data.cover.src;
-    let filePath = '';
-
-    if (src.startsWith('/@fs')) {
-      filePath = src.replace('/@fs', '').split('?')[0];
-    } else if (src.startsWith('/src')) {
-      filePath = path.join(process.cwd(), src.split('?')[0]);
-    } else if (src.startsWith('/') && !src.startsWith('http')) {
-      filePath = path.join(process.cwd(), src.split('?')[0]);
-    }
-
-    if (filePath && fs.existsSync(filePath)) {
-      const stats = fs.statSync(filePath);
-      useOptimizedImage = stats.size < LIMIT;
-    }
-  } catch (e) {
-    useOptimizedImage = true;
-  }
-}
 ---
 
 <div id="header_container">
@@ -45,22 +17,12 @@ if (entry.data.cover && typeof entry.data.cover === 'object' && 'src' in entry.d
     entry.data.cover && 'src' in entry.data.cover && (
       <div id="Cover" class="rounded-t-lg">
         <div id="cover-container">
-          {useOptimizedImage ? (
-            <Image
-              src={entry.data.cover}
-              quality={'mid'}
-              width={'800'}
-              class="motion-safe:animate-fade-up motion-safe:animate-duration-500"
-              alt={entry.data.title}
-            />
-          ) : (
-            <img
-              src={entry.data.cover.src}
-              width="800"
-              class="motion-safe:animate-fade-up motion-safe:animate-duration-500 w-full h-auto object-cover"
-              alt={entry.data.title}
-            />
-          )}
+          <img
+            src={entry.data.cover.src}
+            width="800"
+            class="motion-safe:animate-fade-up motion-safe:animate-duration-500 w-full h-auto object-cover"
+            alt={entry.data.title}
+          />
         </div>
       </div>
     )
