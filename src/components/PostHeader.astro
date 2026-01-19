@@ -1,12 +1,12 @@
 ---
 // Component Imports
-import FormattedDate from "./FormattedDate.astro";
-import { readingTime } from "@lib/utils";
-import type { CollectionEntry } from "astro:content";
-import Image from "astro/components/Image.astro";
+import FormattedDate from './FormattedDate.astro';
+import { readingTime } from '@lib/utils';
+import type { CollectionEntry } from 'astro:content';
+import Image from 'astro/components/Image.astro';
 
 type Props = {
-  entry: CollectionEntry<"blog">;
+  entry: CollectionEntry<'blog'>;
 };
 
 const { entry } = Astro.props;
@@ -14,15 +14,14 @@ const { entry } = Astro.props;
 
 <div id="header_container">
   {
-    entry.data.cover && "src" in entry.data.cover && (
+    entry.data.cover && 'src' in entry.data.cover && (
       <div id="Cover" class="rounded-t-lg">
         <div id="cover-container">
           <Image
             src={entry.data.cover}
-            quality={"mid"}
-            format="avif"
-            width={"800"}
-            class="motion-safe:animate-fade-up motion-safe:animate-duration-500"
+            quality={'mid'}
+            width={'800'}
+            class="motion-safe:animate-fade-up motion-safe:animate-duration-500 rounded-lg"
             alt={entry.data.title}
           />
         </div>
@@ -30,7 +29,7 @@ const { entry } = Astro.props;
     )
   }
 
-  <div id="meta" class=" px-4 pt-4 md:pt-16 ">
+  <div id="meta" class="px-4 pt-4 md:pt-8">
     <div
       class="dark:text-terracotta-500 mb-4 text-black child:font-serif child:font-normal text-2xl"
     >
@@ -44,7 +43,7 @@ const { entry } = Astro.props;
   </div> -->
 
     <div
-      class="animate flex items-center gap-1.5 dark:text-gray-400 border-y border-gray-500 py-1"
+      class="animate flex items-center gap-3 text-black/60 dark:text-white/60 border-b border-dashed border-black/10 dark:border-white/10 pb-4"
     >
       <div class="font-base text-sm">
         <FormattedDate date={entry.data.date} />
@@ -83,7 +82,7 @@ const { entry } = Astro.props;
         <Image
           src={entry.data.cover}
           quality={'mid'}
-          format="avif"
+
           width={'800'}
           class="rounded-lg"
           alt={entry.data.title}
