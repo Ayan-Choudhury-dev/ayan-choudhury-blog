@@ -87,11 +87,7 @@ interface Page {
 const { page } = Astro.props as { page: Page };
 const total_page_num = Math.ceil(page.total / post_num);
 
-const paginationLinks = generate_pagination_links(
-  page.currentPage,
-  total_page_num,
-  Astro.url.pathname.replace(/\/\d+$/, '')
-);
+const paginationLinks = generate_pagination_links(page.currentPage, total_page_num, '/blog');
 ---
 
 <PageLayout title="Blog" description="Description">

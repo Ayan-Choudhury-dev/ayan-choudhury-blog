@@ -184,9 +184,17 @@ import { SITE } from '@consts';
     ];
 
     const header = document.getElementById('main-header');
-    const container = header?.querySelector('.max-w-2xl');
+    // Select the first element child (the Container's div) instead of relying on a specific class that might get merged away
+    const container = header?.firstElementChild;
     const tagline = document.getElementById('tagline');
     const siteName = document.getElementById('site-name');
+
+    console.log('Header initializing:', { header, container });
+
+    if (!header || !container) {
+      console.warn('Header elements not found!');
+      return;
+    }
 
     // Add initial classes
     header?.classList.add('py-5', 'top-0');
