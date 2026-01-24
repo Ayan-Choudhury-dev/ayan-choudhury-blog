@@ -37,8 +37,6 @@ a {
 }
 
 header {
-  /* @apply items-center; */
-  /* @apply flex mt-10 w-1/2 mx-auto rounded-[10em]; */
   @apply fixed top-0 left-0 right-0 z-50 w-full;
   @apply bg-stone-100/75 dark:bg-stone-900/25;
   @apply backdrop-blur-xl;

@@ -1,6 +1,4 @@
 ---
-import '../styles/global.css';
-
 // OLD FONTS
 import '@fontsource/inter/latin-400.css';
 import '@fontsource/inter/latin-600.css';
@@ -69,6 +67,8 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(ogImage, Astro.url)} />
 
+<link rel="stylesheet" href="../src/styles/global.css" />
+
 <ViewTransitions />
 
 <script>
@@ -108,11 +108,6 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
     const rssbutton = document.getElementById('RSS-link-button');
     rssbutton?.addEventListener('click', () => {
       window.open('rss.xml', '_blank');
-    });
-
-    const archivebutton = document.getElementById('Blog-archive-link-button');
-    archivebutton?.addEventListener('click', () => {
-      window.open('https://blogarchive.ayanchoudhury.in/', '_blank');
     });
 
     // const systemThemeButton = document.getElementById("system-theme-button");
