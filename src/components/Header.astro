@@ -16,7 +16,10 @@ import { SITE } from '@consts';
         <div class="font-semibold">
           <span class="dark:text-salmon_dark text-salmon_light" id="site-name">{SITE.NAME}</span>
           <br />
-          <span id="tagline" class="text-sm font-normal transition-all duration-500 ease-in-out">
+          <span
+            id="tagline"
+            class="text-sm font-normal transition-all duration-500 ease-in-out text-slate-300"
+          >
             {SITE.TAGLINE}
           </span>
         </div>
@@ -196,7 +199,10 @@ import { SITE } from '@consts';
       return;
     }
 
-    // Add initial classes
+    // Check if this is first load (transitions should be suppressed)
+    const isFirstLoad = document.documentElement.hasAttribute('data-first-load');
+
+    // Add initial classes synchronously before any transitions
     header?.classList.add('py-5', 'top-0');
 
     // Function to handle scroll state
@@ -204,19 +210,43 @@ import { SITE } from '@consts';
       const currentScroll = window.pageYOffset;
 
       if (currentScroll > SCROLL_THRESHOLD) {
+        // Temporarily disable transitions if first load
+        if (isFirstLoad) {
+          header.style.transition = 'none';
+          container.style.transition = 'none';
+        }
         header?.classList.add(...SCROLL_CLASSES);
         header?.classList.remove('py-5', 'top-0', 'w-full');
         container?.classList.add('max-w-xl');
         tagline?.classList.add('hidden', 'h-0', 'overflow-hidden');
         siteName?.classList.remove('dark:text-salmon_dark', 'text-salmon_light');
         siteName?.classList.add('text-white');
+        // Re-enable transitions after a frame if first load
+        if (isFirstLoad) {
+          requestAnimationFrame(function () {
+            header.style.transition = '';
+            container.style.transition = '';
+          });
+        }
       } else {
+        // Temporarily disable transitions if first load
+        if (isFirstLoad) {
+          header.style.transition = 'none';
+          container.style.transition = 'none';
+        }
         header?.classList.remove(...SCROLL_CLASSES);
         header?.classList.add('py-5', 'top-0', 'w-full');
         container?.classList.remove('max-w-xl');
         tagline?.classList.remove('hidden', 'h-0', 'overflow-hidden');
         siteName?.classList.add('dark:text-salmon_dark', 'text-salmon_light');
         siteName?.classList.remove('text-white');
+        // Re-enable transitions after a frame if first load
+        if (isFirstLoad) {
+          requestAnimationFrame(function () {
+            header.style.transition = '';
+            container.style.transition = '';
+          });
+        }
       }
     };
 

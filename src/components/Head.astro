@@ -34,6 +34,16 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
     document.documentElement.setAttribute('data-first-load', 'true');
   })();
 </script>
+<style is:inline>
+  /* Critical CSS: prevent link color flash */
+  a {
+    color: #e5775e;
+    word-break: break-word;
+  }
+  a:visited {
+    color: #e5775e;
+  }
+</style>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <!-- <link rel="icon" type="image/svg+xml" href="/favicon-dark.svg" media="(prefers-color-scheme: dark)">
 <link rel="icon" type="image/svg+xml" href="/favicon-light.svg" media="(prefers-color-scheme: light)">
