@@ -21,6 +21,18 @@ const { title, description, image } = Astro.props;
 const ogImage = image || generateOGImagePath(Astro.url.pathname);
 ---
 
+<!-- THEME: Absolute first after <head>; executes before any paint to prevent flash -->
+<script is:inline>
+  // Execute immediately to prevent theme flash
+  (function () {
+    const theme =
+      localStorage.getItem('theme') ||
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    if (theme === 'dark') document.documentElement.classList.add('dark');
+    document.documentElement.dataset.theme = theme;
+  })();
+</script>
+
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <!-- DNS prefetch and preconnect for font CDN -->
@@ -41,17 +53,7 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
   type="font/woff2"
   crossorigin="anonymous"
 />
-<script is:inline>
-  (function () {
-    var theme = localStorage.theme;
-    var dark =
-      theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
-    if (dark) document.documentElement.classList.add('dark');
-    else document.documentElement.classList.remove('dark');
-    // Set flag for React components to prevent animations on first load
-    document.documentElement.setAttribute('data-first-load', 'true');
-  })();
-</script>
+
 <style is:inline>
   /* Critical CSS: prevent link color flash */
   a {
@@ -60,6 +62,24 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
   }
   a:visited {
     color: #e5775e;
+  }
+
+  /* PREVENT ANIMATE elements from showing before JS kicks in */
+  .animate {
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out;
+  }
+  .animate.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Hard-prevent any transitions during the DOM swap itself */
+  html.switching * {
+    transition: none !important;
   }
 
   /* Critical CSS: prevent header FOUC */
@@ -124,12 +144,17 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
 <ViewTransitions />
 
 <script>
-  import type { TransitionBeforeSwapEvent } from 'astro:transitions/client';
-  document.addEventListener('astro:before-swap', (e) =>
-    [
-      ...(e as TransitionBeforeSwapEvent).newDocument.head.querySelectorAll('link[as="font"]'),
-    ].forEach((link) => link.remove())
-  );
+  // Ensure the dark class is carried over before page swap, and remove font links
+  document.addEventListener('astro:before-swap', (e) => {
+    // Carry over theme class (FOUC fix on navigation)
+    const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+    if (theme === 'dark') {
+      e.newDocument.documentElement.classList.add('dark');
+    }
+    // Remove font preload links from new head
+    const fonts = e.newDocument.head.querySelectorAll('link[as="font"]');
+    fonts.forEach((link) => link.remove());
+  });
 </script>
 
 <script is:inline>
@@ -251,7 +276,10 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
     document.addEventListener('scroll', onScroll);
   }
 
-  document.addEventListener('DOMContentLoaded', () => initFirstLoad());
-  document.addEventListener('astro:after-swap', () => initFirstLoad());
+  // Use astro:page-load instead of DOMContentLoaded or astro:after-swap
+  document.addEventListener('astro:page-load', () => {
+    initFirstLoad();
+  });
+
   preloadTheme();
 </script>
