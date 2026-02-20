@@ -55,14 +55,14 @@ if (entry.data.cover && typeof entry.data.cover === 'object' && 'src' in entry.d
               src={entry.data.cover}
               quality={'mid'}
               width={'800'}
-              class="motion-safe:animate-fade-up motion-safe:animate-duration-500 rounded-t-lg w-full h-auto object-cover"
+              class=" rounded-t-lg w-full h-auto object-cover"
               alt={entry.data.title}
             />
           ) : (
             <img
               src={entry.data.cover.src}
               width="800"
-              class="motion-safe:animate-fade-up motion-safe:animate-duration-500 rounded-t-lg w-full h-auto object-cover"
+              class=" rounded-t-lg w-full h-auto object-cover"
               alt={entry.data.title}
             />
           )}
@@ -85,13 +85,13 @@ if (entry.data.cover && typeof entry.data.cover === 'object' && 'src' in entry.d
   </div> -->
 
     <div
-      class="animate flex items-center gap-3 text-black/60 dark:text-white/60 border-b border-dashed border-black/10 dark:border-white/10 pb-4"
+      class="flex items-center gap-3 text-black/60 dark:text-white/60 border-b border-dashed border-black/10 dark:border-white/10 pb-4"
     >
       <div class="font-base text-sm">
         <FormattedDate date={entry.data.date} />
       </div>
       &bull;
-      <div class="font-base text-sm animate">
+      <div class="font-base text-sm">
         {readingTime(entry.body)}
       </div>
     </div>

@@ -1,21 +1,23 @@
 ---
 // Component Imports
-import type { CollectionEntry } from "astro:content";
-import PostHeaderMini from "./PostHeaderMini.astro";
-import TagLinks from "./TagLinks.astro";
+import type { CollectionEntry } from 'astro:content';
+import PostHeaderMini from './PostHeaderMini.astro';
+import TagLinks from './TagLinks.astro';
 
 type Props = {
-  entry: CollectionEntry<"blog">;
+  entry: CollectionEntry<'blog'>;
 };
 
 const { entry } = Astro.props;
 const { Content } = await entry.render();
 ---
 
-<div id="Postcard" class="mb-2 shadow-zinc-950 shadow-2xl overflow-hidden dark:bg-zinc-800 rounded-2xl border-2 dark:border-zinc-900">
+<div
+  id="Postcard"
+  class="animate mb-2 shadow-zinc-950 shadow-2xl overflow-hidden dark:bg-zinc-800 rounded-2xl border-2 dark:border-zinc-900"
+>
   <PostHeaderMini entry={entry} />
   <article class="px-4 sm:px-[50px] mb-8 lg:mb-10">
-    
     <!-- Concatinated content -->
     <div class="prose dark:prose-invert max-w-none line-clamp-6">
       <Content />
@@ -23,9 +25,11 @@ const { Content } = await entry.render();
 
     <!-- <TagLinks post={entry} /> -->
 
-     <button onclick={`window.location.href = '/${entry.collection}/${entry.slug}'`} class="animate mt-8 px-4 py-1 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:text-terracotta-500 dark:hover:text-terracotta-400 transition-colors">
+    <button
+      onclick={`window.location.href = '/${entry.collection}/${entry.slug}'`}
+      class="animate mt-8 px-4 py-1 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-md hover:text-terracotta-500 dark:hover:text-terracotta-400 transition-colors"
+    >
       Continue reading
-     </button>
-
+    </button>
   </article>
 </div>
