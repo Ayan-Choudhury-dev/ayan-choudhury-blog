@@ -78,46 +78,7 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
     preloadTheme();
     onScroll();
     animate();
-
-    const backToTop = document.getElementById('back-to-top');
-    backToTop?.addEventListener('click', (event) => scrollToTop(event));
-
-    const backToPrev = document.getElementById('back-to-prev');
-    backToPrev?.addEventListener('click', () => window.history.back());
-
-    // Light mode WIP
-    // const lightThemeButton = document.getElementById("light-theme-button");
-    // lightThemeButton?.addEventListener("click", () => {
-    //   localStorage.setItem("theme", "light");
-    //   toggleTheme(false);
-    // });
-
-    const darkThemeButton = document.getElementById('dark-theme-button');
-    darkThemeButton?.addEventListener('click', () => {
-      localStorage.setItem('theme', 'dark');
-      toggleTheme(true);
-    });
-
-    const rssbutton = document.getElementById('RSS-link-button');
-    rssbutton?.addEventListener('click', () => {
-      window.open('rss.xml', '_blank');
-    });
-
-    // const systemThemeButton = document.getElementById("system-theme-button");
-    // systemThemeButton?.addEventListener("click", () => {
-    //   localStorage.setItem("theme", "system");
-    //   toggleTheme(window.matchMedia("(prefers-color-scheme: dark)").matches);
-    // });
-
-    // window.matchMedia("(prefers-color-scheme: dark)")
-    //   .addEventListener("change", event => {
-    //     if (localStorage.theme === "system") {
-    //       toggleTheme(event.matches);
-    //     }
-    //   }
-    // );
-
-    document.addEventListener('scroll', onScroll);
+    setupEventListeners();
   }
 
   function animate() {
@@ -192,7 +153,41 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
     }
   }
 
-  document.addEventListener('DOMContentLoaded', () => init());
+  function initFirstLoad() {
+    document.documentElement.classList.add('no-entrance-transition');
+    preloadTheme();
+    onScroll();
+    document.querySelectorAll('.animate').forEach(function (el) {
+      el.classList.add('show');
+    });
+    setupEventListeners();
+    requestAnimationFrame(function () {
+      document.documentElement.classList.remove('no-entrance-transition');
+    });
+  }
+
+  function setupEventListeners() {
+    const backToTop = document.getElementById('back-to-top');
+    backToTop?.addEventListener('click', (event) => scrollToTop(event));
+
+    const backToPrev = document.getElementById('back-to-prev');
+    backToPrev?.addEventListener('click', () => window.history.back());
+
+    const darkThemeButton = document.getElementById('dark-theme-button');
+    darkThemeButton?.addEventListener('click', () => {
+      localStorage.setItem('theme', 'dark');
+      toggleTheme(true);
+    });
+
+    const rssbutton = document.getElementById('RSS-link-button');
+    rssbutton?.addEventListener('click', () => {
+      window.open('rss.xml', '_blank');
+    });
+
+    document.addEventListener('scroll', onScroll);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => initFirstLoad());
   document.addEventListener('astro:after-swap', () => init());
   preloadTheme();
 </script>
