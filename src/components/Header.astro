@@ -236,8 +236,13 @@ import { SITE } from '@consts';
     });
   };
 
-  // Initialize on page load
-  initializeHeader();
+  // Wait for DOMContentLoaded to ensure no-entrance-transition is applied first
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeHeader);
+  } else {
+    // DOM already loaded, initialize immediately
+    initializeHeader();
+  }
 
   // Re-initialize on view transitions
   document.addEventListener('astro:page-load', initializeHeader);

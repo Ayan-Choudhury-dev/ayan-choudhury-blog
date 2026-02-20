@@ -138,10 +138,17 @@ article {
   @apply opacity-100 translate-y-0;
 }
 
-/* Prevent FOUC on first load: show .animate in final state with no transition */
+/* Prevent FOUC on first load: suppress all transitions globally */
+html.no-entrance-transition *,
+html.no-entrance-transition *::before,
+html.no-entrance-transition *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* Show .animate in final state with no transition */
 html.no-entrance-transition .animate {
   @apply opacity-100 translate-y-0;
-  transition: none !important;
 }
 
 html #back-to-top {

@@ -77,6 +77,23 @@ export default function Stack({
 }: StackProps) {
   // Initialize cards state with provided data
   const [cards, setCards] = useState(cardsData);
+  // Check if this is first load to prevent animation FOUC
+  const [isFirstLoad, setIsFirstLoad] = useState(() => {
+    if (typeof document !== 'undefined') {
+      return document.documentElement.hasAttribute('data-first-load');
+    }
+    return false;
+  });
+
+  // Remove first-load flag after component mounts
+  useEffect(() => {
+    if (isFirstLoad) {
+      // Wait a frame to ensure initial render is complete
+      requestAnimationFrame(() => {
+        setIsFirstLoad(false);
+      });
+    }
+  }, [isFirstLoad]);
 
   // Function to move a card to the back of the stack
   const sendToBack = (id: number) => {
@@ -130,12 +147,16 @@ export default function Stack({
                   transformOrigin: "90% 90%",
                 }}
                 initial={false}
-                transition={{
-                  type: "spring",
-                  stiffness: animationConfig.stiffness,
-                  damping: animationConfig.damping,
-                  bounce: 20,
-                }}
+                transition={
+                  isFirstLoad
+                    ? { duration: 0 }
+                    : {
+                        type: "spring",
+                        stiffness: animationConfig.stiffness,
+                        damping: animationConfig.damping,
+                        bounce: 20,
+                      }
+                }
                 style={{
                   width: cardDimensions.width,
                   height: cardDimensions.height,

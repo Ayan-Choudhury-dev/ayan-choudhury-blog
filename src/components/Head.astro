@@ -30,6 +30,8 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
       theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
     if (dark) document.documentElement.classList.add('dark');
     else document.documentElement.classList.remove('dark');
+    // Set flag for React components to prevent animations on first load
+    document.documentElement.setAttribute('data-first-load', 'true');
   })();
 </script>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -161,8 +163,13 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
       el.classList.add('show');
     });
     setupEventListeners();
+    // Wait for next frame to ensure all styles are applied, then remove transition suppression
     requestAnimationFrame(function () {
-      document.documentElement.classList.remove('no-entrance-transition');
+      requestAnimationFrame(function () {
+        document.documentElement.classList.remove('no-entrance-transition');
+        // Remove first-load flag to enable animations for React components
+        document.documentElement.removeAttribute('data-first-load');
+      });
     });
   }
 
