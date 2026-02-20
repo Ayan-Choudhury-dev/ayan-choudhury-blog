@@ -188,7 +188,7 @@ import { SITE } from '@consts';
 
     const header = document.getElementById('main-header');
     // Select the first element child (the Container's div) instead of relying on a specific class that might get merged away
-    const container = header?.firstElementChild;
+    const container = header?.firstElementChild as HTMLElement | null;
     const tagline = document.getElementById('tagline');
     const siteName = document.getElementById('site-name');
 
