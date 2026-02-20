@@ -23,6 +23,15 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
+<script is:inline>
+  (function () {
+    var theme = localStorage.theme;
+    var dark =
+      theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if (dark) document.documentElement.classList.add('dark');
+    else document.documentElement.classList.remove('dark');
+  })();
+</script>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <!-- <link rel="icon" type="image/svg+xml" href="/favicon-dark.svg" media="(prefers-color-scheme: dark)">
 <link rel="icon" type="image/svg+xml" href="/favicon-light.svg" media="(prefers-color-scheme: light)">
@@ -52,8 +61,6 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
 <meta property="twitter:title" content={title} />
 <meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(ogImage, Astro.url)} />
-
-<link rel="stylesheet" href="../src/styles/global.css" />
 
 <ViewTransitions />
 
