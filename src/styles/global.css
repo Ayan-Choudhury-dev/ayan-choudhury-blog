@@ -4,10 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@view-transition {
-  navigation: auto;
-}
-
 @font-face {
   font-family: 'Inter Variable';
   font-style: normal;
