@@ -76,11 +76,11 @@ import { SITE } from '@consts';
           </svg>
         </button>
 
-        <!-- Dark and light mode buttons hidden-->
+        <!-- Theme toggle buttons (visibility controlled by JS in Head.astro) -->
         <button
           id="light-theme-button"
           aria-label="Light theme"
-          class="group size-8 flex items-center justify-center rounded-full opacity-40 hidden"
+          class="group size-8 items-center justify-center rounded-full theme-toggle-btn hidden"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -109,7 +109,7 @@ import { SITE } from '@consts';
         <button
           id="dark-theme-button"
           aria-label="Dark theme"
-          class="group size-8 flex items-center justify-center rounded-full hidden"
+          class="group size-8 items-center justify-center rounded-full theme-toggle-btn hidden"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
