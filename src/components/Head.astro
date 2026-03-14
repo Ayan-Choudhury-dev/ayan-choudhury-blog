@@ -226,9 +226,34 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
     }
   }
 
+  function updateThemeButtons() {
+    var isDark = document.documentElement.classList.contains('dark');
+    var lightBtn = document.getElementById('light-theme-button');
+    var darkBtn = document.getElementById('dark-theme-button');
+    if (lightBtn) {
+      if (isDark) {
+        lightBtn.classList.remove('hidden');
+        lightBtn.classList.add('flex');
+      } else {
+        lightBtn.classList.add('hidden');
+        lightBtn.classList.remove('flex');
+      }
+    }
+    if (darkBtn) {
+      if (isDark) {
+        darkBtn.classList.add('hidden');
+        darkBtn.classList.remove('flex');
+      } else {
+        darkBtn.classList.remove('hidden');
+        darkBtn.classList.add('flex');
+      }
+    }
+  }
+
   function initFirstLoad() {
     document.documentElement.classList.add('no-entrance-transition');
     preloadTheme();
+    updateThemeButtons();
     onScroll();
     document.querySelectorAll('.animate').forEach(function (el) {
       el.classList.add('show');
@@ -251,10 +276,18 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
     const backToPrev = document.getElementById('back-to-prev');
     backToPrev?.addEventListener('click', () => window.history.back());
 
-    const darkThemeButton = document.getElementById('dark-theme-button');
-    darkThemeButton?.addEventListener('click', () => {
+    var darkThemeButton = document.getElementById('dark-theme-button');
+    darkThemeButton?.addEventListener('click', function () {
       localStorage.setItem('theme', 'dark');
       toggleTheme(true);
+      updateThemeButtons();
+    });
+
+    var lightThemeButton = document.getElementById('light-theme-button');
+    lightThemeButton?.addEventListener('click', function () {
+      localStorage.setItem('theme', 'light');
+      toggleTheme(false);
+      updateThemeButtons();
     });
 
     const rssbutton = document.getElementById('RSS-link-button');
@@ -272,4 +305,5 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
   });
 
   preloadTheme();
+  updateThemeButtons();
 </script>
