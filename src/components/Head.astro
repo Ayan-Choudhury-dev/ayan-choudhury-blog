@@ -25,9 +25,7 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
 <script is:inline>
   // Execute immediately to prevent theme flash
   (function () {
-    const theme =
-      localStorage.getItem('theme') ||
-      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const theme = localStorage.getItem('theme') || 'dark';
     if (theme === 'dark') document.documentElement.classList.add('dark');
     document.documentElement.dataset.theme = theme;
   })();
@@ -219,20 +217,12 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
   }
 
   function preloadTheme() {
-    const userTheme = localStorage.theme;
+    var userTheme = localStorage.theme;
 
-    if (userTheme === 'light' || userTheme === 'dark') {
-      if (userTheme === 'dark') {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
+    if (userTheme === 'light') {
+      document.documentElement.classList.remove('dark');
     } else {
-      if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
+      document.documentElement.classList.add('dark');
     }
   }
 
