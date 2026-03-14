@@ -1,9 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { readingTime } from '@lib/utils';
+import { readingTime, shouldOptimizeImage } from '@lib/utils';
 import Image from 'astro/components/Image.astro';
-import fs from 'node:fs';
-import path from 'node:path';
 
 type Props = {
   nextPost: CollectionEntry<'blog'>;
@@ -12,39 +10,10 @@ type Props = {
 const { nextPost } = Astro.props;
 const { Content } = await nextPost.render();
 
-let useOptimizedImage = true;
-const LIMIT = 4 * 1024 * 1024; // 4MB
-
-if (
-  nextPost.data.cover &&
-  typeof nextPost.data.cover === 'object' &&
-  'src' in nextPost.data.cover
-) {
-  try {
-    const src = nextPost.data.cover.src;
-    const isAnimated = src.toLowerCase().endsWith('.gif') || src.toLowerCase().endsWith('.webp');
-
-    if (isAnimated) {
-      useOptimizedImage = false;
-    } else {
-      let filePath = '';
-      if (src.startsWith('/@fs')) {
-        filePath = src.replace('/@fs', '').split('?')[0];
-      } else if (src.startsWith('/src')) {
-        filePath = path.join(process.cwd(), src.split('?')[0]);
-      } else if (src.startsWith('/') && !src.startsWith('http')) {
-        filePath = path.join(process.cwd(), src.split('?')[0]);
-      }
-
-      if (filePath && fs.existsSync(filePath)) {
-        const stats = fs.statSync(filePath);
-        useOptimizedImage = stats.size < LIMIT;
-      }
-    }
-  } catch (e) {
-    useOptimizedImage = true;
-  }
-}
+const useOptimizedImage =
+  nextPost.data.cover && typeof nextPost.data.cover === 'object' && 'src' in nextPost.data.cover
+    ? shouldOptimizeImage(nextPost.data.cover.src)
+    : true;
 ---
 
 <div class="mt-16 border-t border-gray-200 dark:border-gray-800 pt-8">

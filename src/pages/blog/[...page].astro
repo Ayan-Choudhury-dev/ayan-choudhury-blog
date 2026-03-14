@@ -7,9 +7,8 @@ import { SITE } from '@consts';
 import PostCardMini from '@components/PostCardMini.astro';
 
 export const post_num = SITE.NUM_POSTS_ON_HOMEPAGE;
-export var display_pagination = true;
+let display_pagination = true;
 
-type display_pagination = boolean;
 type PaginateFunction = (posts: CollectionEntry<'blog'>[], options: { pageSize: number }) => any;
 
 export async function getStaticPaths({ paginate }: { paginate: PaginateFunction }) {

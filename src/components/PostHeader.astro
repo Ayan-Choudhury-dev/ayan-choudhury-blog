@@ -1,12 +1,9 @@
 ---
 // Component Imports
 import FormattedDate from './FormattedDate.astro';
-import { readingTime } from '@lib/utils';
+import { readingTime, shouldOptimizeImage } from '@lib/utils';
 import type { CollectionEntry } from 'astro:content';
 import Image from 'astro/components/Image.astro';
-import fs from 'node:fs';
-
-import path from 'node:path';
 
 type Props = {
   entry: CollectionEntry<'blog'>;
@@ -14,38 +11,10 @@ type Props = {
 
 const { entry } = Astro.props;
 
-let useOptimizedImage = true;
-const LIMIT = 4 * 1024 * 1024; // 4MB
-
-if (entry.data.cover && typeof entry.data.cover === 'object' && 'src' in entry.data.cover) {
-  try {
-    const src = entry.data.cover.src;
-    const isAnimated = src.toLowerCase().endsWith('.gif') || src.toLowerCase().endsWith('.webp');
-
-    if (isAnimated) {
-      useOptimizedImage = false;
-    } else {
-      let filePath = '';
-
-      if (src.startsWith('/@fs')) {
-        filePath = src.replace('/@fs', '').split('?')[0];
-      } else if (src.startsWith('/src')) {
-        filePath = path.join(process.cwd(), src.split('?')[0]);
-      } else if (src.startsWith('/') && !src.startsWith('http')) {
-        filePath = path.join(process.cwd(), src.split('?')[0]);
-      }
-
-      if (filePath && fs.existsSync(filePath)) {
-        const stats = fs.statSync(filePath);
-        useOptimizedImage = stats.size < LIMIT;
-      }
-    }
-  } catch (e) {
-    // console.error("Error checking image size", e);
-    // If we can't check size, assume it's fine to optimize (default behavior)
-    useOptimizedImage = true;
-  }
-}
+const useOptimizedImage =
+  entry.data.cover && typeof entry.data.cover === 'object' && 'src' in entry.data.cover
+    ? shouldOptimizeImage(entry.data.cover.src)
+    : true;
 ---
 
 <div id="header_container">

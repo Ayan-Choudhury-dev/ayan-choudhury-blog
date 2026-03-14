@@ -169,9 +169,8 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
     const animateElements = document.querySelectorAll('.animate');
 
     animateElements.forEach((element, index) => {
-      setTimeout(() => {
-        element.classList.add('show');
-      }, index * 150);
+      element.style.transitionDelay = `${index * 150}ms`;
+      element.classList.add('show');
     });
   }
 
