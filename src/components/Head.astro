@@ -53,13 +53,15 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
 />
 
 <style is:inline>
-  /* Critical CSS: prevent link color flash */
-  a {
-    color: #e5775e;
-    word-break: break-word;
-  }
-  a:visited {
-    color: #e5775e;
+  /* Critical CSS: prevent link color flash — in @layer base so Tailwind utilities override */
+  @layer base {
+    a {
+      color: #e5775e;
+      word-break: break-word;
+    }
+    a:visited {
+      color: #e5775e;
+    }
   }
 
   /* PREVENT ANIMATE elements from showing before JS kicks in */

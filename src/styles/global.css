@@ -45,12 +45,7 @@ body {
   @apply font-sans antialiased;
   @apply flex flex-col;
   @apply bg-stone-100 dark:bg-zinc-800;
-  @apply text-black/50 dark:text-white/75;
-}
-
-a {
-  @apply text-salmon_dark;
-  @apply break-words;
+  @apply text-black/75 dark:text-white/75;
 }
 
 header {
@@ -71,7 +66,7 @@ article {
   @apply max-w-full prose dark:prose-invert prose-img:mx-auto prose-img:my-auto;
   @apply prose-headings:font-medium;
   @apply prose-headings:text-black prose-headings:dark:text-white;
-  @apply font-serif font-light leading-loose tracking-normal space-y-8 mt-8 dark:text-gray-300;
+  @apply font-serif font-light leading-loose tracking-normal space-y-8 mt-8 text-gray-700 dark:text-gray-300;
 
   strong {
     @apply font-bold;
@@ -162,11 +157,19 @@ hr {
 }
 
 #Postcard {
+  background-color: #ffffff;
+}
+
+html.dark #Postcard {
   background-color: #1a1a1a;
   background-image: var(--noise-texture);
 }
 
 #NextPost {
+  background-color: #ffffff;
+}
+
+html.dark #NextPost {
   background-color: #1a1a1a;
   background-image: var(--noise-texture);
 }
@@ -240,5 +243,13 @@ hr {
 
   body {
     @apply bg-background text-foreground;
+  }
+
+  a {
+    @apply text-salmon_dark break-words;
+  }
+
+  a:visited {
+    color: #e5775e;
   }
 }

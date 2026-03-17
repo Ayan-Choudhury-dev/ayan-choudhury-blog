@@ -14,15 +14,18 @@ import { SITE } from '@consts';
     <div class="flex flex-wrap gap-y-2 justify-between items-center" id="hero_container">
       <Link href="/" underline={false}>
         <div class="font-semibold">
-          <span class="dark:text-salmon_dark text-salmon_light" id="site-name">{SITE.NAME}</span>
+          <span class="text-salmon_dark" id="site-name">{SITE.NAME}</span>
           <br />
-          <span id="tagline" class="text-sm font-normal duration-500 ease-in-out text-slate-300">
+          <span
+            id="tagline"
+            class="text-sm font-normal duration-500 ease-in-out text-stone-400 dark:text-slate-300"
+          >
             {SITE.TAGLINE}
           </span>
         </div>
       </Link>
 
-      <div class="flex flex-wrap gap-1 items-center">
+      <div class="flex flex-wrap gap-2 items-center">
         <!-- Music icon hidden-->
         <button
           id="Music-link-button"
@@ -80,7 +83,7 @@ import { SITE } from '@consts';
         <button
           id="light-theme-button"
           aria-label="Light theme"
-          class="group size-8 items-center justify-center rounded-full theme-toggle-btn hidden"
+          class="group size-8 items-center justify-center rounded-full theme-toggle-btn hidden border border-black/20 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/5 transition-colors duration-300 ease-in-out"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -109,7 +112,7 @@ import { SITE } from '@consts';
         <button
           id="dark-theme-button"
           aria-label="Dark theme"
-          class="group size-8 items-center justify-center rounded-full theme-toggle-btn hidden"
+          class="group size-8 items-center justify-center rounded-full theme-toggle-btn hidden border border-black/20 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/5 transition-colors duration-300 ease-in-out"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -128,12 +131,11 @@ import { SITE } from '@consts';
         </button>
 
         <!-- RSS Button -->
-        <!-- RSS Button -->
         <a
           href="/subscribe"
           id="rss-subscribe-link"
           aria-label="RSS Icon"
-          class="group size-8 flex items-center justify-center rounded-xl w-full bg-salmon_dark/80 px-4 gap-1"
+          class="group h-8 flex items-center justify-center rounded-xl bg-salmon_dark/80 hover:bg-salmon_dark transition-colors duration-300 ease-in-out px-4 gap-1"
           data-tippy-content="Open RSS Feed"
         >
           <span class="text-xs font-bold text-white hidden sm:block">SUBSCRIBE</span>
@@ -148,7 +150,7 @@ import { SITE } from '@consts';
             stroke-width="3"
             stroke-linecap="round"
             stroke-linejoin="round"
-            class="group-hover:stroke-black stroke-white group-hover:dark:stroke-white transition-colors duration-300 ease-in-out"
+            class="stroke-white transition-colors duration-300 ease-in-out"
           >
             <path
               stroke-linecap="round"
@@ -173,7 +175,7 @@ import { SITE } from '@consts';
     const SCROLL_CLASSES = [
       'top-4',
       'rounded-2xl',
-      'border-white/20',
+      'border-black/10',
       'dark:border-white/10',
       'shadow-lg',
       'z-50',
@@ -213,8 +215,8 @@ import { SITE } from '@consts';
         header?.classList.remove('py-5', 'top-0', 'w-full');
         container?.classList.add('max-w-xl');
         tagline?.classList.add('hidden', 'h-0', 'overflow-hidden');
-        siteName?.classList.remove('dark:text-salmon_dark', 'text-salmon_light');
-        siteName?.classList.add('text-white');
+        siteName?.classList.remove('text-salmon_dark');
+        siteName?.classList.add('text-black', 'dark:text-white');
         // Re-enable transitions after a frame if first load
         if (isFirstLoad) {
           requestAnimationFrame(function () {
@@ -232,8 +234,8 @@ import { SITE } from '@consts';
         header?.classList.add('py-5', 'top-0', 'w-full');
         container?.classList.remove('max-w-xl');
         tagline?.classList.remove('hidden', 'h-0', 'overflow-hidden');
-        siteName?.classList.add('dark:text-salmon_dark', 'text-salmon_light');
-        siteName?.classList.remove('text-white');
+        siteName?.classList.add('text-salmon_dark');
+        siteName?.classList.remove('text-black', 'dark:text-white');
         // Re-enable transitions after a frame if first load
         if (isFirstLoad) {
           requestAnimationFrame(function () {

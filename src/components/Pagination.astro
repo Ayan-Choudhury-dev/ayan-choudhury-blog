@@ -1,7 +1,4 @@
 ---
-import { SITE } from '@consts';
-
-// Improved TypeScript types
 interface PageInfo {
   currentPage: number;
   total: number;
@@ -25,161 +22,221 @@ interface Props {
 
 const { page, post_num, paginationLinks } = Astro.props;
 
-// Computed values
 const isLastPage = page.currentPage >= Math.ceil(page.total / post_num);
 const totalPages = Math.ceil(page.total / post_num);
 
-// Helper functions
-const getPreviousPageUrl = (currentPage: number, prevUrl: string) => prevUrl;
-
+const getPreviousPageUrl = (_: number, prevUrl: string) => prevUrl;
 const getPageUrl = (link: PaginationLink) => link.url;
-
-// Component classes
-const buttonBaseClasses =
-  'relative inline-flex items-center rounded-full px-6 py-3 text-base font-medium transition-colors';
-const activeButtonClasses = 'bg-white/5 text-white/75 hover:bg-white/10 active:bg-white/15';
-const disabledButtonClasses = 'opacity-10 cursor-not-allowed text-gray-400';
-const desktopButtonClasses =
-  'relative inline-flex items-center rounded-r-md px-2 py-2 focus:z-20 focus:outline-offset-0';
-const pageNumberClasses = (isCurrent: boolean) =>
-  isCurrent
-    ? 'relative z-10 inline-flex items-center rounded-full px-4 py-2 text-sm font-bold text-terracotta-600 focus:z-20'
-    : 'relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-400 hover:text-terracotta-500';
 ---
 
-<!-- Main pagination container -->
-<div
-  id="pagination-container"
-  class="flex items-center justify-between px-4 py-3 sm:px-6 text-black/50 dark:text-white/75"
->
-  <!-- Mobile pagination view -->
-  <div id="mobile-pagination" class="flex flex-1 flex-col gap-4 sm:hidden">
-    <!-- Mobile navigation buttons -->
-    <div id="mobile-nav-buttons" class="flex justify-between items-center">
-      <!-- Previous page arrow -->
-      <a
-        href={getPreviousPageUrl(page.currentPage, page.url.prev)}
-        class={`${buttonBaseClasses} ${activeButtonClasses}`}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="lucide lucide-arrow-left-icon lucide-arrow-left"
-        >
-          <path d="m12 19-7-7 7-7"></path>
-          <path d="M19 12H5"></path>
-        </svg>
-      </a>
+<div id="pagination-container" class="flex flex-col items-center gap-3 py-4">
+  <!-- Post count info -->
+  <p class="text-xs tracking-wide" style="color: inherit; opacity: 0.4;">
+    Page <strong>{page.currentPage}</strong> of <strong>{totalPages}</strong>
+    &nbsp;&middot;&nbsp; {page.total} posts
+  </p>
 
-      <!-- Post count information for mobile -->
-      <div id="mobile-post-count" class="text-center">
-        <p class="text-sm text-white/40">
-          <span class="font-medium text-terracotta-500">{page.currentPage}</span> / <span
-            class="font-medium">{totalPages}</span
-          >
-        </p>
-      </div>
-
-      <!-- Next page arrow -->
-      <a
-        href={page.url.next}
-        class={`${buttonBaseClasses} ${isLastPage ? disabledButtonClasses : activeButtonClasses}`}
-        aria-disabled={isLastPage}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          class="lucide lucide-arrow-right-icon lucide-arrow-right"
-        >
-          <path d="M5 12h14"></path>
-          <path d="m12 5 7 7-7 7"></path>
-        </svg>
-      </a>
-    </div>
-  </div>
-
-  <!-- Desktop pagination view -->
-  <div
-    id="desktop-pagination"
-    class="hidden flex-col gap-4 sm:flex sm:flex-1 sm:items-center sm:justify-between"
-  >
-    <!-- Post count information for desktop -->
-    <div id="desktop-post-count">
-      <p class="text-sm text-white/40">
-        Showing
-        <span class="font-medium">{page.currentPage * post_num - post_num + 1}</span>
-        to
-        <span class="font-medium">{page.currentPage * post_num - 1}</span>
-        of
-        <span class="font-medium">{page.total}</span>
-        posts
-      </p>
-    </div>
-
-    <!-- Desktop pagination navigation -->
-    <div id="desktop-nav">
-      <nav
-        class="isolate inline-flex gap-2 -space-x-px rounded-md shadow-sm"
-        aria-label="Pagination"
-      >
-        <!-- Previous page arrow -->
+  <!-- Page navigation -->
+  <nav class="flex items-center gap-1" aria-label="Pagination">
+    <!-- Previous arrow -->
+    {
+      page.currentPage > 1 ? (
         <a
           href={getPreviousPageUrl(page.currentPage, page.url.prev)}
-          class={`${desktopButtonClasses} dark:text-white hover:text-orange-400`}
+          class="pagination-arrow"
+          aria-label="Previous page"
         >
-          <span class="sr-only">Previous</span>
-          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path
-              fill-rule="evenodd"
-              d="M12.79 5.23a.75.75 0 01-.02 1.06L8.832 10l3.938 3.71a.75.75 0 11-1.04 1.08l-4.5-4.25a.75.75 0 010-1.08l4.5-4.25a.75.75 0 011.06.02z"
-              clip-rule="evenodd"></path>
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="m15 18-6-6 6-6" />
           </svg>
         </a>
+      ) : (
+        <span class="pagination-arrow disabled" aria-disabled="true">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="m15 18-6-6 6-6" />
+          </svg>
+        </span>
+      )
+    }
 
-        <!-- Page number links -->
-        {
-          paginationLinks.map((link) =>
-            typeof link.page === 'number' ? (
-              <a href={getPageUrl(link)} class={pageNumberClasses(link.isCurrent)}>
-                {link.page}
-              </a>
-            ) : (
-              <span class="relative inline-flex items-center px-4 py-2 text-sm font-medium text-gray-400">
-                ...
-              </span>
-            )
+    <!-- Page numbers -->
+    {
+      paginationLinks.map((link) =>
+        typeof link.page === 'number' ? (
+          link.isCurrent ? (
+            <span class="pagination-page current" aria-current="page">
+              {link.page}
+            </span>
+          ) : (
+            <a href={getPageUrl(link)} class="pagination-page">
+              {link.page}
+            </a>
           )
-        }
+        ) : (
+          <span class="pagination-ellipsis">&hellip;</span>
+        )
+      )
+    }
 
-        <!-- Next page arrow -->
-        <a
-          href={page.url.next}
-          class={`${desktopButtonClasses} ${isLastPage ? disabledButtonClasses : 'dark:text-white hover:text-orange-400'}`}
-          aria-disabled={isLastPage}
-        >
-          <span class="sr-only">Next</span>
-          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-            <path
-              fill-rule="evenodd"
-              d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-              clip-rule="evenodd"></path>
+    <!-- Next arrow -->
+    {
+      !isLastPage ? (
+        <a href={page.url.next} class="pagination-arrow" aria-label="Next page">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="m9 18 6-6-6-6" />
           </svg>
         </a>
-      </nav>
-    </div>
-  </div>
+      ) : (
+        <span class="pagination-arrow disabled" aria-disabled="true">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="m9 18 6-6-6-6" />
+          </svg>
+        </span>
+      )
+    }
+  </nav>
 </div>
+
+<style is:global>
+  /* High-specificity ID rules beat the global a:visited rule in every scenario */
+  #pagination-container a.pagination-page,
+  #pagination-container a.pagination-page:link,
+  #pagination-container a.pagination-page:visited,
+  #pagination-container a.pagination-page:active {
+    color: rgb(168 162 158); /* stone-400 */
+  }
+
+  html.dark #pagination-container a.pagination-page,
+  html.dark #pagination-container a.pagination-page:link,
+  html.dark #pagination-container a.pagination-page:visited,
+  html.dark #pagination-container a.pagination-page:active {
+    color: rgb(113 113 122); /* zinc-500 */
+  }
+
+  #pagination-container a.pagination-page:hover {
+    color: rgb(28 25 23); /* stone-900 */
+  }
+
+  html.dark #pagination-container a.pagination-page:hover {
+    color: rgb(244 244 245); /* zinc-100 */
+  }
+
+  #pagination-container a.pagination-arrow,
+  #pagination-container a.pagination-arrow:link,
+  #pagination-container a.pagination-arrow:visited,
+  #pagination-container a.pagination-arrow:active {
+    color: rgb(120 113 108); /* stone-500 */
+  }
+
+  html.dark #pagination-container a.pagination-arrow,
+  html.dark #pagination-container a.pagination-arrow:link,
+  html.dark #pagination-container a.pagination-arrow:visited,
+  html.dark #pagination-container a.pagination-arrow:active {
+    color: rgb(113 113 122); /* zinc-500 */
+  }
+
+  #pagination-container a.pagination-arrow:hover {
+    color: rgb(225 107 94); /* terracotta-500-ish */
+    border-color: rgb(225 107 94);
+  }
+
+  html.dark #pagination-container a.pagination-arrow:hover {
+    color: rgb(234 152 140); /* terracotta-400 */
+    border-color: rgb(234 152 140);
+  }
+</style>
+
+<style>
+  .pagination-page {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    transition: color 0.15s ease;
+  }
+
+  .pagination-page.current {
+    font-weight: 700;
+    color: #e16c5a; /* terracotta-600 */
+  }
+
+  :global(html.dark) .pagination-page.current {
+    color: #ea988c; /* terracotta-400 */
+  }
+
+  .pagination-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 9999px;
+    border: 1px solid rgb(214 211 209); /* stone-300 */
+    transition:
+      color 0.15s ease,
+      border-color 0.15s ease;
+  }
+
+  :global(html.dark) .pagination-arrow {
+    border-color: rgb(63 63 70); /* zinc-700 */
+  }
+
+  .pagination-arrow.disabled {
+    opacity: 0.25;
+    cursor: not-allowed;
+  }
+
+  .pagination-ellipsis {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 0.875rem;
+    color: rgb(214 211 209); /* stone-300 */
+    user-select: none;
+  }
+
+  :global(html.dark) .pagination-ellipsis {
+    color: rgb(63 63 70); /* zinc-700 */
+  }
+</style>

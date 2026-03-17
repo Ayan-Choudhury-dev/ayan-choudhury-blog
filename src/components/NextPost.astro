@@ -23,7 +23,7 @@ const useOptimizedImage =
   <!-- Component goes brr -->
   <div
     id="NextPost"
-    class="flex shadow-zinc-950 shadow-2xl dark:border-zinc-900 rounded-xl overflow-hidden border border-gray-300 dark:border-gray-700"
+    class="flex shadow-zinc-950/20 dark:shadow-zinc-950 shadow-2xl dark:border-zinc-900 rounded-xl overflow-hidden border border-stone-200 dark:border-gray-700"
   >
     <a href={`/blog/${nextPost.slug}`} class="group no-underline md:w-full">
       <!-- Container -->
@@ -65,12 +65,14 @@ const useOptimizedImage =
         </div>
         <!-- Heading -->
         <div class="flex flex-col justify-between p-6 gap-4 md:p-8 md:w-full h-full">
-          <h3 class="dark:text-terracotta-500 font-normal child:font-serif text-xl m-0">
+          <h3
+            class="text-terracotta-600 dark:text-terracotta-500 font-normal child:font-serif text-xl m-0"
+          >
             {nextPost.data.title}
           </h3>
           <!-- Text  -->
           <div
-            class="flex items-center justify-between prose font-normal font-sans dark:prose-invert max-w-none line-clamp-2"
+            class="flex items-center justify-between font-normal font-sans text-stone-500 dark:text-zinc-400 max-w-none line-clamp-2"
           >
             {readingTime(nextPost.body)}
             <!-- <Content /> -->
@@ -91,4 +93,3 @@ const useOptimizedImage =
     </a>
   </div>
 </div>
-
