@@ -172,13 +172,13 @@ const getPageUrl = (link: PaginationLink) => link.url;
   }
 
   #pagination-container a.pagination-arrow:hover {
-    color: rgb(225 107 94); /* terracotta-500-ish */
-    border-color: rgb(225 107 94);
+    color: rgb(var(--color-accent));
+    border-color: rgb(var(--color-accent));
   }
 
   html.dark #pagination-container a.pagination-arrow:hover {
-    color: rgb(234 152 140); /* terracotta-400 */
-    border-color: rgb(234 152 140);
+    color: rgb(var(--color-accent));
+    border-color: rgb(var(--color-accent));
   }
 </style>
 
@@ -196,11 +196,11 @@ const getPageUrl = (link: PaginationLink) => link.url;
 
   .pagination-page.current {
     font-weight: 700;
-    color: #e16c5a; /* terracotta-600 */
+    color: rgb(var(--color-accent));
   }
 
   :global(html.dark) .pagination-page.current {
-    color: #ea988c; /* terracotta-400 */
+    color: rgb(var(--color-accent));
   }
 
   .pagination-arrow {

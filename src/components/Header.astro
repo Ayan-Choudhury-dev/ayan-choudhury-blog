@@ -14,7 +14,7 @@ import { SITE } from '@consts';
     <div class="flex flex-wrap gap-y-2 justify-between items-center" id="hero_container">
       <Link href="/" underline={false}>
         <div class="font-semibold">
-          <span class="text-salmon_dark" id="site-name">{SITE.NAME}</span>
+          <span class="text-accent-color" id="site-name">{SITE.NAME}</span>
           <br />
           <span
             id="tagline"
@@ -135,7 +135,7 @@ import { SITE } from '@consts';
           href="/subscribe"
           id="rss-subscribe-link"
           aria-label="RSS Icon"
-          class="group h-8 flex items-center justify-center rounded-xl bg-salmon_dark/80 hover:bg-salmon_dark transition-colors duration-300 ease-in-out px-4 gap-1"
+          class="group h-8 flex items-center justify-center rounded-xl bg-accent-color/80 hover:bg-accent-color transition-colors duration-300 ease-in-out px-4 gap-1"
           data-tippy-content="Open RSS Feed"
         >
           <span class="text-xs font-bold text-white hidden sm:block">SUBSCRIBE</span>
@@ -215,7 +215,7 @@ import { SITE } from '@consts';
         header?.classList.remove('py-5', 'top-0', 'w-full');
         container?.classList.add('max-w-xl');
         tagline?.classList.add('hidden', 'h-0', 'overflow-hidden');
-        siteName?.classList.remove('text-salmon_dark');
+        siteName?.classList.remove('text-accent-color');
         siteName?.classList.add('text-black', 'dark:text-white');
         // Re-enable transitions after a frame if first load
         if (isFirstLoad) {
@@ -234,7 +234,7 @@ import { SITE } from '@consts';
         header?.classList.add('py-5', 'top-0', 'w-full');
         container?.classList.remove('max-w-xl');
         tagline?.classList.remove('hidden', 'h-0', 'overflow-hidden');
-        siteName?.classList.add('text-salmon_dark');
+        siteName?.classList.add('text-accent-color');
         siteName?.classList.remove('text-black', 'dark:text-white');
         // Re-enable transitions after a frame if first load
         if (isFirstLoad) {
