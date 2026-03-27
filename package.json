@@ -59,6 +59,9 @@
     "typescript": "^5.4.2",
     "vercel": "^39.0.2"
   },
+  "overrides": {
+    "fast-xml-parser": "^5.5.9"
+  },
   "devDependencies": {
     "prettier": "3.3.2",
     "prettier-plugin-astro": "^0.14.1"
