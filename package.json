@@ -60,7 +60,8 @@
     "vercel": "^39.0.2"
   },
   "overrides": {
-    "fast-xml-parser": "^5.5.9"
+    "fast-xml-parser": "^5.5.9",
+    "picomatch": "^4.0.4"
   },
   "devDependencies": {
     "prettier": "3.3.2",
