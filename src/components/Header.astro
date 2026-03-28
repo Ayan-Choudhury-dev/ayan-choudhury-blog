@@ -14,11 +14,13 @@ import { SITE } from '@consts';
     <div class="flex flex-wrap gap-y-2 justify-between items-center" id="hero_container">
       <Link href="/" underline={false}>
         <div class="font-semibold">
-          <span class="text-accent-color" id="site-name">{SITE.NAME}</span>
+          <span class="text-[#e17766] dark:text-white transition-colors duration-300" id="site-name"
+            >{SITE.NAME}</span
+          >
           <br />
           <span
             id="tagline"
-            class="text-sm font-normal duration-500 ease-in-out text-stone-400 dark:text-slate-300"
+            class="text-sm font-normal duration-500 ease-in-out text-foreground/70 dark:text-foreground/80"
           >
             {SITE.TAGLINE}
           </span>
@@ -134,30 +136,55 @@ import { SITE } from '@consts';
         <a
           href="/subscribe"
           id="rss-subscribe-link"
-          aria-label="RSS Icon"
-          class="group h-8 flex items-center justify-center rounded-xl bg-accent-color/80 hover:bg-accent-color transition-colors duration-300 ease-in-out px-4 gap-1"
-          data-tippy-content="Open RSS Feed"
+          aria-label="Subscribe to RSS"
+          class="relative inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg font-semibold text-sm tracking-tight transition-all duration-200 ease-out overflow-hidden group"
+          data-tippy-content="Subscribe to RSS Feed"
         >
-          <span class="text-xs font-bold text-white hidden sm:block">SUBSCRIBE</span>
-          <span class="text-xs font-bold text-white sm:hidden">SUB</span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="15"
-            height="15"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="3"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="stroke-white transition-colors duration-300 ease-in-out"
+          <!-- Background layers -->
+          <div
+            class="absolute inset-0 bg-gradient-to-br from-accent-color/5 to-accent-color/10 dark:from-white/10 dark:to-white/5 border border-accent-color/30 dark:border-white/20 rounded-lg transition-all duration-200 group-hover:border-accent-color/60 dark:group-hover:border-white/40"
           >
-            <path
+          </div>
+          <div
+            class="absolute inset-0 bg-accent-color/0 dark:bg-white/0 group-hover:bg-accent-color/5 dark:group-hover:bg-white/8 rounded-lg transition-all duration-200"
+          >
+          </div>
+
+          <!-- Content -->
+          <div class="relative flex items-center gap-1.5">
+            <span class="text-[#e17766] dark:text-white font-bold tracking-wide hidden sm:inline"
+              >SUBSCRIBE</span
+            >
+            <span class="text-[#e17766] dark:text-white font-bold sm:hidden">RSS</span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
               stroke-linecap="round"
               stroke-linejoin="round"
-              d="M12.75 19.5v-.75a7.5 7.5 0 0 0-7.5-7.5H4.5m0-6.75h.75c7.87 0 14.25 6.38 14.25 14.25v.75M6 18.75a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z"
-            ></path>
-          </svg>
+              class="text-[#e17766] dark:text-white transition-all duration-200 group-hover:scale-110 group-hover:rotate-12"
+            >
+              <path d="M4 11a9 9 0 0 1 9 9"></path>
+              <path d="M4 4a16 16 0 0 1 16 16"></path>
+              <circle cx="5" cy="19" r="1"></circle>
+            </svg>
+          </div>
+
+          <!-- Hover glow effect -->
+          <div
+            class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg pointer-events-none"
+            style="box-shadow: inset 0 0 12px rgba(225, 119, 102, 0.1), 0 0 12px rgba(225, 119, 102, 0.15);"
+          >
+          </div>
+          <div
+            class="absolute inset-0 opacity-0 dark:opacity-0 group-hover:dark:opacity-100 transition-opacity duration-200 rounded-lg pointer-events-none"
+            style="box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.1), 0 0 12px rgba(255, 255, 255, 0.1);"
+          >
+          </div>
         </a>
       </div>
     </div>

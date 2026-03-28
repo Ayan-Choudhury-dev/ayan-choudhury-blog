@@ -17,9 +17,7 @@ const useOptimizedImage =
 ---
 
 <div class="mt-16 border-t border-gray-200 dark:border-gray-800 pt-8">
-  <h2 class="text-sm tracking-wider uppercase text-gray-500 dark:text-gray-400 mb-6 font-sans">
-    Read next
-  </h2>
+  <h2 class="text-sm tracking-wider uppercase text-foreground/60 mb-6 font-sans">Read next</h2>
   <!-- Component goes brr -->
   <div
     id="NextPost"
@@ -72,7 +70,7 @@ const useOptimizedImage =
           </h3>
           <!-- Text  -->
           <div
-            class="flex items-center justify-between font-normal font-sans text-stone-500 dark:text-zinc-400 max-w-none line-clamp-2"
+            class="flex items-center justify-between font-normal font-sans text-foreground/70 max-w-none line-clamp-2"
           >
             {readingTime(nextPost.body)}
             <!-- <Content /> -->
