@@ -35,6 +35,14 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
 
 <!-- Critical inline CSS: available instantly, prevents FOUC during initial load & view transitions -->
 <style is:inline>
+  /* Background colors: must be inline for both initial load and view transitions */
+  html {
+    background-color: #ede7de;
+  }
+  html.dark {
+    background-color: #201f1d;
+  }
+
   /* Animate elements: hidden until JS adds .show */
   .animate {
     opacity: 0;
@@ -144,12 +152,13 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
 
 <ClientRouter />
 
-<script>
+<script is:inline>
   // --- View Transition theme & FOUC prevention ---
+  // Must be is:inline so handlers register synchronously before any navigation
 
   // BEFORE swap: prepare the incoming document so the first frame is correct
-  document.addEventListener('astro:before-swap', (e) => {
-    const isDark = document.documentElement.classList.contains('dark');
+  document.addEventListener('astro:before-swap', function (e) {
+    var isDark = document.documentElement.classList.contains('dark');
 
     // 1. Carry over theme class
     if (isDark) {
@@ -162,19 +171,21 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
     e.newDocument.documentElement.classList.add('no-entrance-transition');
 
     // 3. Pre-show all .animate elements so content doesn't flash invisible
-    e.newDocument.querySelectorAll('.animate').forEach((el) => {
+    e.newDocument.querySelectorAll('.animate').forEach(function (el) {
       el.classList.add('show');
     });
 
     // 4. Remove font preload links (already cached)
-    e.newDocument.head.querySelectorAll('link[as="font"]').forEach((link) => link.remove());
+    e.newDocument.head.querySelectorAll('link[as="font"]').forEach(function (link) {
+      link.remove();
+    });
   });
 
   // AFTER swap: safety net — re-apply theme on the live document before paint
-  document.addEventListener('astro:after-swap', () => {
-    const stored = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    const theme = stored || (prefersDark ? 'dark' : 'light');
+  document.addEventListener('astro:after-swap', function () {
+    var stored = localStorage.getItem('theme');
+    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var theme = stored || (prefersDark ? 'dark' : 'light');
 
     if (theme === 'dark') {
       document.documentElement.classList.add('dark');
