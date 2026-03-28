@@ -119,8 +119,12 @@ article {
   article strong,
   article em,
   article .prose strong,
-  article .prose em {
-    color: var(--foreground);
+  article .prose em,
+  article .prose p strong,
+  article .prose li strong,
+  article .prose p em,
+  article .prose li em {
+    color: var(--foreground) !important;
   }
 
   article h1,
