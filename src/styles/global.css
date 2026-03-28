@@ -212,6 +212,15 @@ html.dark #NextPost {
   background-image: var(--noise-texture);
 }
 
+/* Header styling for post cards */
+#header_container #meta {
+  background-color: transparent;
+}
+
+html.dark #header_container #meta {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
 /* #mask-container{
   background-blend-mode: normal;
   background: linear-gradient(180deg, rgba(0,0,0,0) 16.26%, #000000 79.15%);
