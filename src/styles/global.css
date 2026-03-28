@@ -47,9 +47,23 @@ body {
 }
 
 header {
-  @apply fixed top-0 left-0 right-0 z-50 w-full;
-  @apply bg-stone-100/75 dark:bg-stone-900/25;
-  @apply backdrop-blur-xl;
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+  top: 0;
+  border: 2px solid transparent;
+  border-bottom: 1px solid rgba(225, 119, 102, 0.12);
+  background-color: rgba(247, 238, 227, 0.85);
+  backdrop-filter: blur(12px);
+  z-index: 50;
+}
+
+html.dark header {
+  background-color: rgba(28, 25, 23, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 main {
@@ -61,10 +75,9 @@ footer {
 }
 
 article {
-  @apply max-w-full prose dark:prose-invert prose-img:mx-auto prose-img:my-auto;
+  @apply max-w-full prose prose-img:mx-auto prose-img:my-auto;
   @apply prose-headings:font-medium;
-  @apply prose-headings:text-black prose-headings:dark:text-white;
-  @apply font-serif font-light leading-loose tracking-normal space-y-8 mt-8 text-gray-700 dark:text-gray-300;
+  @apply font-serif font-light leading-loose tracking-normal space-y-8 mt-8;
 
   strong {
     @apply font-bold;
@@ -98,9 +111,26 @@ article {
 }
 
 @layer utilities {
+  article,
+  article p,
+  article li,
+  article blockquote,
+  article figcaption {
+    color: var(--foreground);
+  }
+
+  article h1,
+  article h2,
+  article h3,
+  article h4,
+  article h5,
+  article h6 {
+    color: var(--foreground);
+  }
+
   article a {
     @apply font-bold;
-    @apply text-current underline underline-offset-4;
+    @apply text-accent-color underline underline-offset-4;
     @apply decoration-black/15 dark:decoration-white/30;
     @apply transition-colors duration-500 ease-in-out;
   }
@@ -114,13 +144,22 @@ article {
   }
 }
 
+/* Hard-prevent any transitions during the DOM swap itself */
+html.switching * {
+  transition: none !important;
+}
+
 .animate {
-  @apply opacity-0 translate-y-3;
-  @apply transition-all duration-700 ease-out;
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.6s ease-out,
+    transform 0.6s ease-out;
 }
 
 .animate.show {
-  @apply opacity-100 translate-y-0;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Prevent FOUC on first load: suppress all transitions globally */
@@ -154,20 +193,20 @@ hr {
 }
 
 #Postcard {
-  background-color: rgb(var(--card));
+  background-color: var(--card);
 }
 
 html.dark #Postcard {
-  background-color: rgb(var(--card));
+  background-color: var(--card);
   background-image: var(--noise-texture);
 }
 
 #NextPost {
-  background-color: rgb(var(--card));
+  background-color: var(--card);
 }
 
 html.dark #NextPost {
-  background-color: rgb(var(--card));
+  background-color: var(--card);
   background-image: var(--noise-texture);
 }
 
@@ -179,68 +218,67 @@ html.dark #NextPost {
 @layer base {
   :root {
     /* — surfaces (warm cream palette) — */
-    /* Format: R G B  —  copy hex from any color picker and split into R G B */
-    --background: 237 231 222; /* #ede7de warm cream          */
-    --foreground: 44 41 38; /* #2c2926 dark brown text     */
-    --card: 247 238 227; /* #f7eee3 card surface        */
-    --card-foreground: 44 41 38; /* #2c2926                     */
-    --popover: 226 217 203; /* #e2d9cb                     */
-    --popover-foreground: 44 41 38; /* #2c2926                     */
-    --primary: 219 113 97; /* #db7161 terracotta          */
-    --primary-foreground: 250 250 250; /* #fafafa                     */
-    --secondary: 224 219 210; /* #e0dbd2                     */
-    --secondary-foreground: 44 41 38; /* #2c2926                     */
-    --muted: 224 219 210; /* #e0dbd2                     */
-    --muted-foreground: 139 134 126; /* #8b867e                     */
-    --accent: 224 219 210; /* #e0dbd2                     */
-    --accent-foreground: 44 41 38; /* #2c2926                     */
-    --destructive: 239 68 68; /* #ef4444                     */
-    --destructive-foreground: 250 250 250; /* #fafafa                     */
-    --border: 211 206 197; /* #d3cec5                     */
-    --input: 211 206 197; /* #d3cec5                     */
-    --ring: 219 113 97; /* #db7161 terracotta          */
-    --chart-1: 219 113 97; /* #db7161                     */
-    --chart-2: 42 157 144; /* #2a9d90                     */
-    --chart-3: 39 71 84; /* #274754                     */
-    --chart-4: 232 196 104; /* #e8c468                     */
-    --chart-5: 244 164 98; /* #f4a462                     */
+    --background: #ede7de;
+    --foreground: #1e2d40;
+    --card: #f7eee3;
+    --card-foreground: #1e2d40;
+    --popover: #e2d9cb;
+    --popover-foreground: #1e2d40;
+    --primary: #db7161;
+    --primary-foreground: #fafafa;
+    --secondary: #e0dbd2;
+    --secondary-foreground: #1e2d40;
+    --muted: #e0dbd2;
+    --muted-foreground: #5c7a8a;
+    --accent: #e0dbd2;
+    --accent-foreground: #1e2d40;
+    --destructive: #ef4444;
+    --destructive-foreground: #fafafa;
+    --border: #d3cec5;
+    --input: #d3cec5;
+    --ring: #db7161;
+    --chart-1: #db7161;
+    --chart-2: #2a9d90;
+    --chart-3: #274754;
+    --chart-4: #e8c468;
+    --chart-5: #f4a462;
     --radius: 0.5rem;
     /* — terracotta accent tokens — */
-    --color-accent: 219 113 97; /* #db7161 terracotta          */
-    --color-accent-fg: 250 250 250; /* #fafafa                     */
-    --color-accent-subtle: 231 153 141; /* #e7998d light terracotta    */
+    --color-accent: #e17766;
+    --color-accent-fg: #fafafa;
+    --color-accent-subtle: #c66353;
   }
 
   .dark {
     /* — surfaces (dark) — */
-    --background: 32 31 29; /* #201f1d                     */
-    --foreground: 235 235 235; /* #ebebeb near white          */
-    --card: 43 41 39; /* #2b2927                     */
-    --card-foreground: 235 235 235; /* #ebebeb                     */
-    --popover: 43 41 39; /* #2b2927                     */
-    --popover-foreground: 235 235 235; /* #ebebeb                     */
-    --primary: 231 153 141; /* #e7998d light terracotta    */
-    --primary-foreground: 27 26 24; /* #1b1a18                     */
-    --secondary: 38 38 38; /* #262626                     */
-    --secondary-foreground: 250 250 250; /* #fafafa                     */
-    --muted: 38 38 38; /* #262626                     */
-    --muted-foreground: 163 163 163; /* #a3a3a3                     */
-    --accent: 38 38 38; /* #262626                     */
-    --accent-foreground: 250 250 250; /* #fafafa                     */
-    --destructive: 127 29 29; /* #7f1d1d                     */
-    --destructive-foreground: 250 250 250; /* #fafafa                     */
-    --border: 38 38 38; /* #262626                     */
-    --input: 38 38 38; /* #262626                     */
-    --ring: 231 153 141; /* #e7998d                     */
-    --chart-1: 231 153 141; /* #e7998d                     */
-    --chart-2: 46 184 138; /* #2eb88a                     */
-    --chart-3: 232 140 48; /* #e88c30                     */
-    --chart-4: 175 87 219; /* #af57db                     */
-    --chart-5: 226 54 112; /* #e23670                     */
+    --background: #201f1d;
+    --foreground: #ebebeb;
+    --card: #2b2927;
+    --card-foreground: #ebebeb;
+    --popover: #2b2927;
+    --popover-foreground: #ebebeb;
+    --primary: #e7998d;
+    --primary-foreground: #1b1a18;
+    --secondary: #262626;
+    --secondary-foreground: #fafafa;
+    --muted: #262626;
+    --muted-foreground: #a3a3a3;
+    --accent: #262626;
+    --accent-foreground: #fafafa;
+    --destructive: #7f1d1d;
+    --destructive-foreground: #fafafa;
+    --border: #262626;
+    --input: #262626;
+    --ring: #e7998d;
+    --chart-1: #e7998d;
+    --chart-2: #2eb88a;
+    --chart-3: #e88c30;
+    --chart-4: #af57db;
+    --chart-5: #e23670;
     /* — terracotta accent tokens — */
-    --color-accent: 231 153 141; /* #e7998d                     */
-    --color-accent-fg: 27 26 24; /* #1b1a18                     */
-    --color-accent-subtle: 202 99 83; /* #ca6353                     */
+    --color-accent: #e16c5a;
+    --color-accent-fg: #1b1a18;
+    --color-accent-subtle: #d4d4d4;
   }
 }
 
@@ -258,6 +296,6 @@ html.dark #NextPost {
   }
 
   a:visited {
-    color: rgb(var(--color-accent-subtle));
+    color: var(--color-accent-subtle);
   }
 }
