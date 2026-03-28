@@ -115,7 +115,9 @@ article {
   article p,
   article li,
   article blockquote,
-  article figcaption {
+  article figcaption,
+  article strong,
+  article em {
     color: var(--foreground);
   }
 
