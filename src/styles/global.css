@@ -221,8 +221,16 @@ html.dark #NextPost {
 }
 
 /* Header styling for post card mini only */
+#Postcard.rounded-2xl #header_container {
+  background-color: transparent;
+}
+
 #Postcard.rounded-2xl #header_container #meta {
   background-color: transparent;
+}
+
+html.dark #Postcard.rounded-2xl #header_container {
+  background-color: rgba(255, 255, 255, 0.02);
 }
 
 html.dark #Postcard.rounded-2xl #header_container #meta {
@@ -238,7 +246,7 @@ html.dark #Postcard.rounded-2xl #header_container #meta {
   :root {
     /* — surfaces (warm cream palette) — */
     --background: #ede7de;
-    --foreground: #1e2d40;
+    --foreground: #3c68a5;
     --card: #f7eee3;
     --card-foreground: #1e2d40;
     --popover: #e2d9cb;
