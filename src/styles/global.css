@@ -132,8 +132,14 @@ article {
   article h3,
   article h4,
   article h5,
-  article h6 {
-    color: var(--foreground);
+  article h6,
+  article .prose h1,
+  article .prose h2,
+  article .prose h3,
+  article .prose h4,
+  article .prose h5,
+  article .prose h6 {
+    color: var(--foreground) !important;
   }
 
   article a {
