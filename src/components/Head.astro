@@ -25,7 +25,9 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
 <script is:inline>
   // Execute immediately to prevent theme flash
   (function () {
-    const theme = localStorage.getItem('theme') || 'dark';
+    const storedTheme = localStorage.getItem('theme');
+    const theme =
+      storedTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
     if (theme === 'dark') document.documentElement.classList.add('dark');
     document.documentElement.dataset.theme = theme;
   })();
@@ -52,65 +54,6 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
   crossorigin="anonymous"
 />
 
-<style is:inline>
-  /* Critical CSS: prevent link color flash — in @layer base so Tailwind utilities override */
-  @layer base {
-    a {
-      color: #e5775e;
-      word-break: break-word;
-    }
-    a:visited {
-      color: #e5775e;
-    }
-  }
-
-  /* PREVENT ANIMATE elements from showing before JS kicks in */
-  .animate {
-    opacity: 0;
-    transform: translateY(10px);
-    transition:
-      opacity 0.6s ease-out,
-      transform 0.6s ease-out;
-  }
-  .animate.show {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  /* Hard-prevent any transitions during the DOM swap itself */
-  html.switching * {
-    transition: none !important;
-  }
-
-  /* Critical CSS: prevent header FOUC */
-  header {
-    position: fixed;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    padding-top: 1.25rem;
-    padding-bottom: 1.25rem;
-    top: 0;
-    border: 2px solid transparent;
-    background-color: rgba(245, 245, 244, 0.75);
-    backdrop-filter: blur(12px);
-    z-index: 50;
-  }
-
-  html.dark header {
-    background-color: rgba(28, 25, 23, 0.25);
-  }
-
-  /* Prevent font swap flash */
-  body {
-    font-family:
-      'Inter Variable',
-      -apple-system,
-      BlinkMacSystemFont,
-      'Segoe UI',
-      sans-serif;
-  }
-</style>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <!-- <link rel="icon" type="image/svg+xml" href="/favicon-dark.svg" media="(prefers-color-scheme: dark)">
 <link rel="icon" type="image/svg+xml" href="/favicon-light.svg" media="(prefers-color-scheme: light)">
@@ -191,37 +134,29 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
   }
 
   function toggleTheme(dark) {
-    const css = document.createElement('style');
+    const html = document.documentElement;
 
-    css.appendChild(
-      document.createTextNode(
-        `* {
-             -webkit-transition: none !important;
-             -moz-transition: none !important;
-             -o-transition: none !important;
-             -ms-transition: none !important;
-             transition: none !important;
-          }
-        `
-      )
-    );
-
-    document.head.appendChild(css);
+    // Add transition class before changing theme
+    html.classList.add('theme-transitioning');
 
     if (dark) {
-      document.documentElement.classList.add('dark');
+      html.classList.add('dark');
     } else {
-      document.documentElement.classList.remove('dark');
+      html.classList.remove('dark');
     }
 
-    window.getComputedStyle(css).opacity;
-    document.head.removeChild(css);
+    // Remove transition class after animation completes
+    setTimeout(() => {
+      html.classList.remove('theme-transitioning');
+    }, 300);
   }
 
   function preloadTheme() {
     var userTheme = localStorage.theme;
+    var theme =
+      userTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
 
-    if (userTheme === 'light') {
+    if (theme === 'light') {
       document.documentElement.classList.remove('dark');
     } else {
       document.documentElement.classList.add('dark');

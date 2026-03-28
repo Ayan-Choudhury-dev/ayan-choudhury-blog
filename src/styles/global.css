@@ -180,6 +180,16 @@ html.no-entrance-transition *::after {
   animation: none !important;
 }
 
+/* Smooth theme transitions */
+html.theme-transitioning,
+html.theme-transitioning * {
+  transition:
+    background-color 300ms ease-in-out,
+    color 300ms ease-in-out,
+    border-color 300ms ease-in-out,
+    box-shadow 300ms ease-in-out !important;
+}
+
 /* Show .animate in final state with no transition */
 html.no-entrance-transition .animate {
   @apply opacity-100 translate-y-0;
@@ -246,7 +256,7 @@ html.dark #Postcard.rounded-2xl #header_container #meta {
   :root {
     /* — surfaces (warm cream palette) — */
     --background: #ede7de;
-    --foreground: #3c68a5;
+    --foreground: #3f546e;
     --card: #f7eee3;
     --card-foreground: #1e2d40;
     --popover: #e2d9cb;
