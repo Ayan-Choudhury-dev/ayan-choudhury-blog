@@ -118,12 +118,8 @@ article {
   article figcaption,
   article strong,
   article em,
-  article .prose strong,
-  article .prose em,
-  article .prose p strong,
-  article .prose li strong,
-  article .prose p em,
-  article .prose li em {
+  article .prose,
+  article .prose * {
     color: var(--foreground) !important;
   }
 
