@@ -18,7 +18,7 @@ const { title, description, image } = Astro.props;
 <html lang="en">
   <head>
     <!-- CRITICAL: Runs before any CSS to prevent FOUC. Must be inline and first. -->
-    <style>
+    <style is:inline>
       html {
         background-color: #ede7de;
       }
