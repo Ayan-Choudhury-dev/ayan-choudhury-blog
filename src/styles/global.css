@@ -29,7 +29,7 @@
 
 html {
   overflow-y: scroll;
-  color-scheme: light;
+  color-scheme: light dark;
 }
 
 html.dark {
