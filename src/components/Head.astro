@@ -87,16 +87,42 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
 <ClientRouter />
 
 <script>
-  // Ensure the dark class is carried over before page swap, and remove font links
+  // --- View Transition theme & FOUC prevention ---
+
+  // BEFORE swap: prepare the incoming document so the first frame is correct
   document.addEventListener('astro:before-swap', (e) => {
-    // Carry over theme class (FOUC fix on navigation)
-    const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-    if (theme === 'dark') {
+    const isDark = document.documentElement.classList.contains('dark');
+
+    // 1. Carry over theme class
+    if (isDark) {
       e.newDocument.documentElement.classList.add('dark');
+    } else {
+      e.newDocument.documentElement.classList.remove('dark');
     }
-    // Remove font preload links from new head
-    const fonts = e.newDocument.head.querySelectorAll('link[as="font"]');
-    fonts.forEach((link) => link.remove());
+
+    // 2. Suppress transitions during swap
+    e.newDocument.documentElement.classList.add('no-entrance-transition');
+
+    // 3. Pre-show all .animate elements so content doesn't flash invisible
+    e.newDocument.querySelectorAll('.animate').forEach((el) => {
+      el.classList.add('show');
+    });
+
+    // 4. Remove font preload links (already cached)
+    e.newDocument.head.querySelectorAll('link[as="font"]').forEach((link) => link.remove());
+  });
+
+  // AFTER swap: safety net — re-apply theme on the live document before paint
+  document.addEventListener('astro:after-swap', () => {
+    const stored = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = stored || (prefersDark ? 'dark' : 'light');
+
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
   });
 </script>
 
