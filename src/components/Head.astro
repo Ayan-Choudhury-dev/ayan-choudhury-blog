@@ -33,6 +33,64 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
   })();
 </script>
 
+<!-- Critical inline CSS: available instantly, prevents FOUC during initial load & view transitions -->
+<style is:inline>
+  /* Animate elements: hidden until JS adds .show */
+  .animate {
+    opacity: 0;
+    transform: translateY(10px);
+    transition:
+      opacity 0.6s ease-out,
+      transform 0.6s ease-out;
+  }
+  .animate.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Suppress transitions during DOM swap */
+  html.no-entrance-transition *,
+  html.no-entrance-transition *::before,
+  html.no-entrance-transition *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+  html.no-entrance-transition .animate {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Header: must be inline so it doesn't flash unstyled */
+  header {
+    position: fixed;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+    top: 0;
+    border: 2px solid transparent;
+    border-bottom: 1px solid rgba(225, 119, 102, 0.12);
+    background-color: rgba(247, 238, 227, 0.85);
+    backdrop-filter: blur(12px);
+    z-index: 50;
+  }
+  html.dark header {
+    background-color: rgba(28, 25, 23, 0.4);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  /* Prevent font swap flash */
+  body {
+    font-family:
+      'Inter Variable',
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      sans-serif;
+  }
+</style>
+
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <!-- DNS prefetch and preconnect for font CDN -->
