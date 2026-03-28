@@ -9,9 +9,9 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				'accent-color': 'rgb(var(--color-accent))',
-				'accent-color-fg': 'rgb(var(--color-accent-fg))',
-				'accent-color-subtle': 'rgb(var(--color-accent-subtle))',
+				'accent-color': 'var(--color-accent)',
+				'accent-color-fg': 'var(--color-accent-fg)',
+				'accent-color-subtle': 'var(--color-accent-subtle)',
 				terracotta: {
 					'50': '#fef8f7',
 					'100': '#fcf0ef',
@@ -24,45 +24,45 @@ export default {
 					'800': '#874136',
 					'900': '#6e352c'
 				},
-				background: 'rgb(var(--background))',
-				foreground: 'rgb(var(--foreground))',
+				background: 'var(--background)',
+				foreground: 'var(--foreground)',
 				card: {
-					DEFAULT: 'rgb(var(--card))',
-					foreground: 'rgb(var(--card-foreground))'
+					DEFAULT: 'var(--card)',
+					foreground: 'var(--card-foreground)'
 				},
 				popover: {
-					DEFAULT: 'rgb(var(--popover))',
-					foreground: 'rgb(var(--popover-foreground))'
+					DEFAULT: 'var(--popover)',
+					foreground: 'var(--popover-foreground)'
 				},
 				primary: {
-					DEFAULT: 'rgb(var(--primary))',
-					foreground: 'rgb(var(--primary-foreground))'
+					DEFAULT: 'var(--primary)',
+					foreground: 'var(--primary-foreground)'
 				},
 				secondary: {
-					DEFAULT: 'rgb(var(--secondary))',
-					foreground: 'rgb(var(--secondary-foreground))'
+					DEFAULT: 'var(--secondary)',
+					foreground: 'var(--secondary-foreground)'
 				},
 				muted: {
-					DEFAULT: 'rgb(var(--muted))',
-					foreground: 'rgb(var(--muted-foreground))'
+					DEFAULT: 'var(--muted)',
+					foreground: 'var(--muted-foreground)'
 				},
 				accent: {
-					DEFAULT: 'rgb(var(--accent))',
-					foreground: 'rgb(var(--accent-foreground))'
+					DEFAULT: 'var(--accent)',
+					foreground: 'var(--accent-foreground)'
 				},
 				destructive: {
-					DEFAULT: 'rgb(var(--destructive))',
-					foreground: 'rgb(var(--destructive-foreground))'
+					DEFAULT: 'var(--destructive)',
+					foreground: 'var(--destructive-foreground)'
 				},
-				border: 'rgb(var(--border))',
-				input: 'rgb(var(--input))',
-				ring: 'rgb(var(--ring))',
+				border: 'var(--border)',
+				input: 'var(--input)',
+				ring: 'var(--ring)',
 				chart: {
-					'1': 'rgb(var(--chart-1))',
-					'2': 'rgb(var(--chart-2))',
-					'3': 'rgb(var(--chart-3))',
-					'4': 'rgb(var(--chart-4))',
-					'5': 'rgb(var(--chart-5))'
+					'1': 'var(--chart-1)',
+					'2': 'var(--chart-2)',
+					'3': 'var(--chart-3)',
+					'4': 'var(--chart-4)',
+					'5': 'var(--chart-5)'
 				}
 			},
 			fontFamily: {
