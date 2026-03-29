@@ -56,7 +56,7 @@ header {
   top: 0;
   border: 2px solid transparent;
   border-bottom: 1px solid rgba(225, 119, 102, 0.12);
-  background-color: rgba(247, 238, 227, 0.85);
+  background-color: rgba(247, 238, 227, 0.4);
   backdrop-filter: blur(12px);
   z-index: 50;
 }
