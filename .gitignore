@@ -22,3 +22,6 @@ pnpm-debug.log*
 .DS_Store
 .vercel
 astro-app/
+
+# Claude Code
+CLAUDE.md
