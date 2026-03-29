@@ -111,6 +111,14 @@ article {
 }
 
 @layer utilities {
+  .title-accent {
+    color: var(--color-accent);
+  }
+
+  .dark .title-accent {
+    color: var(--color-accent-subtle);
+  }
+
   article,
   article p,
   article li,
