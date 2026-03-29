@@ -231,11 +231,15 @@ html.dark #Postcard {
 
 #NextPost {
   background-color: var(--card);
+  border-color: var(--border);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
 }
 
 html.dark #NextPost {
   background-color: var(--card);
   background-image: var(--noise-texture);
+  border-color: var(--border);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
 }
 
 /* Header styling for post card mini only */
