@@ -15,8 +15,7 @@ type Props = {
 const { post } = Astro.props;
 ---
 
-<div class="font-serif flex items-baseline font-base text-foreground mt-10">
-  {/* Check if the post has a 'tags' property */}
+<div class="font-serif flex items-baseline font-base text-foreground mt-10">  {/* Check if the post has a 'tags' property */}
   {
     post.data.tags && Array.isArray(post.data.tags) && post.data.tags.length > 0 && (
       <>

@@ -79,6 +79,10 @@ export default {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
+			},
+			boxShadow: {
+				'glow-accent': 'inset 0 0 12px rgba(225, 119, 102, 0.1), 0 0 12px rgba(225, 119, 102, 0.15)',
+				'glow-white': 'inset 0 0 12px rgba(255, 255, 255, 0.1), 0 0 12px rgba(255, 255, 255, 0.1)',
 			}
 		}
 	},

@@ -322,11 +322,6 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
       updateThemeButtons();
     });
 
-    const rssbutton = document.getElementById('RSS-link-button');
-    rssbutton?.addEventListener('click', () => {
-      window.open('rss.xml', '_blank');
-    });
-
     document.removeEventListener('scroll', onScroll);
     document.addEventListener('scroll', onScroll);
   }

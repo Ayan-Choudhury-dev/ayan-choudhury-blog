@@ -43,10 +43,8 @@ const useOptimizedImage =
     )
   }
 
-  <div id="meta" class="px-4 sm:px-[50px] pt-4 md:pt-8">
-    <div
-      class="text-terracotta-700 dark:text-terracotta-500 mb-4 child:font-serif child:font-normal text-2xl"
-    >
+  <div id="meta" class="px-4 sm:px-12">
+    <div class="title-accent mt-8 child:font-serif child:font-normal text-lg sm:text-xl">
       <a href={`/${entry.collection}/${entry.slug}`} class="no-underline !text-inherit">
         {entry.data.title}
       </a>
@@ -57,7 +55,7 @@ const useOptimizedImage =
   </div> -->
 
     <div
-      class="flex items-center gap-3 text-black/60 dark:text-white/60 border-b border-dashed border-black/10 dark:border-white/10 pb-4"
+      class="flex items-center gap-2 font-sans text-black/60 dark:text-white/60 border-b border-dashed border-black/10 dark:border-white/10 pb-4"
     >
       <div class="font-base text-sm">
         <FormattedDate date={entry.data.date} />

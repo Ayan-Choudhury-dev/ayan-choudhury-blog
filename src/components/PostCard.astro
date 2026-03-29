@@ -12,10 +12,12 @@ const { entry } = Astro.props;
 const { Content } = await entry.render();
 ---
 
-<div id="Postcard" class="mb-10 shadow-black/10 dark:shadow-zinc-950 shadow-2xl bg-card">
+<div
+  class="postcard mb-10 shadow-black/10 dark:shadow-zinc-950 shadow-2xl bg-card rounded-2xl overflow-hidden"
+>
   <PostHeader entry={entry} />
   <!-- todo:concat the content and add a read more button -->
-  <article class="px-4 sm:px-[50px] mb-16">
+  <article class="px-4 sm:px-12 mb-16">
     <Content />
     <TagLinks post={entry} />
   </article>

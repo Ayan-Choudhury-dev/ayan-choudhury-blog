@@ -13,11 +13,10 @@ const { Content } = await entry.render();
 ---
 
 <div
-  id="Postcard"
-  class="animate mb-2 shadow-black/10 dark:shadow-zinc-950 shadow-2xl overflow-hidden bg-card rounded-2xl border border-border"
+  class="postcard animate mb-2 shadow-black/10 dark:shadow-zinc-950 shadow-2xl overflow-hidden bg-card rounded-2xl border border-border"
 >
   <PostHeaderMini entry={entry} />
-  <article class="px-4 sm:px-[50px] mb-8 lg:mb-10">
+  <article class="px-4 sm:px-12 mb-8 lg:mb-10">
     <!-- Concatinated content -->
     <div class="prose dark:prose-invert max-w-none line-clamp-6">
       <Content />
