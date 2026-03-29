@@ -8,7 +8,6 @@ type Props = {
 };
 
 const { nextPost } = Astro.props;
-const { Content } = await nextPost.render();
 
 const useOptimizedImage =
   nextPost.data.cover && typeof nextPost.data.cover === 'object' && 'src' in nextPost.data.cover
@@ -16,78 +15,278 @@ const useOptimizedImage =
     : true;
 ---
 
-<div class="mt-16 border-t border-gray-200 dark:border-gray-800 pt-8">
-  <h2 class="text-sm tracking-wider uppercase text-foreground/60 mb-6 font-sans">Read next</h2>
-  <!-- Component goes brr -->
-  <div
-    id="NextPost"
-    class="flex rounded-xl overflow-hidden border"
+<div class="next-post-section">
+  <a
+    href={`/blog/${nextPost.slug}`}
+    class="next-post-link group"
+    aria-label={`Read next: ${nextPost.data.title}`}
   >
-    <a href={`/blog/${nextPost.slug}`} class="group no-underline md:w-full">
-      <!-- Container -->
-      <div class="flex flex-col md:flex-1 md:flex-row md:h-[240px]">
-        <div class="relative w-full h-full aspect-[16/9] md:aspect-auto overflow-hidden md:p-4">
-          <div class="md:rounded-lg overflow-clip h-full">
-            {
-              nextPost.data.cover && 'src' in nextPost.data.cover ? (
-                useOptimizedImage ? (
-                  <Image
-                    src={nextPost.data.cover}
-                    quality={'mid'}
-                    width={800}
-                    height={450}
-                    class=" object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500 ease-in-out rounded-none"
-                    alt={nextPost.data.title}
-                  />
-                ) : (
-                  <img
-                    src={nextPost.data.cover.src}
-                    width="800"
-                    height="450"
-                    class=" object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500 ease-in-out rounded-none"
-                    alt={nextPost.data.title}
-                  />
-                )
-              ) : (
-                <Image
-                  src="https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fGdyYWRpZW50fGVufDB8fDB8fHww"
-                  quality={'mid'}
-                  width={800}
-                  height={450}
-                  class=" object-cover w-full h-full transform group-hover:scale-105 transition-transform duration-500 ease-in-out rounded-none"
-                  alt={nextPost.data.title}
-                />
-              )
-            }
-          </div>
-        </div>
-        <!-- Heading -->
-        <div class="flex flex-col justify-between p-6 gap-4 md:p-8 md:w-full h-full">
-          <h3
-            class="title-accent font-normal child:font-serif text-xl m-0"
+    <!-- Rotated eyebrow label -->
+    <div class="next-post-eyebrow" aria-hidden="true">
+      <span>UP NEXT</span>
+    </div>
+
+    <!-- Card -->
+    <div class="next-post-card" id="NextPost">
+      <!-- Image -->
+      <div class="next-post-image-col">
+        {
+          nextPost.data.cover && 'src' in nextPost.data.cover ? (
+            useOptimizedImage ? (
+              <Image
+                src={nextPost.data.cover}
+                quality="mid"
+                width={400}
+                height={300}
+                class="next-post-img"
+                alt={nextPost.data.title}
+              />
+            ) : (
+              <img
+                src={nextPost.data.cover.src}
+                width="400"
+                height="300"
+                class="next-post-img"
+                alt={nextPost.data.title}
+              />
+            )
+          ) : (
+            <div class="next-post-img-placeholder" />
+          )
+        }
+      </div>
+
+      <!-- Content -->
+      <div class="next-post-content">
+        <p class="next-post-kicker">Read next</p>
+        <h3 class="next-post-title">{nextPost.data.title}</h3>
+        <div class="next-post-meta">
+          <span class="next-post-time">{readingTime(nextPost.body)}</span>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+            class="next-post-arrow"
+            aria-hidden="true"
           >
-            {nextPost.data.title}
-          </h3>
-          <!-- Text  -->
-          <div
-            class="flex items-center justify-between font-normal font-sans text-foreground/70 max-w-none line-clamp-2"
-          >
-            {readingTime(nextPost.body)}
-            <!-- <Content /> -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              class="size-5"
-            >
-              <path
-                fill-rule="evenodd"
-                d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z"
-                clip-rule="evenodd"></path>
-            </svg>
-          </div>
+            <path
+              fill-rule="evenodd"
+              d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z"
+              clip-rule="evenodd"></path>
+          </svg>
         </div>
       </div>
-    </a>
-  </div>
+    </div>
+  </a>
 </div>
+
+<style>
+  .next-post-section {
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .next-post-link {
+    display: flex;
+    align-items: stretch;
+    gap: 0.875rem;
+    text-decoration: none;
+    color: inherit;
+  }
+
+  /* Rotated vertical "UP NEXT" label */
+  .next-post-eyebrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    flex-shrink: 0;
+  }
+
+  .next-post-eyebrow span {
+    font-family: 'Inter Variable', sans-serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    white-space: nowrap;
+    opacity: 0.75;
+    transition: opacity 300ms ease;
+  }
+
+  .group:hover .next-post-eyebrow span {
+    opacity: 1;
+  }
+
+  /* Card shell */
+  .next-post-card {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+    border-radius: 0.75rem;
+    border: 1px solid var(--border);
+    background-color: var(--card);
+    position: relative;
+    transition:
+      border-color 350ms ease,
+      box-shadow 350ms ease;
+  }
+
+  /* Animated accent hairline on bottom */
+  .next-post-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 0;
+    background-color: var(--color-accent);
+    transition: width 450ms cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 0 0 0.75rem 0.75rem;
+  }
+
+  .group:hover .next-post-card {
+    border-color: color-mix(in srgb, var(--color-accent) 40%, var(--border));
+    box-shadow: 0 6px 28px rgba(0, 0, 0, 0.07);
+  }
+
+  .group:hover .next-post-card::after {
+    width: 100%;
+  }
+
+  /* Image column */
+  .next-post-image-col {
+    width: 38%;
+    max-width: 210px;
+    flex-shrink: 0;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .next-post-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 550ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .next-post-img-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      135deg,
+      color-mix(in srgb, var(--color-accent) 12%, var(--card)),
+      color-mix(in srgb, var(--color-accent) 4%, var(--card))
+    );
+  }
+
+  .group:hover .next-post-img {
+    transform: scale(1.05);
+  }
+
+  /* Content */
+  .next-post-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.5rem 1.75rem;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  /* "Read next" kicker */
+  .next-post-kicker {
+    font-family: 'Inter Variable', sans-serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin: 0;
+    opacity: 0.8;
+  }
+
+  /* Title */
+  .next-post-title {
+    font-family: 'Merriweather Variable', Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: var(--color-accent);
+    margin: 0;
+    flex: 1;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    transition: color 300ms ease;
+  }
+
+  /* Meta row */
+  .next-post-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 0.25rem;
+  }
+
+  .next-post-time {
+    font-family: 'Inter Variable', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.03em;
+    color: var(--foreground);
+    opacity: 0.45;
+  }
+
+  .next-post-arrow {
+    width: 1rem;
+    height: 1rem;
+    color: var(--foreground);
+    opacity: 0.45;
+    transform: translateX(0);
+    transition:
+      transform 300ms ease,
+      opacity 300ms ease,
+      color 300ms ease;
+    flex-shrink: 0;
+  }
+
+  .group:hover .next-post-arrow {
+    transform: translateX(5px);
+    opacity: 1;
+    color: var(--color-accent);
+  }
+
+  /* Dark mode */
+  :global(html.dark) .next-post-card {
+    background-image: var(--noise-texture);
+  }
+
+  :global(html.dark) .group:hover .next-post-card {
+    box-shadow: 0 8px 36px rgba(0, 0, 0, 0.45);
+  }
+
+  /* Mobile */
+  @media (max-width: 540px) {
+    .next-post-eyebrow {
+      display: none;
+    }
+
+    .next-post-image-col {
+      width: 36%;
+    }
+
+    .next-post-content {
+      padding: 1.125rem 1.25rem;
+    }
+
+    .next-post-title {
+      font-size: 1rem;
+      -webkit-line-clamp: 4;
+    }
+  }
+</style>
