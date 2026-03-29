@@ -60,10 +60,10 @@ const useOptimizedImage =
 
       <!-- Content -->
       <div class="next-post-content">
-        <p class="next-post-kicker">Read next</p>
+        <p class="next-post-kicker text-xs">Read next</p>
         <h3 class="next-post-title">{nextPost.data.title}</h3>
         <div class="next-post-meta">
-          <span class="next-post-time">{readingTime(nextPost.body)}</span>
+          <span class="next-post-time text-sm">{readingTime(nextPost.body)}</span>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20"
@@ -168,7 +168,6 @@ const useOptimizedImage =
   /* "Read next" kicker */
   .next-post-kicker {
     font-family: 'Inter Variable', sans-serif;
-    font-size: 0.6rem;
     letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--color-accent);
@@ -202,7 +201,6 @@ const useOptimizedImage =
 
   .next-post-time {
     font-family: 'Inter Variable', sans-serif;
-    font-size: 0.72rem;
     letter-spacing: 0.03em;
     color: var(--foreground);
     opacity: 0.45;
@@ -212,7 +210,6 @@ const useOptimizedImage =
     width: 1rem;
     height: 1rem;
     color: var(--foreground);
-    opacity: 0.45;
     transform: translateX(0);
     transition:
       transform 300ms ease,
