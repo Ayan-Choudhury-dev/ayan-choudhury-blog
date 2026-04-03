@@ -9,10 +9,10 @@ Regular commits not guaranteed.
 
 | Feature                          | Status  |
 | -------------------------------- | ------- |
-| Fix RSS Feed                     | Pending |
+| Fix RSS Feed                     | Done |
 | Add Bio                          | Pending |
-| Implement dynamic OpenGraph data | Pending |
+| Implement dynamic OpenGraph data | Done |
 
 ---
 
-Built with procrastination and a healthy helping of Chat GPT 4o by Ayan.
+Built with procrastination and a healthy helping of Claude by Ayan.

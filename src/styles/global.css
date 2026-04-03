@@ -76,8 +76,8 @@ footer {
 
 article {
   @apply max-w-full prose prose-img:mx-auto prose-img:my-auto;
-  @apply prose-headings:font-medium;
-  @apply font-serif font-light leading-loose tracking-normal space-y-8;
+  @apply prose-headings:font-semibold prose-headings:tracking-[-0.015em];
+  @apply font-serif font-light leading-[1.78] tracking-normal space-y-6;
 
   strong {
     @apply font-bold;
