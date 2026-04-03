@@ -56,6 +56,18 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
     transform: translateY(0);
   }
 
+  /* Staggered animation delays via data attribute (survives DOM swaps) */
+  [data-animate-index="0"] { transition-delay: 0ms; }
+  [data-animate-index="1"] { transition-delay: 150ms; }
+  [data-animate-index="2"] { transition-delay: 300ms; }
+  [data-animate-index="3"] { transition-delay: 450ms; }
+  [data-animate-index="4"] { transition-delay: 600ms; }
+  [data-animate-index="5"] { transition-delay: 750ms; }
+  [data-animate-index="6"] { transition-delay: 900ms; }
+  [data-animate-index="7"] { transition-delay: 1050ms; }
+  [data-animate-index="8"] { transition-delay: 1200ms; }
+  [data-animate-index="9"] { transition-delay: 1350ms; }
+
   /* Suppress transitions during DOM swap */
   html.no-entrance-transition *,
   html.no-entrance-transition *::before,
@@ -207,7 +219,8 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
     const animateElements = document.querySelectorAll('.animate');
 
     animateElements.forEach((element, index) => {
-      element.style.transitionDelay = `${index * 150}ms`;
+      // Use data attribute instead of inline style (survives DOM swaps)
+      element.dataset.animateIndex = index;
       element.classList.add('show');
     });
   }
@@ -326,9 +339,41 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
     document.addEventListener('scroll', onScroll);
   }
 
-  // Use astro:page-load instead of DOMContentLoaded or astro:after-swap
+  // Initial page load: use astro:page-load for first load
+  // Subsequent navigations: use astro:after-swap (captures correct screenshot)
+  let isFirstLoad = true;
+
   document.addEventListener('astro:page-load', () => {
-    initFirstLoad();
+    if (isFirstLoad) {
+      isFirstLoad = false;
+      initFirstLoad();
+    }
+  });
+
+  // Navigations: set up animation state after DOM swap
+  document.addEventListener('astro:after-swap', () => {
+    // Re-apply theme (safety net)
+    var stored = localStorage.getItem('theme');
+    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    var theme = stored || (prefersDark ? 'dark' : 'light');
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+
+    // Set up animations (elements already visible via no-entrance-transition)
+    animate();
+    onScroll();
+    setupEventListeners();
+    updateThemeButtons();
+
+    // Remove transition suppression after layout settles
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        document.documentElement.classList.remove('no-entrance-transition');
+      });
+    });
   });
 
   preloadTheme();
