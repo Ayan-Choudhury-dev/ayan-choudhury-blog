@@ -19,6 +19,38 @@ export default config({
   },
 
   collections: {
+    snippets: collection({
+      label: "✨ Hero Snippets",
+      slugField: "title",
+      columns: ["title", "date"],
+
+      path: "src/content/snippets/**",
+
+      format: { contentField: "content" },
+
+      schema: {
+        title: fields.slug({ name: { label: "Snippet Title" } }),
+
+        content: fields.markdoc({
+          label: "Snippet Text",
+          options: {
+            image: {
+              directory: "src/assets/images",
+              publicPath: "@assets/images/",
+            },
+          },
+        }),
+
+        date: fields.date({
+          label: "Created",
+        }),
+
+        draft: fields.checkbox({
+          label: "Draft",
+          description: "Hide this snippet from the homepage",
+        }),
+      },
+    }),
     posts: collection({
       label: "✍️ Posts",
       entryLayout: "content",

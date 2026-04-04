@@ -5,170 +5,85 @@ import PageLayout from '@layouts/PageLayout.astro';
 import PostCardMini from '@components/PostCardMini.astro';
 import Link from '@components/Link.astro';
 import { SITE, HOME, SOCIALS } from '@consts';
-import { Mail } from 'lucide-astro';
-// import ArrowCard from "@components/ArrowCard.astro";
-// import { dateRange } from "@lib/utils";
-// import { ContentSchemaContainsSlugError } from "node_modules/astro/dist/core/errors/errors-data";
-// import { cloudImage } from "node_modules/@keystatic/core/dist/declarations/src/content-components";
-// import { BLOG } from "@consts";
-// import Pagination from "@components/Pagination.astro";
+import { MagicalSnippet } from '@components/MagicalSnippet';
 
 const allPosts = await getCollection('blog');
 const totalPosts = allPosts.filter((post) => !post.data.draft).length;
-const showOlderPosts = totalPosts > SITE.NUM_POSTS_ON_HOMEPAGE;
 
 const blog = allPosts
   .filter((post) => !post.data.draft)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, SITE.NUM_POSTS_ON_HOMEPAGE);
 
-const projects = (await getCollection('projects'))
-  .filter((project) => !project.data.draft)
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, SITE.NUM_PROJECTS_ON_HOMEPAGE);
-
-const allwork = (await getCollection('work'))
-  .sort((a, b) => new Date(b.data.dateStart).valueOf() - new Date(a.data.dateStart).valueOf())
-  .slice(0, SITE.NUM_WORKS_ON_HOMEPAGE);
+// Fetch random hero snippet
+const allSnippets = await getCollection('snippets');
+const activeSnippets = allSnippets.filter((snippet) => !snippet.data.draft);
+const randomSnippetEntry = activeSnippets[Math.floor(Math.random() * activeSnippets.length)];
+const randomSnippetText = randomSnippetEntry ? randomSnippetEntry.body : null;
 ---
 
 <PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION}>
   <Container>
-    <div class="space-y-16">
-      <!-- Posts -->
-      <section class="animate space-y-6">
-        <div class="flex flex-wrap gap-y-2 items-center justify-between">
-          <!-- <h5 class="font-semibold text-black dark:text-white">
-            Latest posts
-          </h5> -->
-          <!-- <Link href="/blog">
-            See all posts
-          </Link> -->
-        </div>
-        <ul class="flex flex-col gap-16">
-          <!-- {blog.map(post => (
-            <li>
-              <ArrowCard entry={post} />
-            </li>
-          ))} -->
-          {
-            blog.map((post) => (
-              <article>
-                <PostCardMini entry={post} />
-              </article>
-            ))
-          }
-        </ul>
-      </section>
+    <!-- Identity + Hero -->
+    <section class="mb-16 space-y-5">
+      <MagicalSnippet
+        client:load
+        text={randomSnippetText ??
+          'Explore a collection of thoughts, snippets, and daily observations.'}
+      />
+    </section>
 
-      <!-- Read older posts link -->
+    <!-- Divider -->
+    <div class="border-t border-foreground/10 mb-16"></div>
 
-      {
-        showOlderPosts && (
-          <section class="border-y border-gray-300 dark:border-gray-600 py-4 text-terracotta-500 flex justify-center">
-            <Link href={'/blog/2'} aria-label={'Read older posts'} underline={false}>
-              <div class="flex gap-2 w-fit mx-auto">
-                Read older posts
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke-width="1.5"
-                  stroke="currentColor"
-                  class="size-6"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
-                  />
-                </svg>
-              </div>
+    <!-- Posts -->
+    <section class="animate space-y-10">
+      <div class="flex items-baseline justify-between">
+        <h2 class="font-serif text-xs font-semibold text-foreground/70 uppercase tracking-widest">
+          Latest
+        </h2>
+        <Link href="/blog" aria-label="View all posts" underline={false}>
+          <span class="text-xs font-mono text-foreground/40 hover:text-foreground/70 transition-colors duration-200 flex items-center gap-1.5">
+            All {totalPosts} entries
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-3">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+            </svg>
+          </span>
+        </Link>
+      </div>
+
+      <ul class="flex flex-col gap-12">
+        {
+          blog.map((post) => (
+            <article>
+              <PostCardMini entry={post} />
+            </article>
+          ))
+        }
+      </ul>
+    </section>
+
+    <!-- Footer contact -->
+    <footer class="mt-24 pt-8 border-t border-foreground/10">
+      <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
+        <span class="text-xs font-mono text-foreground/35">say hello —</span>
+        {
+          SOCIALS.map((SOCIAL) => (
+            <Link href={SOCIAL.HREF} external aria-label={`${SITE.NAME} on ${SOCIAL.NAME}`}>
+              <span class="text-xs font-mono text-foreground/50 hover:text-foreground/80 transition-colors duration-200">
+                {SOCIAL.NAME}
+              </span>
             </Link>
-          </section>
-        )
-      }
-
-      <!--       
-      <section class="animate space-y-6">
-        <div class="flex flex-wrap gap-y-2 items-center justify-between">
-          <h5 class="font-semibold text-black dark:text-white">
-            Work Experience
-          </h5>
-          <Link href="/work">
-            See all work
-          </Link>
-        </div>
-        <ul class="flex flex-col space-y-4">
-          {work.map(entry => (
-            <li>
-              <div class="text-sm opacity-75">
-                {dateRange(entry.data.dateStart, entry.data.dateEnd)}
-              </div>
-              <div class="font-semibold text-black dark:text-white">
-                {entry.data.company}
-              </div>
-              <div class="text-sm opacity-75">
-                {entry.data.role}
-              </div>
-              <article>
-                <entry.Content />
-              </article>
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      <section class="animate space-y-6">
-        <div class="flex flex-wrap gap-y-2 items-center justify-between">
-          <h5 class="font-semibold text-black dark:text-white">
-            Recent projects
-          </h5>
-          <Link href="/projects">
-            See all projects
-          </Link>
-        </div>
-        <ul class="flex flex-col gap-4">
-          {projects.map(project => (
-            <li>
-              <ArrowCard entry={project} />
-            </li>
-          ))}
-        </ul>
-      </section> -->
-
-      <!-- Contact Information -->
-
-      <section class="animate space-y-4">
-        <div class="flex gap-2">
-          <Mail />
-          <h5 class="font-semibold text-foreground">Let's Connect</h5>
-        </div>
-
-        <article>
-          <p>
-            If you want to get in touch with me about something or just to say hi, reach out on
-            social media or send me an email.
-          </p>
-        </article>
-        <ul class="flex flex-wrap gap-2">
-          {
-            SOCIALS.map((SOCIAL) => (
-              <li class="flex gap-x-2 text-nowrap">
-                <Link href={SOCIAL.HREF} external aria-label={`${SITE.NAME} on ${SOCIAL.NAME}`}>
-                  {SOCIAL.NAME}
-                </Link>
-                {'/'}
-              </li>
-            ))
-          }
-          <li class="line-clamp-1">
-            <Link href={`mailto:${SITE.EMAIL}`} aria-label={`Email ${SITE.NAME}`}>
-              {SITE.EMAIL}
-            </Link>
-          </li>
-        </ul>
-      </section>
-    </div>
+          ))
+        }
+        <Link href={`mailto:${SITE.EMAIL}`} aria-label={`Email ${SITE.NAME}`}>
+          <span
+            class="text-xs font-mono text-foreground/50 hover:text-foreground/80 transition-colors duration-200"
+          >
+            {SITE.EMAIL}
+          </span>
+        </Link>
+      </div>
+    </footer>
   </Container>
 </PageLayout>

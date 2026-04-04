@@ -1,0 +1,62 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '@layouts/PageLayout.astro';
+import Container from '@components/Container.astro';
+import ArchivePostRow from '@components/ArchivePostRow.astro';
+import { BLOG } from '@consts';
+
+const allPosts = (await getCollection('blog'))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const postsByYear = allPosts.reduce(
+  (acc, post) => {
+    const year = new Date(post.data.date).getFullYear();
+    if (!acc[year]) acc[year] = [];
+    acc[year].push(post);
+    return acc;
+  },
+  {} as Record<number, typeof allPosts>
+);
+
+const years = Object.keys(postsByYear)
+  .map(Number)
+  .sort((a, b) => b - a);
+---
+
+<PageLayout title="All posts" description={BLOG.DESCRIPTION}>
+  <Container>
+
+    <!-- Header -->
+    <div class="mb-16 space-y-1">
+      <p class="text-lg uppercase text-foreground font-bold">All posts</p>
+      <p class="text-sm font-mono text-muted-foreground">{allPosts.length} entries</p>
+    </div>
+
+    <!-- Year groups -->
+    <div class="space-y-16">
+      {years.map((year) => (
+        <section>
+
+          <!-- Year row -->
+          <div class="flex items-center gap-4 mb-4">
+            <span class="font-serif font-semibold text-xl text-foreground-color">{year}</span>
+            <div class="flex-1 border-t border-foreground/50" />
+            <span class="text-xs font-mono text-muted-foreground">
+              {postsByYear[year].length} {postsByYear[year].length === 1 ? 'entry' : 'entries'}
+            </span>
+          </div>
+
+          <!-- Post rows -->
+          <ul>
+            {postsByYear[year].map((post) => (
+              <ArchivePostRow post={post} />
+            ))}
+          </ul>
+
+        </section>
+      ))}
+    </div>
+
+  </Container>
+</PageLayout>

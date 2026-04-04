@@ -1,3 +1,10 @@
+# Content files — do not format
+src/content/blog/**
+src/content/posts/**
+src/content/music/**
+src/content/projects/**
+src/content/work/**
+
 node_modules
 build
 dist

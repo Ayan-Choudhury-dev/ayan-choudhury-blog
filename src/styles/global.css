@@ -1,15 +1,15 @@
-/* inter-latin-wght-normal */
+/* geist-latin-wght-normal */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @font-face {
-  font-family: 'Inter Variable';
+  font-family: 'Geist Variable';
   font-style: normal;
   font-display: swap;
   font-weight: 100 900;
-  src: url(https://cdn.jsdelivr.net/fontsource/fonts/inter:vf@latest/latin-wght-normal.woff2)
+  src: url(https://cdn.jsdelivr.net/fontsource/fonts/geist:vf@latest/latin-wght-normal.woff2)
     format('woff2-variations');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
     U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
@@ -251,67 +251,67 @@ html.dark .postcard.rounded-2xl #header_container {
 @layer base {
   :root {
     /* — surfaces (warm cream palette) — */
-    --background: #ede7de;
-    --foreground: #3f546e;
-    --card: #f7eee3;
-    --card-foreground: #1e2d40;
-    --popover: #e2d9cb;
-    --popover-foreground: #1e2d40;
-    --primary: #db7161;
-    --primary-foreground: #fafafa;
-    --secondary: #e0dbd2;
-    --secondary-foreground: #1e2d40;
-    --muted: #e0dbd2;
-    --muted-foreground: #5c7a8a;
-    --accent: #e0dbd2;
-    --accent-foreground: #1e2d40;
-    --destructive: #ef4444;
-    --destructive-foreground: #fafafa;
-    --border: #d3cec5;
-    --input: #d3cec5;
-    --ring: #db7161;
-    --chart-1: #db7161;
-    --chart-2: #2a9d90;
-    --chart-3: #274754;
-    --chart-4: #e8c468;
-    --chart-5: #f4a462;
+    --background: 237 231 222;
+    --foreground: 63 84 110;
+    --card: 247 238 227;
+    --card-foreground: 30 45 64;
+    --popover: 226 217 203;
+    --popover-foreground: 30 45 64;
+    --primary: 219 113 97;
+    --primary-foreground: 250 250 250;
+    --secondary: 224 219 210;
+    --secondary-foreground: 30 45 64;
+    --muted: 224 219 210;
+    --muted-foreground: 92 122 138;
+    --accent: 224 219 210;
+    --accent-foreground: 30 45 64;
+    --destructive: 239 68 68;
+    --destructive-foreground: 250 250 250;
+    --border: 211 206 197;
+    --input: 211 206 197;
+    --ring: 219 113 97;
+    --chart-1: 219 113 97;
+    --chart-2: 42 157 144;
+    --chart-3: 39 71 84;
+    --chart-4: 232 196 104;
+    --chart-5: 244 164 98;
     --radius: 0.5rem;
     /* — terracotta accent tokens — */
-    --color-accent: #e17766;
-    --color-accent-fg: #fafafa;
-    --color-accent-subtle: #c66353;
+    --color-accent: 225 119 102;
+    --color-accent-fg: 250 250 250;
+    --color-accent-subtle: 198 99 83;
   }
 
   .dark {
     /* — surfaces (dark) — */
-    --background: #201f1d;
-    --foreground: #ebebeb;
-    --card: #2b2927;
-    --card-foreground: #ebebeb;
-    --popover: #2b2927;
-    --popover-foreground: #ebebeb;
-    --primary: #e7998d;
-    --primary-foreground: #1b1a18;
-    --secondary: #262626;
-    --secondary-foreground: #fafafa;
-    --muted: #262626;
-    --muted-foreground: #a3a3a3;
-    --accent: #262626;
-    --accent-foreground: #fafafa;
-    --destructive: #7f1d1d;
-    --destructive-foreground: #fafafa;
-    --border: #262626;
-    --input: #262626;
-    --ring: #e7998d;
-    --chart-1: #e7998d;
-    --chart-2: #2eb88a;
-    --chart-3: #e88c30;
-    --chart-4: #af57db;
-    --chart-5: #e23670;
+    --background: 32 31 29;
+    --foreground: 235 235 235;
+    --card: 43 41 39;
+    --card-foreground: 235 235 235;
+    --popover: 43 41 39;
+    --popover-foreground: 235 235 235;
+    --primary: 231 153 141;
+    --primary-foreground: 27 26 24;
+    --secondary: 38 38 38;
+    --secondary-foreground: 250 250 250;
+    --muted: 38 38 38;
+    --muted-foreground: 163 163 163;
+    --accent: 38 38 38;
+    --accent-foreground: 250 250 250;
+    --destructive: 127 29 29;
+    --destructive-foreground: 250 250 250;
+    --border: 38 38 38;
+    --input: 38 38 38;
+    --ring: 231 153 141;
+    --chart-1: 231 153 141;
+    --chart-2: 46 184 138;
+    --chart-3: 232 140 48;
+    --chart-4: 175 87 219;
+    --chart-5: 226 54 112;
     /* — terracotta accent tokens — */
-    --color-accent: #e16c5a;
-    --color-accent-fg: #1b1a18;
-    --color-accent-subtle: #c07060;
+    --color-accent: 225 108 90;
+    --color-accent-fg: 27 26 24;
+    --color-accent-subtle: 192 112 96;
   }
 }
 
