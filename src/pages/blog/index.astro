@@ -40,8 +40,8 @@ const years = Object.keys(postsByYear)
 
           <!-- Year row -->
           <div class="flex items-center gap-4 mb-4">
-            <span class="font-serif font-semibold text-xl text-foreground-color">{year}</span>
-            <div class="flex-1 border-t border-foreground/50" />
+            <span class="font-serif font-semibold text-xl text-accent-color">{year}</span>
+            <div class="flex-1 border-t border-gray-300 dark:border-gray-700" />
             <span class="text-xs font-mono text-muted-foreground">
               {postsByYear[year].length} {postsByYear[year].length === 1 ? 'entry' : 'entries'}
             </span>
