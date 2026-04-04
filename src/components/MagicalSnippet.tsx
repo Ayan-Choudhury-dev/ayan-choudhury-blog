@@ -1,12 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 
 interface MagicalSnippetProps {
-  text: string;
+  texts: string[];
 }
 
-export const MagicalSnippet: React.FC<MagicalSnippetProps> = ({ text }) => {
-  const words = (text ?? '').trim().split(/\s+/).filter((w) => w.length > 0);
+export const MagicalSnippet: React.FC<MagicalSnippetProps> = ({ texts }) => {
+  const [text, setText] = useState(texts[0] ?? '');
+
+  useEffect(() => {
+    const picked = texts[Math.floor(Math.random() * texts.length)];
+    setText(picked ?? '');
+  }, []);
+
+  const words = text.trim().split(/\s+/).filter((w) => w.length > 0);
 
   const containerVariants = {
     hidden: { opacity: 0 },

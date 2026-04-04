@@ -15,11 +15,11 @@ const blog = allPosts
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, SITE.NUM_POSTS_ON_HOMEPAGE);
 
-// Fetch random hero snippet
+// Fetch all snippets — random selection happens client-side to work in static builds
 const allSnippets = await getCollection('snippets');
-const activeSnippets = allSnippets.filter((snippet) => !snippet.data.draft);
-const randomSnippetEntry = activeSnippets[Math.floor(Math.random() * activeSnippets.length)];
-const randomSnippetText = randomSnippetEntry ? randomSnippetEntry.body : null;
+const snippetTexts = allSnippets
+  .filter((s) => !s.data.draft && s.body)
+  .map((s) => s.body as string);
 ---
 
 <PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION}>
@@ -28,8 +28,7 @@ const randomSnippetText = randomSnippetEntry ? randomSnippetEntry.body : null;
     <section class="mb-16 space-y-5">
       <MagicalSnippet
         client:load
-        text={randomSnippetText ??
-          'Explore a collection of thoughts, snippets, and daily observations.'}
+        texts={snippetTexts.length > 0 ? snippetTexts : ['Explore a collection of thoughts, snippets, and daily observations.']}
       />
     </section>
 
@@ -43,10 +42,22 @@ const randomSnippetText = randomSnippetEntry ? randomSnippetEntry.body : null;
           Latest
         </h2>
         <Link href="/blog" aria-label="View all posts" underline={false}>
-          <span class="text-xs font-mono text-foreground/40 hover:text-foreground/70 transition-colors duration-200 flex items-center gap-1.5">
+          <span
+            class="text-xs font-mono text-foreground/40 hover:text-foreground/70 transition-colors duration-200 flex items-center gap-1.5"
+          >
             All {totalPosts} entries
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-3">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="size-3"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"></path>
             </svg>
           </span>
         </Link>
