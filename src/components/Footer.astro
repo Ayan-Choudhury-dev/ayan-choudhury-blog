@@ -7,13 +7,8 @@ const year = new Date().getFullYear();
 
 <footer class="animate">
   <Container>
-    <!-- <div class="relative">
-      <div class="absolute right-0 -top-20">
-        <BackToTop />
-      </div>
-    </div> -->
     <div class="flex flex-col items-center gap-4">
-      <div class="font-semibold text-foreground/60">
+      <div class="font-semibold text-accent-color">
         &copy; {year}
         {SITE.AUTHOR}
       </div>
@@ -22,7 +17,7 @@ const year = new Date().getFullYear();
           href="https://vercel.com"
           target="_blank"
           rel="noopener noreferrer"
-          class="flex items-center gap-1.5 font-semibold text-foreground/60 hover:text-foreground/80 transition-colors duration-300"
+          class="flex items-center gap-1.5 font-semibold fill-accent-color hover:text-foreground/80 transition-colors duration-300"
         >
           <svg
             width="20"
@@ -30,7 +25,7 @@ const year = new Date().getFullYear();
             viewBox="0 0 76 65"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            class="text-foreground/60"
+            class=""
           >
             <path d="M37.5274 0L75.0548 65H0L37.5274 0Z" fill="currentColor"></path>
           </svg>
@@ -40,12 +35,9 @@ const year = new Date().getFullYear();
           href="https://astro.build"
           target="_blank"
           rel="noopener noreferrer"
-          class="flex items-center gap-1.5 font-semibold text-foreground/60 hover:text-foreground/80 transition-colors duration-300"
+          class="flex items-center gap-1.5 font-semibold text-accent-color hover:text-foreground/80 transition-colors duration-300"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 128 128"
-            class="w-6 h-6"
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" class="w-6 h-6"
             ><defs
               ><linearGradient
                 id="a"
