@@ -41,6 +41,10 @@ body {
   @apply size-full;
 }
 
+.text-accent-color {
+  color: rgb(var(--color-accent));
+}
+
 body {
   @apply font-sans antialiased;
   @apply flex flex-col;
@@ -111,12 +115,20 @@ article {
 }
 
 @layer utilities {
+  .text-accent-color {
+    color: rgb(var(--color-accent));
+  }
+
+  .dark .text-accent-color {
+    color: rgb(var(--color-accent));
+  }
+
   .title-accent {
-    color: var(--color-accent);
+    @apply text-accent-color;
   }
 
   .dark .title-accent {
-    color: var(--color-accent-subtle);
+    color: rgb(var(--color-accent-subtle));
   }
 
   article,
@@ -155,7 +167,8 @@ article {
 
   article a:hover {
     /* @apply text-black dark:text-white; */
-    @apply text-accent-color-subtle dark:text-accent-color;
+    color: rgb(var(--color-accent-subtle));
+    @apply dark:text-accent-color;
     @apply decoration-black/25 dark:decoration-white/50;
     @apply transition duration-500 ease-in-out;
     @apply underline-offset-4;

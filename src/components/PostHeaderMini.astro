@@ -44,7 +44,9 @@ const useOptimizedImage =
   }
 
   <div id="meta" class="px-4 sm:px-12">
-    <div class="title-accent mt-8 child:font-serif child:font-normal text-lg sm:text-xl">
+    <div
+      class="title-accent text-accent-color mt-8 child:font-serif child:font-normal text-lg sm:text-xl"
+    >
       <a href={`/${entry.collection}/${entry.slug}`} class="no-underline !text-inherit">
         {entry.data.title}
       </a>
