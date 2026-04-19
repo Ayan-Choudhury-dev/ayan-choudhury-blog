@@ -31,8 +31,9 @@ export default config({
       schema: {
         title: fields.slug({ name: { label: "Snippet Title" } }),
 
-        content: fields.textarea({
+        content: fields.text({
           label: "Snippet Text",
+          multiline: true,
         }),
 
         date: fields.date({

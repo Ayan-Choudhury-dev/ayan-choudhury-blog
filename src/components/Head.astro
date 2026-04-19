@@ -186,13 +186,6 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
 </script>
 
 <script is:inline>
-  function init() {
-    preloadTheme();
-    onScroll();
-    animate();
-    setupEventListeners();
-  }
-
   function animate() {
     const animateElements = document.querySelectorAll('.animate:not([data-animate-index])');
 
