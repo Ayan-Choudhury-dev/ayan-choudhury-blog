@@ -17,23 +17,7 @@ const { title, description, image } = Astro.props;
 <!doctype html>
 <html lang="en">
   <head>
-    <!-- CRITICAL: Runs before any CSS to prevent FOUC. Must be inline and first. -->
-    <style is:inline>
-      html {
-        background-color: #ede7de;
-      }
-      html.dark {
-        background-color: #201f1d;
-      }
-    </style>
-    <script is:inline>
-      (function () {
-        var stored = localStorage.getItem('theme');
-        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        var theme = stored || (prefersDark ? 'dark' : 'light');
-        if (theme === 'dark') document.documentElement.classList.add('dark');
-      })();
-    </script>
+
     <Head title={`${title} | ${SITE.NAME}`} description={description} image={image} />
     <Analytics />
   </head>

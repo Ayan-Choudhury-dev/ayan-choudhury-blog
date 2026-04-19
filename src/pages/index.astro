@@ -25,15 +25,15 @@ const snippetTexts = allSnippets
 <PageLayout title={HOME.TITLE} description={HOME.DESCRIPTION}>
   <Container>
     <!-- Identity + Hero -->
-    <section class="mb-16 space-y-5">
+    <section class="mb-16 hidden space-y-5">
       <MagicalSnippet
         client:load
-        texts={snippetTexts.length > 0 ? snippetTexts : ['Explore a collection of thoughts, snippets, and daily observations.']}
+        texts={snippetTexts.length > 0
+          ? snippetTexts
+          : ['Explore a collection of thoughts, snippets, and daily observations.']}
       />
+      <div class="border-t border-foreground/10 mb-16"></div>
     </section>
-
-    <!-- Divider -->
-    <div class="border-t border-foreground/10 mb-16"></div>
 
     <!-- Posts -->
     <section class="animate space-y-10">

@@ -175,32 +175,6 @@ article {
   }
 }
 
-/* Hard-prevent any transitions during the DOM swap itself */
-html.switching * {
-  transition: none !important;
-}
-
-.animate {
-  opacity: 0;
-  transform: translateY(10px);
-  transition:
-    opacity 0.6s ease-out,
-    transform 0.6s ease-out;
-}
-
-.animate.show {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* Prevent FOUC on first load: suppress all transitions globally */
-html.no-entrance-transition *,
-html.no-entrance-transition *::before,
-html.no-entrance-transition *::after {
-  transition: none !important;
-  animation: none !important;
-}
-
 /* Smooth theme transitions */
 html.theme-transitioning,
 html.theme-transitioning * {
@@ -209,11 +183,6 @@ html.theme-transitioning * {
     color 300ms ease-in-out,
     border-color 300ms ease-in-out,
     box-shadow 300ms ease-in-out !important;
-}
-
-/* Show .animate in final state with no transition */
-html.no-entrance-transition .animate {
-  @apply opacity-100 translate-y-0;
 }
 
 html #back-to-top {

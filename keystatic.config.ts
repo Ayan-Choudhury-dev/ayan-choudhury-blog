@@ -31,14 +31,8 @@ export default config({
       schema: {
         title: fields.slug({ name: { label: "Snippet Title" } }),
 
-        content: fields.markdoc({
+        content: fields.textarea({
           label: "Snippet Text",
-          options: {
-            image: {
-              directory: "src/assets/images",
-              publicPath: "@assets/images/",
-            },
-          },
         }),
 
         date: fields.date({

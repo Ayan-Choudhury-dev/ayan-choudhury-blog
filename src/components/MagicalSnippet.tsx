@@ -1,59 +1,85 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect, useMemo } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { TextEffect } from '@/components/motion-primitives/text-effect';
 
 interface MagicalSnippetProps {
   texts: string[];
 }
 
+type SnippetType = 'quote' | 'normal';
+
+interface ParsedSnippet {
+  type: SnippetType;
+  content: string;
+}
+
 export const MagicalSnippet: React.FC<MagicalSnippetProps> = ({ texts }) => {
-  const [text, setText] = useState(texts[0] ?? '');
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
-    const picked = texts[Math.floor(Math.random() * texts.length)];
-    setText(picked ?? '');
-  }, []);
+    const randomIdx = Math.floor(Math.random() * texts.length);
+    setCurrentIndex(randomIdx);
+  }, [texts]);
 
-  const words = text.trim().split(/\s+/).filter((w) => w.length > 0);
+  const rawText = texts[currentIndex] ?? '';
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.08, delayChildren: 0.2 },
-    },
-  };
-
-  const wordVariants = {
-    hidden: { opacity: 0, y: 10, filter: 'blur(4px)' },
-    visible: {
-      opacity: 1,
-      y: 0,
-      filter: 'blur(0px)',
-      transition: { duration: 0.6, type: 'spring' as const, stiffness: 100, damping: 15 },
-    },
-  };
+  const parsed = useMemo((): ParsedSnippet => {
+    const trimmed = rawText.trim();
+    if (trimmed.startsWith('>')) {
+      // It's a quote
+      let content = trimmed.substring(1).trim();
+      // Handle legacy markdown formatting like >*Text*
+      content = content.replace(/^\*+\s*(.*?)\s*\*+$/, '$1');
+      return { type: 'quote', content };
+    }
+    return { type: 'normal', content: trimmed };
+  }, [rawText]);
 
   return (
-    <motion.div
-      className="font-semibold font-serif text-lg leading-snug text-foreground max-w-2xl"
-      variants={containerVariants}
-      initial="hidden"
-      animate="visible"
-    >
-      <div className="relative">
-        <div className="absolute -inset-8 bg-gradient-to-r from-blue-500/10 via-purple-500/10 to-pink-500/10 blur-2xl rounded-full pointer-events-none -z-10" />
-        <div className="flex flex-wrap gap-x-[0.3em] gap-y-1">
-          {words.map((word, i) => (
-            <motion.span
-              key={`${i}-${word}`}
-              variants={wordVariants}
-              className="relative inline-block"
-            >
-              {word}
-            </motion.span>
-          ))}
-        </div>
-      </div>
-    </motion.div>
+    <div className="relative group min-h-[5rem] flex items-center py-4">
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={currentIndex}
+          className={`relative max-w-2xl pl-10 border-l-2 transition-colors duration-500 ${
+            parsed.type === 'quote'
+              ? 'border-accent-color/40 sm:border-accent-color/30 italic'
+              : 'border-transparent'
+          }`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          {parsed.type === 'quote' && (
+            <span className="absolute -left-3 -top-6 text-6xl font-serif text-accent-color/10 pointer-events-none select-none">
+              &ldquo;
+            </span>
+          )}
+
+          <div className="absolute -inset-16 bg-gradient-to-tr from-accent-color/10 via-transparent to-accent-color/5 blur-3xl rounded-full pointer-events-none -z-10 opacity-40 group-hover:opacity-100 transition-opacity duration-1000" />
+
+          <TextEffect
+            per="word"
+            as="h1"
+            preset="blur"
+            speedReveal={2}
+            className={`font-serif text-lg sm:text-xl tracking-tight leading-snug ${
+              parsed.type === 'quote'
+                ? 'text-foreground font-normal'
+                : 'text-foreground/85 font-medium'
+            }`}
+          >
+            {parsed.content}
+          </TextEffect>
+
+          {parsed.type === 'quote' && (
+            <motion.div
+              initial={{ width: 0 }}
+              animate={{ width: 48 }}
+              className="mt-6 h-px bg-accent-color/20"
+            />
+          )}
+        </motion.div>
+      </AnimatePresence>
+    </div>
   );
 };

@@ -43,42 +43,29 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
     background-color: #201f1d;
   }
 
-  /* Animate elements: hidden until JS adds .show */
+  @keyframes fade-in-up {
+    0% { opacity: 0; transform: translateY(10px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
   .animate {
     opacity: 0;
-    transform: translateY(10px);
-    transition:
-      opacity 0.6s ease-out,
-      transform 0.6s ease-out;
-  }
-  .animate.show {
-    opacity: 1;
-    transform: translateY(0);
+    animation: fade-in-up 0.6s ease-out forwards;
+    animation-play-state: paused;
   }
 
   /* Staggered animation delays via data attribute (survives DOM swaps) */
-  [data-animate-index="0"] { transition-delay: 0ms; }
-  [data-animate-index="1"] { transition-delay: 150ms; }
-  [data-animate-index="2"] { transition-delay: 300ms; }
-  [data-animate-index="3"] { transition-delay: 450ms; }
-  [data-animate-index="4"] { transition-delay: 600ms; }
-  [data-animate-index="5"] { transition-delay: 750ms; }
-  [data-animate-index="6"] { transition-delay: 900ms; }
-  [data-animate-index="7"] { transition-delay: 1050ms; }
-  [data-animate-index="8"] { transition-delay: 1200ms; }
-  [data-animate-index="9"] { transition-delay: 1350ms; }
-
-  /* Suppress transitions during DOM swap */
-  html.no-entrance-transition *,
-  html.no-entrance-transition *::before,
-  html.no-entrance-transition *::after {
-    transition: none !important;
-    animation: none !important;
-  }
-  html.no-entrance-transition .animate {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  [data-animate-index] { animation-play-state: running; }
+  [data-animate-index="0"] { animation-delay: 0ms; }
+  [data-animate-index="1"] { animation-delay: 150ms; }
+  [data-animate-index="2"] { animation-delay: 300ms; }
+  [data-animate-index="3"] { animation-delay: 450ms; }
+  [data-animate-index="4"] { animation-delay: 600ms; }
+  [data-animate-index="5"] { animation-delay: 750ms; }
+  [data-animate-index="6"] { animation-delay: 900ms; }
+  [data-animate-index="7"] { animation-delay: 1050ms; }
+  [data-animate-index="8"] { animation-delay: 1200ms; }
+  [data-animate-index="9"] { animation-delay: 1350ms; }
 
   /* Header: must be inline so it doesn't flash unstyled */
   header {
@@ -168,28 +155,19 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
   // --- View Transition theme & FOUC prevention ---
   // Must be is:inline so handlers register synchronously before any navigation
 
-  // BEFORE swap: prepare the incoming document so the first frame is correct
   document.addEventListener('astro:before-swap', function (e) {
     var isDark = document.documentElement.classList.contains('dark');
 
-    // 1. Carry over theme class
+    // 1. Carry over theme class ahead of layout
     if (isDark) {
       e.newDocument.documentElement.classList.add('dark');
     } else {
       e.newDocument.documentElement.classList.remove('dark');
     }
 
-    // 2. Suppress transitions during swap
-    e.newDocument.documentElement.classList.add('no-entrance-transition');
-
-    // 3. Pre-show all .animate elements so content doesn't flash invisible
-    e.newDocument.querySelectorAll('.animate').forEach(function (el) {
-      el.classList.add('show');
-    });
-
-    // 4. Remove font preload links (already cached)
-    e.newDocument.head.querySelectorAll('link[as="font"]').forEach(function (link) {
-      link.remove();
+    // 2. Assign staggered animation delays before the new document is painted
+    e.newDocument.querySelectorAll('.animate').forEach(function (element, index) {
+      element.dataset.animateIndex = index.toString();
     });
   });
 
@@ -216,12 +194,11 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
   }
 
   function animate() {
-    const animateElements = document.querySelectorAll('.animate');
+    const animateElements = document.querySelectorAll('.animate:not([data-animate-index])');
 
     animateElements.forEach((element, index) => {
       // Use data attribute instead of inline style (survives DOM swaps)
       element.dataset.animateIndex = index;
-      element.classList.add('show');
     });
   }
 
@@ -296,22 +273,11 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
   }
 
   function initFirstLoad() {
-    document.documentElement.classList.add('no-entrance-transition');
     preloadTheme();
     updateThemeButtons();
     onScroll();
-    document.querySelectorAll('.animate').forEach(function (el) {
-      el.classList.add('show');
-    });
+    animate();
     setupEventListeners();
-    // Wait for next frame to ensure all styles are applied, then remove transition suppression
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () {
-        document.documentElement.classList.remove('no-entrance-transition');
-        // Remove first-load flag to enable animations for React components
-        document.documentElement.removeAttribute('data-first-load');
-      });
-    });
   }
 
   function setupEventListeners() {
@@ -362,18 +328,9 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
       document.documentElement.classList.remove('dark');
     }
 
-    // Set up animations (elements already visible via no-entrance-transition)
-    animate();
     onScroll();
     setupEventListeners();
     updateThemeButtons();
-
-    // Remove transition suppression after layout settles
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        document.documentElement.classList.remove('no-entrance-transition');
-      });
-    });
   });
 
   preloadTheme();
