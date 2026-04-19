@@ -1,6 +1,6 @@
 ---
 // Component Imports
-import type { CollectionEntry } from 'astro:content';
+import { type CollectionEntry, render } from 'astro:content';
 import PostHeader from './PostHeader.astro';
 import TagLinks from './TagLinks.astro';
 
@@ -9,7 +9,7 @@ type Props = {
 };
 
 const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { Content } = await render(entry);
 ---
 
 <div

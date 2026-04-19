@@ -1,7 +1,12 @@
-import { defineCollection, z } from "astro:content";
+import { defineCollection } from "astro:content";
+import { z } from "astro:schema";
+import { glob } from "astro/loaders";
+
+// Astro v6 Content Layer Config
+// Relative paths in 'base' are relative to the project root.
 
 const blog = defineCollection({
-  type: "content",
+  loader: glob({ pattern: "**/*.{md,mdx,mdoc}", base: "./src/content/blog" }),
   schema: ({ image }) =>
     z.object({
       title: z.string(),
@@ -14,7 +19,7 @@ const blog = defineCollection({
 });
 
 const music = defineCollection({
-  type: "data",
+  loader: glob({ pattern: "**/*.yaml", base: "./src/content/music" }),
   schema: z.object({
     type: z.string(),
     name: z.string(),
@@ -28,7 +33,7 @@ const music = defineCollection({
 });
 
 const work = defineCollection({
-  type: "content",
+  loader: glob({ pattern: "**/*.md", base: "./src/content/work" }),
   schema: z.object({
     company: z.string(),
     role: z.string(),
@@ -38,7 +43,7 @@ const work = defineCollection({
 });
 
 const projects = defineCollection({
-  type: "content",
+  loader: glob({ pattern: "**/index.md", base: "./src/content/projects" }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
@@ -50,7 +55,7 @@ const projects = defineCollection({
 });
 
 const snippets = defineCollection({
-  type: "content",
+  loader: glob({ pattern: "**/*.{md,mdoc}", base: "./src/content/snippets" }),
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
@@ -59,4 +64,3 @@ const snippets = defineCollection({
 });
 
 export const collections = { blog, music, work, projects, snippets };
-// export const collections = { blog };

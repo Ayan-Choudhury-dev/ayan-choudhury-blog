@@ -1,0 +1,25 @@
+---
+import { getCollection } from 'astro:content';
+
+const blog = await getCollection('blog');
+const music = await getCollection('music');
+const projects = await getCollection('projects');
+const snippets = await getCollection('snippets');
+const work = await getCollection('work');
+---
+
+<html>
+<body>
+  <h1>Debug Content</h1>
+  <p>Blog count: {blog.length}</p>
+  <p>Music count: {music.length}</p>
+  <p>Projects count: {projects.length}</p>
+  <p>Snippets count: {snippets.length}</p>
+  <p>Work count: {work.length}</p>
+  
+  <h2>Blog IDs:</h2>
+  <ul>
+    {blog.map(post => <li>{post.id}</li>)}
+  </ul>
+</body>
+</html>

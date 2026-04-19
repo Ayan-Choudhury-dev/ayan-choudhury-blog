@@ -47,7 +47,7 @@ const useOptimizedImage =
     <div
       class="title-accent text-accent-color mt-8 child:font-serif child:font-normal text-lg sm:text-xl"
     >
-      <a href={`/${entry.collection}/${entry.slug}`} class="no-underline !text-inherit">
+      <a href={`/${entry.collection}/${entry.id}`} class="no-underline !text-inherit">
         {entry.data.title}
       </a>
     </div>
@@ -64,7 +64,7 @@ const useOptimizedImage =
       </div>
       &bull;
       <div class="font-base text-sm">
-        {readingTime(entry.body)}
+        {readingTime(entry.body ?? '')}
       </div>
     </div>
 

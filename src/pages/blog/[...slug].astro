@@ -1,5 +1,5 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content';
+import { type CollectionEntry, getCollection, render } from 'astro:content';
 import PageLayout from '@layouts/PageLayout.astro';
 import Container from '@components/Container.astro';
 import PostHeader from '@components/PostHeader.astro';
@@ -16,7 +16,7 @@ export async function getStaticPaths() {
     const nextPost = index < posts.length - 1 ? posts[index + 1] : null;
 
     return {
-      params: { slug: post.slug },
+      params: { slug: post.id },
       props: { post, nextPost },
     };
   });
@@ -28,7 +28,7 @@ type Props = {
 };
 
 const { post, nextPost } = Astro.props;
-const { Content } = await post.render();
+const { Content } = await render(post);
 
 // Ensure description is always a string
 const description = post.data.description || '';

@@ -35,7 +35,7 @@ const { entry } = Astro.props;
 
     <div id="frontmatter-container" class="absolute ml-10 mb-10 bottom-0 z-20">
       <div class="dark:text-terracotta-500 text-black child:font-serif child:font-normal text-xl">
-        <a href={`/${entry.collection}/${entry.slug}`} class="no-underline">
+        <a href={`/${entry.collection}/${entry.id}`} class="no-underline">
           {entry.data.title}
         </a>
       </div>
@@ -46,7 +46,7 @@ const { entry } = Astro.props;
         </div>
         &bull;
         <div class="font-base text-sm animate">
-          {readingTime(entry.body)}
+          {readingTime(entry.body ?? '')}
         </div>
       </div>
     </div>

@@ -17,8 +17,8 @@ const pages: Record<string, { title: string; description: string; type?: string 
       },
     ],
     // Blog posts
-    ...blogEntries.map(({ slug, data }) => [
-      `blog/${slug}`,
+    ...blogEntries.map(({ id, data }) => [
+      `blog/${id}`,
       {
         title: data.title,
         description: data.description || 'A blog post by Ayan Choudhury',
@@ -26,8 +26,8 @@ const pages: Record<string, { title: string; description: string; type?: string 
       },
     ]),
     // Work entries
-    ...workEntries.map(({ slug, data }) => [
-      `work/${slug}`,
+    ...workEntries.map(({ id, data }) => [
+      `work/${id}`,
       {
         title: `${data.role} at ${data.company}`,
         description: `Work experience: ${data.role} position`,
@@ -35,8 +35,8 @@ const pages: Record<string, { title: string; description: string; type?: string 
       },
     ]),
     // Project entries
-    ...projectEntries.map(({ slug, data }) => [
-      `projects/${slug}`,
+    ...projectEntries.map(({ id, data }) => [
+      `projects/${id}`,
       {
         title: data.title,
         description: data.description,

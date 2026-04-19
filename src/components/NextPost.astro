@@ -17,7 +17,7 @@ const useOptimizedImage =
 
 <div class="mt-16 pt-8 border-t border-border">
   <a
-    href={`/blog/${nextPost.slug}`}
+    href={`/blog/${nextPost.id}`}
     class="group flex items-stretch text-inherit no-underline"
     aria-label={`Read next: ${nextPost.data.title}`}
   >
@@ -83,7 +83,7 @@ const useOptimizedImage =
         </h3>
         <div class="flex items-center justify-between mt-1">
           <span class="text-sm font-sans tracking-[0.03em] text-foreground opacity-[0.45]">
-            {readingTime(nextPost.body)}
+            {readingTime(nextPost.body ?? '')}
           </span>
           <svg
             xmlns="http://www.w3.org/2000/svg"

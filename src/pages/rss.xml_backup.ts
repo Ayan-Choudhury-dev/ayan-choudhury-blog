@@ -28,7 +28,7 @@ export async function GET({ site }: Context) {
       title: post.data.title,
       description: post.data.description,
       pubDate: post.data.date,
-      link: `/${post.collection}/${post.slug}/`,
+      link: `/${post.collection}/${post.id}/`,
 
       customData: `<media:content
           type="image/${post.data.cover?.format == "jpg" ? "jpeg" : "png"}"
