@@ -31,9 +31,8 @@ export default config({
       schema: {
         title: fields.slug({ name: { label: "Snippet Title" } }),
 
-        content: fields.text({
+        content: fields.markdoc({
           label: "Snippet Text",
-          multiline: true,
         }),
 
         date: fields.date({
