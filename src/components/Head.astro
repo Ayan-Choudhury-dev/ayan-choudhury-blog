@@ -23,7 +23,6 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
 
 <!-- THEME: Absolute first after <head>; executes before any paint to prevent flash -->
 <script is:inline>
-  // Execute immediately to prevent theme flash
   (function () {
     const storedTheme = localStorage.getItem('theme');
     const theme =
@@ -35,9 +34,8 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
 
 <!-- Critical inline CSS: available instantly, prevents FOUC during initial load & view transitions -->
 <style is:inline>
-  /* Background colors: must be inline for both initial load and view transitions */
   html {
-    background-color: #ede7de;
+    background-color: #ede7de; /* Match global.css --background */
   }
   html.dark {
     background-color: #201f1d;
@@ -54,7 +52,6 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
     animation-play-state: paused;
   }
 
-  /* Staggered animation delays via data attribute (survives DOM swaps) */
   [data-animate-index] { animation-play-state: running; }
   [data-animate-index="0"] { animation-delay: 0ms; }
   [data-animate-index="1"] { animation-delay: 150ms; }
@@ -63,11 +60,7 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
   [data-animate-index="4"] { animation-delay: 600ms; }
   [data-animate-index="5"] { animation-delay: 750ms; }
   [data-animate-index="6"] { animation-delay: 900ms; }
-  [data-animate-index="7"] { animation-delay: 1050ms; }
-  [data-animate-index="8"] { animation-delay: 1200ms; }
-  [data-animate-index="9"] { animation-delay: 1350ms; }
 
-  /* Header: must be inline so it doesn't flash unstyled */
   header {
     position: fixed;
     left: 50%;
@@ -76,7 +69,6 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
     padding-top: 1.25rem;
     padding-bottom: 1.25rem;
     top: 0;
-    border: 2px solid transparent;
     border-bottom: 1px solid rgba(225, 119, 102, 0.12);
     background-color: rgba(247, 238, 227, 0.85);
     backdrop-filter: blur(12px);
@@ -87,245 +79,89 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
 
-  /* Prevent font swap flash */
   body {
-    font-family:
-      'Inter Variable',
-      -apple-system,
-      BlinkMacSystemFont,
-      'Segoe UI',
-      sans-serif;
+    font-family: 'Geist Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
 </style>
 
 <!-- Global Metadata -->
 <meta charset="utf-8" />
-<!-- DNS prefetch and preconnect for font CDN -->
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-<!-- Preload critical fonts -->
+
+<!-- Preload critical fonts (Geist as defined in tailwind.config.mjs) -->
 <link
   rel="preload"
-  href="https://cdn.jsdelivr.net/fontsource/fonts/inter:vf@latest/latin-wght-normal.woff2"
-  as="font"
-  type="font/woff2"
-  crossorigin="anonymous"
-/>
-<link
-  rel="preload"
-  href="https://cdn.jsdelivr.net/fontsource/fonts/merriweather:vf@latest/latin-wght-normal.woff2"
+  href="https://cdn.jsdelivr.net/fontsource/fonts/geist:vf@latest/latin-wght-normal.woff2"
   as="font"
   type="font/woff2"
   crossorigin="anonymous"
 />
 
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<!-- <link rel="icon" type="image/svg+xml" href="/favicon-dark.svg" media="(prefers-color-scheme: dark)">
-<link rel="icon" type="image/svg+xml" href="/favicon-light.svg" media="(prefers-color-scheme: light)">
-<link rel="icon" type="image/x-icon" href="/favicon-light.svg"> -->
 <link rel="icon" type="image/x-icon" href="/favicon.png" />
 <meta name="generator" content={Astro.generator} />
-
-<!-- Canonical URL -->
 <link rel="canonical" href={canonicalURL} />
 
-<!-- Primary Meta Tags -->
 <title>{title}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
 
-<!-- Open Graph / Facebook -->
+<!-- OG / Twitter -->
 <meta property="og:type" content="website" />
 <meta property="og:url" content={Astro.url} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:image" content={new URL(ogImage, Astro.url)} />
-<meta property="og:site_name" content="Dada's Sketchbook" />
-
-<!-- Twitter -->
 <meta property="twitter:card" content="summary_large_image" />
-<meta property="twitter:url" content={Astro.url} />
-<meta property="twitter:title" content={title} />
-<meta property="twitter:description" content={description} />
 <meta property="twitter:image" content={new URL(ogImage, Astro.url)} />
 
 <ClientRouter />
 
 <script is:inline>
-  // --- View Transition theme & FOUC prevention ---
-  // Must be is:inline so handlers register synchronously before any navigation
+  // theme and FOUC prevention logic
+  function applyTheme() {
+    const stored = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const theme = stored || (prefersDark ? 'dark' : 'light');
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    document.documentElement.dataset.theme = theme;
+  }
 
-  document.addEventListener('astro:before-swap', function (e) {
-    var isDark = document.documentElement.classList.contains('dark');
-
-    // 1. Carry over theme class ahead of layout
-    if (isDark) {
-      e.newDocument.documentElement.classList.add('dark');
-    } else {
-      e.newDocument.documentElement.classList.remove('dark');
-    }
-
-    // 2. Assign staggered animation delays before the new document is painted
-    e.newDocument.querySelectorAll('.animate').forEach(function (element, index) {
-      element.dataset.animateIndex = index.toString();
-    });
-  });
-
-  // AFTER swap: safety net — re-apply theme on the live document before paint
-  document.addEventListener('astro:after-swap', function () {
-    var stored = localStorage.getItem('theme');
-    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    var theme = stored || (prefersDark ? 'dark' : 'light');
-
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-  });
-</script>
-
-<script is:inline>
-  function animate() {
-    const animateElements = document.querySelectorAll('.animate:not([data-animate-index])');
-
-    animateElements.forEach((element, index) => {
-      // Use data attribute instead of inline style (survives DOM swaps)
-      element.dataset.animateIndex = index;
+  function initAnimations() {
+    document.querySelectorAll('.animate').forEach((el, i) => {
+      el.dataset.animateIndex = i.toString();
     });
   }
 
-  function onScroll() {
-    if (window.scrollY > 0) {
-      document.documentElement.classList.add('scrolled');
-    } else {
-      document.documentElement.classList.remove('scrolled');
-    }
-  }
-
-  function scrollToTop(event) {
-    event.preventDefault();
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth',
-    });
-  }
-
-  function toggleTheme(dark) {
-    const html = document.documentElement;
-
-    // Add transition class before changing theme
-    html.classList.add('theme-transitioning');
-
-    if (dark) {
-      html.classList.add('dark');
-    } else {
-      html.classList.remove('dark');
-    }
-
-    // Remove transition class after animation completes
-    setTimeout(() => {
-      html.classList.remove('theme-transitioning');
-    }, 300);
-  }
-
-  function preloadTheme() {
-    var userTheme = localStorage.theme;
-    var theme =
-      userTheme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-
-    if (theme === 'light') {
-      document.documentElement.classList.remove('dark');
-    } else {
-      document.documentElement.classList.add('dark');
-    }
-  }
-
-  function updateThemeButtons() {
-    var isDark = document.documentElement.classList.contains('dark');
-    var lightBtn = document.getElementById('light-theme-button');
-    var darkBtn = document.getElementById('dark-theme-button');
-    if (lightBtn) {
-      if (isDark) {
-        lightBtn.classList.remove('hidden');
-        lightBtn.classList.add('flex');
-      } else {
-        lightBtn.classList.add('hidden');
-        lightBtn.classList.remove('flex');
-      }
-    }
-    if (darkBtn) {
-      if (isDark) {
-        darkBtn.classList.add('hidden');
-        darkBtn.classList.remove('flex');
-      } else {
-        darkBtn.classList.remove('hidden');
-        darkBtn.classList.add('flex');
-      }
-    }
-  }
-
-  function initFirstLoad() {
-    preloadTheme();
-    updateThemeButtons();
+  function setupHeader() {
+    const onScroll = () => {
+      document.documentElement.classList.toggle('scrolled', window.scrollY > 0);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
     onScroll();
-    animate();
-    setupEventListeners();
   }
 
-  function setupEventListeners() {
-    const backToTop = document.getElementById('back-to-top');
-    backToTop?.addEventListener('click', (event) => scrollToTop(event));
-
-    const backToPrev = document.getElementById('back-to-prev');
-    backToPrev?.addEventListener('click', () => window.history.back());
-
-    var darkThemeButton = document.getElementById('dark-theme-button');
-    darkThemeButton?.addEventListener('click', function () {
-      localStorage.setItem('theme', 'dark');
-      toggleTheme(true);
-      updateThemeButtons();
-    });
-
-    var lightThemeButton = document.getElementById('light-theme-button');
-    lightThemeButton?.addEventListener('click', function () {
-      localStorage.setItem('theme', 'light');
-      toggleTheme(false);
-      updateThemeButtons();
-    });
-
-    document.removeEventListener('scroll', onScroll);
-    document.addEventListener('scroll', onScroll);
-  }
-
-  // Initial page load: use astro:page-load for first load
-  // Subsequent navigations: use astro:after-swap (captures correct screenshot)
-  let isFirstLoad = true;
-
+  // Initialize on first load and every navigation
   document.addEventListener('astro:page-load', () => {
-    if (isFirstLoad) {
-      isFirstLoad = false;
-      initFirstLoad();
-    }
+    applyTheme();
+    initAnimations();
+    setupHeader();
+    
+    // Setup theme toggles
+    document.getElementById('dark-theme-button')?.addEventListener('click', () => {
+      localStorage.setItem('theme', 'dark');
+      applyTheme();
+    });
+    document.getElementById('light-theme-button')?.addEventListener('click', () => {
+      localStorage.setItem('theme', 'light');
+      applyTheme();
+    });
   });
 
-  // Navigations: set up animation state after DOM swap
-  document.addEventListener('astro:after-swap', () => {
-    // Re-apply theme (safety net)
-    var stored = localStorage.getItem('theme');
-    var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    var theme = stored || (prefersDark ? 'dark' : 'light');
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-    }
-
-    onScroll();
-    setupEventListeners();
-    updateThemeButtons();
+  // Ensure theme is applied IMMEDIATELY during swap to prevent flash
+  document.addEventListener('astro:before-swap', (e) => {
+    const isDark = document.documentElement.classList.contains('dark');
+    e.newDocument.documentElement.classList.toggle('dark', isDark);
   });
-
-  preloadTheme();
-  updateThemeButtons();
-</script>
+</script>t>
