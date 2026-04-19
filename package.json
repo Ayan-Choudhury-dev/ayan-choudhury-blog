@@ -3,6 +3,9 @@
   "type": "module",
   "version": "1.0.0",
   "packageManager": "bun@1.3.11",
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "scripts": {
     "start": "concurrently \"npm run watch:prettier\" \"npm run watch:dev\"",
     "watch:prettier": "onchange \"**/*.{js,ts,astro,mdx,json,css}\" -- prettier --write --ignore-unknown {{changed}}",
