@@ -74,8 +74,32 @@ const snippetTexts = allSnippets
       </ul>
     </section>
 
+    <!-- Read more -->
+    <section class="animate space-y-10 mt-10 items-center">
+      <Link href="/blog" aria-label="View all posts" underline={false}>
+        <span
+          class="text-sm font-mono text-foreground/40 hover:text-foreground/70 transition-colors duration-200 flex items-center gap-1.5"
+        >
+          All {totalPosts} entries
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-3"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"></path>
+          </svg>
+        </span>
+      </Link>
+    </section>
+
     <!-- Footer contact -->
-    <footer class="mt-24 pt-8 border-t border-foreground/10">
+    <footer class="mt-10 pt-8 border-t border-foreground/10">
       <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
         <span class="text-xs font-mono text-foreground/35">say hello —</span>
         {
