@@ -112,6 +112,19 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
     background-color: rgba(28, 25, 23, 0.4);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   }
+
+  /*
+   * HEADER PERSIST FIX:
+   * The header uses transition:persist so it stays in the DOM across navigations.
+   * The .animate class sets opacity:0 with a paused animation until JS assigns
+   * data-animate-index. Without this rule, any .animate element inside the header
+   * would flash invisible on page load. Force full visibility for all header content.
+   */
+  header, header * {
+    opacity: 1 !important;
+    animation: none !important;
+    transform: none !important;
+  }
 </style>
 
 <!-- Global Metadata -->
@@ -159,8 +172,16 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
   }
 
   function initAnimations() {
-    document.querySelectorAll('.animate').forEach((el, i) => {
-      el.dataset.animateIndex = i.toString();
+    // Only assign animate indices to elements that haven't been initialized yet.
+    // This prevents re-triggering (opacity:0 flash) on elements that are already
+    // visible — particularly important for transition:persist elements like the header.
+    let index = 0;
+    document.querySelectorAll('.animate').forEach((el) => {
+      // Skip elements already assigned (persisted across view transitions)
+      // and skip anything inside the header (it persists and should not re-animate)
+      if (el.hasAttribute('data-animate-index') || el.closest('header')) return;
+      (el as HTMLElement).dataset.animateIndex = index.toString();
+      index++;
     });
   }
 
