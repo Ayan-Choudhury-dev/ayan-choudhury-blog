@@ -158,15 +158,20 @@ article {
     color: var(--foreground) !important;
   }
 
-  article a {
+  /*
+   * Only links inside actual prose content (Tailwind Typography .prose class)
+   * get underlines. We do NOT use `article a` here because <article> is also
+   * used as a layout wrapper in PostCardMini, which would underline the
+   * "Continue reading" button.
+   */
+  .prose a {
     @apply font-bold;
     @apply text-accent-color underline underline-offset-4;
     @apply decoration-black/15 dark:decoration-white/30;
     @apply transition-colors duration-500 ease-in-out;
   }
 
-  article a:hover {
-    /* @apply text-black dark:text-white; */
+  .prose a:hover {
     color: rgb(var(--color-accent-subtle));
     @apply dark:text-accent-color;
     @apply decoration-black/25 dark:decoration-white/50;
@@ -306,8 +311,17 @@ html.dark .postcard.rounded-2xl #header_container {
     @apply bg-background text-foreground;
   }
 
+  /* Restore link styling after async CSS loads (critical CSS sets color:inherit / text-decoration:none)
+     NOTE: We do NOT restore text-decoration here — buttons/cards/nav-links should never underline.
+     Prose link underlines are handled by the more specific `article a { }` rule above.
+     Components that explicitly want underlines use the `underline` Tailwind utility. */
   a {
     @apply text-accent-color break-words;
+    text-decoration: none;
+  }
+
+  html.dark a {
+    text-decoration: none;
   }
 
   article a:visited {

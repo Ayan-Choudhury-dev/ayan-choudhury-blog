@@ -35,10 +35,43 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
 <!-- Critical inline CSS: available instantly, prevents FOUC during initial load & view transitions -->
 <style is:inline>
   html {
-    background-color: #ede7de; /* Match global.css --background */
+    /* Warm cream background — matches global.css :root --background */
+    background-color: rgb(237, 231, 222);
+    /* Correct text color so it doesn't default to black-on-white flash */
+    color: rgb(63, 84, 110);
   }
   html.dark {
-    background-color: #201f1d;
+    background-color: rgb(32, 31, 29);
+    color: rgb(235, 235, 235);
+  }
+
+  /*
+   * THE MAIN FOUC FIX:
+   * Reset ALL anchor tags to inherit the text color of their parent instead of
+   * showing the browser default blue. This must live in the inline critical CSS
+   * so it is applied BEFORE the async Tailwind stylesheet loads.
+   * The global.css rule `a { @apply text-accent-color }` overrides this once loaded.
+   */
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /*
+   * SVG FOUC FIX:
+   * The arrow in ArrowCard uses `stroke-current`. Without this reset, browsers
+   * fall back to the default blue link color during the FOUC window.
+   */
+  svg {
+    stroke: currentColor;
+  }
+
+  body {
+    font-family: 'Geist Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background-color: rgb(237, 231, 222);
+  }
+  html.dark body {
+    background-color: rgb(32, 31, 29);
   }
 
   @keyframes fade-in-up {
@@ -61,6 +94,7 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
   [data-animate-index="5"] { animation-delay: 750ms; }
   [data-animate-index="6"] { animation-delay: 900ms; }
 
+  /* Header critical styles — must match global.css exactly */
   header {
     position: fixed;
     left: 50%;
@@ -77,10 +111,6 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
   html.dark header {
     background-color: rgba(28, 25, 23, 0.4);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
-  body {
-    font-family: 'Geist Variable', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   }
 </style>
 
@@ -164,4 +194,4 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
     const isDark = document.documentElement.classList.contains('dark');
     e.newDocument.documentElement.classList.toggle('dark', isDark);
   });
-</script>t>
+</script>

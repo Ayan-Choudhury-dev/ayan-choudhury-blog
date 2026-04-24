@@ -33,7 +33,7 @@ import { SITE } from '@consts';
           href="/music"
           id="Music-link-button"
           aria-label="Music Icon"
-          class="hidden group size-8 flex items-center justify-center rounded-full data-[active=true]:bg-black/10 dark:data-[active=true]:bg-white/10 data-[active=true]:cursor-default"
+          class="hidden group size-8 flex items-center justify-center rounded-full data-[active=true]:bg-black/10 dark:data-[active=true]:bg-white/10 data-[active=true]:cursor-default no-underline"
           data-tippy-content="Now I'm listening to"
           data-active={Astro.url.pathname === '/music'}
         >
@@ -60,7 +60,7 @@ import { SITE } from '@consts';
           href="/archive"
           id="Blog-archive-link-button"
           aria-label="Archive Icon"
-          class="hidden group size-8 flex items-center justify-center rounded-full"
+          class="hidden group size-8 flex items-center justify-center rounded-full no-underline"
           data-tippy-content="Go to Blog Archive"
         >
           <svg
@@ -139,7 +139,7 @@ import { SITE } from '@consts';
           href="/subscribe"
           id="rss-subscribe-link"
           aria-label="Subscribe to RSS"
-          class="relative inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg font-semibold text-sm tracking-tight transition-all duration-200 ease-out overflow-hidden group"
+          class="relative inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg font-semibold text-sm tracking-tight transition-all duration-200 ease-out overflow-hidden group no-underline"
           data-tippy-content="Subscribe to RSS Feed"
         >
           <!-- Background layers -->
