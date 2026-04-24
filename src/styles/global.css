@@ -50,28 +50,8 @@ body {
   @apply flex flex-col;
 }
 
-header {
-  position: fixed;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  padding-top: 1.25rem;
-  padding-bottom: 1.25rem;
-  top: 0;
-  border: 2px solid transparent;
-  border-bottom: 1px solid rgba(225, 119, 102, 0.12);
-  background-color: rgba(247, 238, 227, 0.4);
-  backdrop-filter: blur(12px);
-  z-index: 50;
-}
-
-html.dark header {
-  background-color: rgba(28, 25, 23, 0.4);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
 main {
-  @apply flex-1 pt-32 pb-12;
+  @apply flex-1 pt-8 pb-12;
 }
 
 footer {

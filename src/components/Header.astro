@@ -6,143 +6,27 @@ import { SITE } from '@consts';
 // import tippy from 'tippy.js';
 ---
 
-<header
-  transition:persist
-  class="fixed left-1/2 -translate-x-1/2 w-full py-5 top-0 border-2 border-transparent duration-300 ease-in-out origin-top"
-  id="main-header"
->
-  <Container class="w-full max-w-2xl mx-auto transition-[max-width] duration-300 ease-in-out">
+<header class="w-full py-6 mb-8 border-b border-border">
+  <Container class="w-full max-w-2xl mx-auto">
     <div class="flex flex-nowrap gap-y-2 justify-between items-center" id="hero_container">
       <Link href="/" underline={false}>
         <div class="font-semibold">
-          <span class="text-accent-color dark:text-accent-color transition-colors duration-300" id="site-name"
-            >{SITE.NAME}</span
-          >
+          <span class="text-accent-color dark:text-accent-color">{SITE.NAME}</span>
           <span
             id="tagline"
-            class="block text-sm font-normal duration-500 ease-in-out text-foreground dark:text-foreground hidden sm:block"
+            class="block text-sm font-normal text-foreground dark:text-foreground hidden sm:block"
           >
             {SITE.TAGLINE}
           </span>
         </div>
       </Link>
 
-      <div class="flex flex-wrap gap-2 items-center">
-        <!-- Music icon -->
-        <a
-          href="/music"
-          id="Music-link-button"
-          aria-label="Music Icon"
-          class="hidden group size-8 flex items-center justify-center rounded-full data-[active=true]:bg-black/10 dark:data-[active=true]:bg-white/10 data-[active=true]:cursor-default no-underline"
-          data-tippy-content="Now I'm listening to"
-          data-active={Astro.url.pathname === '/music'}
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="group-hover:stroke-black group-hover:dark:stroke-white transition-colors duration-300 ease-in-out"
-          >
-            <path d="M9 18V5l12-2v13"></path>
-            <circle cx="6" cy="18" r="3"></circle>
-            <circle cx="18" cy="16" r="3"></circle>
-          </svg>
-        </a>
-
-        <!-- Archive icon -->
-        <a
-          href="/archive"
-          id="Blog-archive-link-button"
-          aria-label="Archive Icon"
-          class="hidden group size-8 flex items-center justify-center rounded-full no-underline"
-          data-tippy-content="Go to Blog Archive"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="group-hover:stroke-black group-hover:dark:stroke-white transition-colors duration-300 ease-in-out"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M5.25 14.25h13.5m-13.5 0a3 3 0 0 1-3-3m3 3a3 3 0 1 0 0 6h13.5a3 3 0 1 0 0-6m-16.5-3a3 3 0 0 1 3-3h13.5a3 3 0 0 1 3 3m-19.5 0a4.5 4.5 0 0 1 .9-2.7L5.737 5.1a3.375 3.375 0 0 1 2.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 0 1 .9 2.7m0 0a3 3 0 0 1-3 3m0 3h.008v.008h-.008v-.008Zm0-6h.008v.008h-.008v-.008Zm-3 6h.008v.008h-.008v-.008Zm0-6h.008v.008h-.008v-.008Z"
-            ></path>
-          </svg>
-        </a>
-
-        <!-- Theme toggle buttons (visibility controlled by JS in Head.astro) -->
-        <button
-          id="light-theme-button"
-          aria-label="Light theme"
-          class="group size-8 items-center justify-center rounded-full theme-toggle-btn hidden border border-black/20 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/5 transition-colors duration-300 ease-in-out"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="group-hover:stroke-black group-hover:dark:stroke-white transition-colors duration-300 ease-in-out"
-          >
-            <circle cx="12" cy="12" r="5"></circle>
-            <line x1="12" y1="1" x2="12" y2="3"></line>
-            <line x1="12" y1="21" x2="12" y2="23"></line>
-            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-            <line x1="1" y1="12" x2="3" y2="12"></line>
-            <line x1="21" y1="12" x2="23" y2="12"></line>
-            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-          </svg>
-        </button>
-
-        <button
-          id="dark-theme-button"
-          aria-label="Dark theme"
-          class="group size-8 items-center justify-center rounded-full theme-toggle-btn hidden border border-black/20 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/5 transition-colors duration-300 ease-in-out"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="group-hover:stroke-black group-hover:dark:stroke-white transition-colors duration-300 ease-in-out"
-          >
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-          </svg>
-        </button>
-
-        <!-- RSS Button -->
+      <div class="flex items-center gap-4">
         <a
           href="/subscribe"
-          id="rss-subscribe-link"
           aria-label="Subscribe to RSS"
           class="relative inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg font-semibold text-sm tracking-tight transition-all duration-200 ease-out overflow-hidden group no-underline"
-          data-tippy-content="Subscribe to RSS Feed"
         >
-          <!-- Background layers -->
           <div
             class="absolute inset-0 bg-gradient-to-br from-accent-color/5 to-accent-color/10 dark:from-white/10 dark:to-white/5 border border-accent-color/30 dark:border-white/20 rounded-lg transition-all duration-200 group-hover:border-accent-color/60 dark:group-hover:border-white/40"
           >
@@ -152,7 +36,6 @@ import { SITE } from '@consts';
           >
           </div>
 
-          <!-- Content -->
           <div class="relative flex items-center gap-1.5">
             <span class="text-accent-color dark:text-white font-bold tracking-wide hidden sm:inline"
               >SUBSCRIBE</span
@@ -175,112 +58,10 @@ import { SITE } from '@consts';
               <circle cx="5" cy="19" r="1"></circle>
             </svg>
           </div>
-
-          <!-- Hover glow effect -->
-          <div
-            class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg pointer-events-none shadow-glow-accent"
-          >
-          </div>
-          <div
-            class="absolute inset-0 opacity-0 dark:opacity-0 group-hover:dark:opacity-100 transition-opacity duration-200 rounded-lg pointer-events-none shadow-glow-white"
-          >
-          </div>
         </a>
       </div>
+
+
     </div>
   </Container>
 </header>
-
-<script>
-  import tippy from 'tippy.js';
-  import 'tippy.js/dist/tippy.css';
-
-  let _scrollHandler: (() => void) | null = null;
-
-  const initializeHeader = () => {
-    tippy('[data-tippy-content]');
-
-    const SCROLL_THRESHOLD = 100;
-    const SCROLL_CLASSES = [
-      'top-4',
-      'rounded-2xl',
-      'border-black/10',
-      'dark:border-white/10',
-      'shadow-lg',
-      'z-50',
-      'py-2',
-      'w-[96%]',
-      'md:w-1/3',
-      'sm:w-1/2',
-    ];
-
-    const header = document.getElementById('main-header');
-    // Select the first element child (the Container's div) instead of relying on a specific class that might get merged away
-    const container = header?.firstElementChild as HTMLElement | null;
-    const tagline = document.getElementById('tagline');
-    const siteName = document.getElementById('site-name');
-
-    if (!header || !container) {
-      console.warn('Header elements not found!');
-      return;
-    }
-
-    // Check if this is first load (transitions should be suppressed)
-    const isFirstLoad = document.documentElement.hasAttribute('data-first-load');
-
-    // Function to handle scroll state
-    const handleScroll = () => {
-      const currentScroll = window.pageYOffset;
-
-      if (currentScroll > SCROLL_THRESHOLD) {
-        // Temporarily disable transitions if first load
-        if (isFirstLoad) {
-          header.style.transition = 'none';
-          container.style.transition = 'none';
-        }
-        header?.classList.add(...SCROLL_CLASSES);
-        header?.classList.remove('py-5', 'top-0', 'w-full');
-        container?.classList.add('max-w-xl');
-        tagline?.classList.add('!hidden');
-        // Re-enable transitions after a frame if first load
-        if (isFirstLoad) {
-          requestAnimationFrame(function () {
-            header.style.transition = '';
-            container.style.transition = '';
-          });
-        }
-      } else {
-        // Temporarily disable transitions if first load
-        if (isFirstLoad) {
-          header.style.transition = 'none';
-          container.style.transition = 'none';
-        }
-        header?.classList.remove(...SCROLL_CLASSES);
-        header?.classList.add('py-5', 'top-0', 'w-full');
-        container?.classList.remove('max-w-xl');
-        tagline?.classList.remove('!hidden');
-        // Re-enable transitions after a frame if first load
-        if (isFirstLoad) {
-          requestAnimationFrame(function () {
-            header.style.transition = '';
-            container.style.transition = '';
-          });
-        }
-      }
-    };
-
-    // Check scroll position on page load
-    handleScroll();
-
-    // Remove any previous scroll listener before adding a new one
-    if (_scrollHandler) {
-      window.removeEventListener('scroll', _scrollHandler);
-    }
-    _scrollHandler = handleScroll;
-    window.addEventListener('scroll', _scrollHandler);
-
-  };
-
-  // astro:page-load fires on both initial load and after view transitions
-  document.addEventListener('astro:page-load', initializeHeader);
-</script>

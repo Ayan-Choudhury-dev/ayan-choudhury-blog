@@ -94,37 +94,7 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
   [data-animate-index="5"] { animation-delay: 750ms; }
   [data-animate-index="6"] { animation-delay: 900ms; }
 
-  /* Header critical styles — must match global.css exactly */
-  header {
-    position: fixed;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    padding-top: 1.25rem;
-    padding-bottom: 1.25rem;
-    top: 0;
-    border-bottom: 1px solid rgba(225, 119, 102, 0.12);
-    background-color: rgba(247, 238, 227, 0.85);
-    backdrop-filter: blur(12px);
-    z-index: 50;
-  }
-  html.dark header {
-    background-color: rgba(28, 25, 23, 0.4);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
-  /*
-   * HEADER PERSIST FIX:
-   * The header uses transition:persist so it stays in the DOM across navigations.
-   * The .animate class sets opacity:0 with a paused animation until JS assigns
-   * data-animate-index. Without this rule, any .animate element inside the header
-   * would flash invisible on page load. Force full visibility for all header content.
-   */
-  header, header * {
-    opacity: 1 !important;
-    animation: none !important;
-    transform: none !important;
-  }
+  /* No header specific CSS needed, handled by Tailwind classes in Header.astro */
 </style>
 
 <!-- Global Metadata -->
