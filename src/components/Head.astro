@@ -180,7 +180,7 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
       // Skip elements already assigned (persisted across view transitions)
       // and skip anything inside the header (it persists and should not re-animate)
       if (el.hasAttribute('data-animate-index') || el.closest('header')) return;
-      (el as HTMLElement).dataset.animateIndex = index.toString();
+      el.setAttribute('data-animate-index', index.toString());
       index++;
     });
   }
