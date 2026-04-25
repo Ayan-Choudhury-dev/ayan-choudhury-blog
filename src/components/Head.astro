@@ -107,6 +107,22 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
     .hidden.sm\\:block { display: block !important; }
     .hidden.sm\\:inline { display: inline !important; }
   }
+
+  /* 
+   * HEADER FOUC FIX:
+   * Prevents the Subscribe button from popping into size when Tailwind CSS loads asynchronously.
+   */
+  header a[href="/subscribe"] {
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 0.5rem 0.875rem !important;
+    border-radius: 0.5rem !important;
+    gap: 0.375rem !important;
+  }
+  header a[href="/subscribe"] svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
 </style>
 
 <!-- Global Metadata -->
