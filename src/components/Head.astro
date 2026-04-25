@@ -113,11 +113,21 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
    * Prevents the Subscribe button from popping into size when Tailwind CSS loads asynchronously.
    */
   header a[href="/subscribe"] {
+    position: relative !important;
+    overflow: hidden !important;
     display: inline-flex !important;
     align-items: center !important;
     padding: 0.5rem 0.875rem !important;
     border-radius: 0.5rem !important;
     gap: 0.375rem !important;
+  }
+  header a[href="/subscribe"] > div {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    border-radius: 0.5rem !important;
   }
   header a[href="/subscribe"] svg {
     width: 16px !important;
