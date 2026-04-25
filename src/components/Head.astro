@@ -94,7 +94,19 @@ const ogImage = image || generateOGImagePath(Astro.url.pathname);
   [data-animate-index="5"] { animation-delay: 750ms; }
   [data-animate-index="6"] { animation-delay: 900ms; }
 
-  /* No header specific CSS needed, handled by Tailwind classes in Header.astro */
+  /*
+   * TAILWIND BREAKPOINT FOUC FIX:
+   * On mobile, elements with `hidden sm:block` or `sm:hidden` will flash their incorrect
+   * state before Tailwind loads. These critical rules enforce the correct display state
+   * immediately during initial load and view transitions.
+   */
+  @media (max-width: 639px) {
+    .sm\\:hidden { display: none !important; }
+  }
+  @media (min-width: 640px) {
+    .hidden.sm\\:block { display: block !important; }
+    .hidden.sm\\:inline { display: inline !important; }
+  }
 </style>
 
 <!-- Global Metadata -->
