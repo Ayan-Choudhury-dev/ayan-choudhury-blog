@@ -39,10 +39,18 @@ const coverImage = post.data.cover?.src;
 
 <PageLayout title={post.data.title} description={description} image={coverImage}>
   <Container>
-    <div class="mb-8">
+    <PostHeader entry={post} />
+
+    <!-- Content of blog begins here -->
+    <article class="mb-16 prose-lg">
+      <Content />
+      <TagLinks post={post} />
+    </article>
+
+    <div class="mt-8 mb-16 flex justify-center">
       <a
         href="/blog"
-        class="inline-flex items-center gap-2 font-mono text-sm text-foreground/80 hover:text-foreground/70 transition-colors duration-150"
+        class="inline-flex items-center gap-2 font-mono text-sm text-foreground/80 hover:text-foreground/70 transition-colors duration-150 px-4 py-2 rounded-full border border-border hover:bg-muted/50"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -63,13 +71,6 @@ const coverImage = post.data.cover?.src;
       </a>
     </div>
 
-    <PostHeader entry={post} />
-
-    <!-- Content of blog begins here -->
-    <article class="mb-16 prose-lg">
-      <Content />
-      <TagLinks post={post} />
-    </article>
     {
       nextPost && (
         <div class="px-4 mb-16">
