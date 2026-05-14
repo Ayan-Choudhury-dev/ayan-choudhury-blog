@@ -22,27 +22,65 @@ const postsByYear = allPosts.reduce(
 const years = Object.keys(postsByYear)
   .map(Number)
   .sort((a, b) => b - a);
+
+const allTags = Array.from(
+  new Set(allPosts.flatMap((post) => post.data.tags || []))
+).sort();
 ---
 
 <PageLayout title="All posts" description={BLOG.DESCRIPTION}>
   <Container>
 
     <!-- Header -->
-    <div class="mb-16 space-y-1">
+    <div class="mb-8 space-y-1">
       <p class="text-lg uppercase text-foreground font-bold">All posts</p>
-      <p class="text-sm font-mono text-muted-foreground">{allPosts.length} entries</p>
+      <p class="text-sm font-mono text-muted-foreground" id="post-count-label">{allPosts.length} entries</p>
     </div>
 
+    <!-- Tags filter -->
+    {allTags.length > 0 && (
+      <div class="mb-16">
+        <div class="flex flex-wrap gap-2" id="tag-filters">
+          <button
+            class="tag-btn active px-3 py-1 text-xs font-mono rounded-full border transition-colors bg-accent-color text-white border-accent-color hover:bg-accent-color/90"
+            data-tag="all"
+          >
+            all
+          </button>
+          {allTags.map((tag, i) => (
+            <button
+              class={`tag-btn px-3 py-1 text-xs font-mono rounded-full border border-border text-muted-foreground bg-transparent hover:text-foreground hover:bg-muted/50 transition-colors ${i >= 5 ? 'extra-tag hidden' : ''}`}
+              data-tag={tag}
+            >
+              {tag}
+            </button>
+          ))}
+
+          {allTags.length > 5 && (
+            <button
+              id="toggle-tags-btn"
+              class="px-3 py-1 text-xs font-mono rounded-full border border-dashed border-border text-muted-foreground bg-transparent hover:text-foreground transition-colors flex items-center gap-1"
+            >
+              <span id="toggle-tags-text">+{allTags.length - 5} more</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3 transition-transform duration-200" id="toggle-tags-icon">
+                <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          )}
+        </div>
+      </div>
+    )}
+
     <!-- Year groups -->
-    <div class="space-y-16">
+    <div class="space-y-16" id="year-groups">
       {years.map((year) => (
-        <section>
+        <section class="year-section">
 
           <!-- Year row -->
           <div class="flex items-center gap-4 mb-4">
             <span class="font-serif font-semibold text-xl text-accent-color">{year}</span>
             <div class="flex-1 border-t border-gray-300 dark:border-gray-700" />
-            <span class="text-xs font-mono text-muted-foreground">
+            <span class="year-count text-xs font-mono text-muted-foreground">
               {postsByYear[year].length} {postsByYear[year].length === 1 ? 'entry' : 'entries'}
             </span>
           </div>
@@ -60,3 +98,102 @@ const years = Object.keys(postsByYear)
 
   </Container>
 </PageLayout>
+
+<script>
+  function setupTagFilters() {
+    const tagBtns = document.querySelectorAll('.tag-btn');
+    const yearSections = document.querySelectorAll('.year-section');
+    const globalCountLabel = document.getElementById('post-count-label');
+
+    tagBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Handle active state
+        tagBtns.forEach(b => {
+          b.classList.remove('active', 'bg-accent-color', 'text-white', 'border-accent-color');
+          b.classList.add('border-border', 'text-muted-foreground', 'bg-transparent');
+        });
+        
+        btn.classList.remove('border-border', 'text-muted-foreground', 'bg-transparent');
+        btn.classList.add('active', 'bg-accent-color', 'text-white', 'border-accent-color');
+
+        const selectedTag = btn.getAttribute('data-tag');
+        let totalVisibleCount = 0;
+
+        // Filter posts
+        yearSections.forEach(section => {
+          let visibleCount = 0;
+          const rows = section.querySelectorAll('.post-row');
+          
+          rows.forEach(row => {
+            const htmlRow = row as HTMLElement;
+            const tags = htmlRow.getAttribute('data-tags');
+            const tagsArray = tags ? tags.split(',') : [];
+            
+            if (selectedTag === 'all' || (selectedTag && tagsArray.includes(selectedTag))) {
+              htmlRow.style.display = '';
+              visibleCount++;
+            } else {
+              htmlRow.style.display = 'none';
+            }
+          });
+
+          // Update year count
+          const countLabel = section.querySelector('.year-count');
+          if (countLabel) {
+            countLabel.textContent = `${visibleCount} ${visibleCount === 1 ? 'entry' : 'entries'}`;
+          }
+
+          // Hide section if no posts
+          const htmlSection = section as HTMLElement;
+          if (visibleCount === 0) {
+            htmlSection.style.display = 'none';
+          } else {
+            htmlSection.style.display = '';
+          }
+
+          totalVisibleCount += visibleCount;
+        });
+
+        // Update global count
+        if (globalCountLabel) {
+          globalCountLabel.textContent = `${totalVisibleCount} ${totalVisibleCount === 1 ? 'entry' : 'entries'}`;
+        }
+      });
+    });
+
+    // Expand/Collapse logic
+    const toggleBtn = document.getElementById('toggle-tags-btn');
+    const toggleText = document.getElementById('toggle-tags-text');
+    const toggleIcon = document.getElementById('toggle-tags-icon');
+    const extraTags = document.querySelectorAll('.extra-tag');
+    let isExpanded = false;
+
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', () => {
+        isExpanded = !isExpanded;
+        
+        extraTags.forEach(tag => {
+          if (isExpanded) {
+            tag.classList.remove('hidden');
+          } else {
+            // Only hide if it's not the currently active tag
+            if (!tag.classList.contains('active')) {
+              tag.classList.add('hidden');
+            }
+          }
+        });
+
+        if (isExpanded) {
+          if (toggleText) toggleText.textContent = 'show less';
+          if (toggleIcon) toggleIcon.classList.add('rotate-180');
+        } else {
+          if (toggleText) toggleText.textContent = `+${extraTags.length} more`;
+          if (toggleIcon) toggleIcon.classList.remove('rotate-180');
+        }
+      });
+    }
+  }
+
+  // Run on initial load and after ViewTransitions
+  document.addEventListener('astro:page-load', setupTagFilters);
+</script>

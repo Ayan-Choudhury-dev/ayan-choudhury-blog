@@ -18,7 +18,7 @@ function formatDate(date: Date): string {
 }
 ---
 
-<li class="border-b border-foreground/20 last:border-0">
+<li class="post-row border-b border-foreground/20 last:border-0" data-tags={post.data.tags?.join(',') || ''}>
   <a
     href={`/blog/${post.id}`}
     class="group relative grid grid-cols-[4rem_1fr_3.5rem] sm:grid-cols-[5rem_1fr_4rem] items-baseline gap-x-4 py-4 -mx-3 px-3 rounded-sm transition-colors duration-150 cursor-pointer hover:bg-accent-color/[0.04] no-underline"
