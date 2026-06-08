@@ -6,12 +6,25 @@ import react from "@astrojs/react";
 import markdoc from "@astrojs/markdoc";
 import keystatic from '@keystatic/astro';
 
-import vercel from "@astrojs/vercel";
+
+
+
+
+
+
+import cloudflare from "@astrojs/cloudflare";
 
 // https://astro.build/config
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const canvaskitWasmDir = JSON.stringify(path.join(__dirname, 'node_modules/canvaskit-wasm/bin'));
+
 export default defineConfig({
   site: "https://blog.ayanchoudhury.in",
   integrations: [mdx(), sitemap(), tailwind(), react({ experimentalReactChildren: true, }), markdoc(), keystatic()],
+
   image: {
     service: {
       entrypoint: 'astro/assets/services/sharp',
@@ -23,12 +36,21 @@ export default defineConfig({
     domains: [],
     remotePatterns: [{ protocol: "https" }],
   },
+
   output: "static",
-  adapter: vercel({
-    imageService: true,
-    imagesConfig: {
-      sizes: [320, 640, 1280],
-      formats: ['image/webp'], // Force Vercel to only optimize to WebP, skipping AVIF
-    },
-  }),
+  adapter: cloudflare(),
+
+  vite: {
+    plugins: [
+      {
+        name: 'inject-dirname',
+        enforce: 'pre',
+        transform(code, id) {
+          if (id.includes('canvaskit_') || id.includes('canvaskit-wasm')) {
+            return code.replace(/__dirname/g, canvaskitWasmDir);
+          }
+        }
+      }
+    ]
+  },
 });
