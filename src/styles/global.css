@@ -29,6 +29,7 @@
 
 html {
   overflow-y: scroll;
+  scrollbar-gutter: stable;
   color-scheme: light dark;
 }
 
