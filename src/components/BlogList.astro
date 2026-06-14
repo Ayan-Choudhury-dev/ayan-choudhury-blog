@@ -1,0 +1,239 @@
+---
+import { getCollection } from 'astro:content';
+import PageLayout from '@layouts/PageLayout.astro';
+import Container from '@components/Container.astro';
+import ArchivePostRow from '@components/ArchivePostRow.astro';
+import { BLOG } from '@consts';
+
+type Props = {
+  activeTag?: string;
+};
+
+const { activeTag = 'all' } = Astro.props;
+
+const allPosts = (await getCollection('blog'))
+  .filter((post) => !post.data.draft)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const postsByYear = allPosts.reduce(
+  (acc, post) => {
+    const year = new Date(post.data.date).getFullYear();
+    if (!acc[year]) acc[year] = [];
+    acc[year].push(post);
+    return acc;
+  },
+  {} as Record<number, typeof allPosts>
+);
+
+const years = Object.keys(postsByYear)
+  .map(Number)
+  .sort((a, b) => b - a);
+
+const allTags = Array.from(
+  new Set(allPosts.flatMap((post) => post.data.tags || []))
+).sort();
+
+const pageTitle = activeTag === 'all' ? 'All posts' : `Posts tagged "${activeTag}"`;
+const pageDescription = activeTag === 'all' ? BLOG.DESCRIPTION : `Posts tagged with ${activeTag}`;
+
+const totalVisibleCount = activeTag === 'all'
+  ? allPosts.length
+  : allPosts.filter(post => post.data.tags?.includes(activeTag)).length;
+---
+
+<PageLayout title={pageTitle} description={pageDescription}>
+  <Container>
+
+    <!-- Header -->
+    <div class="mb-8 space-y-1">
+      <p class="text-lg uppercase text-foreground font-bold">All posts</p>
+      <p class="text-sm font-mono text-muted-foreground" id="post-count-label">{totalVisibleCount} {totalVisibleCount === 1 ? 'entry' : 'entries'}</p>
+    </div>
+
+    <!-- Tags filter -->
+    {allTags.length > 0 && (
+      <div class="mb-16">
+        <div class="flex flex-wrap gap-2" id="tag-filters">
+          <button
+            class={`tag-btn px-3 py-1 text-xs font-mono rounded-full border transition-colors ${activeTag === 'all' ? 'active bg-accent-color text-white border-accent-color hover:bg-accent-color/90' : 'border-border text-muted-foreground bg-transparent hover:text-foreground hover:bg-muted/50'}`}
+            data-tag="all"
+          >
+            all
+          </button>
+          {allTags.map((tag, i) => {
+            const isActive = tag === activeTag;
+            return (
+              <button
+                class={`tag-btn px-3 py-1 text-xs font-mono rounded-full border transition-colors ${isActive ? 'active bg-accent-color text-white border-accent-color hover:bg-accent-color/90' : 'border-border text-muted-foreground bg-transparent hover:text-foreground hover:bg-muted/50'} ${i >= 5 && !isActive ? 'extra-tag hidden' : ''}`}
+                data-tag={tag}
+              >
+                {tag}
+              </button>
+            );
+          })}
+
+          {allTags.length > 5 && (
+            <button
+              id="toggle-tags-btn"
+              class="px-3 py-1 text-xs font-mono rounded-full border border-dashed border-border text-muted-foreground bg-transparent hover:text-foreground transition-colors flex items-center gap-1"
+            >
+              <span id="toggle-tags-text">
+                {activeTag !== 'all' && allTags.indexOf(activeTag) >= 5 
+                  ? `+${allTags.length - 6} more` 
+                  : `+${allTags.length - 5} more`
+                }
+              </span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-3 h-3 transition-transform duration-200" id="toggle-tags-icon">
+                <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          )}
+        </div>
+      </div>
+    )}
+
+    <!-- Year groups -->
+    <div class="space-y-16" id="year-groups">
+      {years.map((year) => {
+        const yearPosts = postsByYear[year];
+        const hasVisiblePosts = activeTag === 'all' || yearPosts.some(post => post.data.tags?.includes(activeTag));
+        const visibleCount = activeTag === 'all' 
+          ? yearPosts.length 
+          : yearPosts.filter(post => post.data.tags?.includes(activeTag)).length;
+
+        return (
+          <section class="year-section" style={hasVisiblePosts ? undefined : 'display: none;'}>
+
+            <!-- Year row -->
+            <div class="flex items-center gap-4 mb-4">
+              <span class="font-serif font-semibold text-xl text-accent-color">{year}</span>
+              <div class="flex-1 border-t border-gray-300 dark:border-gray-700" />
+              <span class="year-count text-xs font-mono text-muted-foreground">
+                {visibleCount} {visibleCount === 1 ? 'entry' : 'entries'}
+              </span>
+            </div>
+
+            <!-- Post rows -->
+            <ul>
+              {yearPosts.map((post) => {
+                const isVisible = activeTag === 'all' || post.data.tags?.includes(activeTag);
+                return (
+                  <ArchivePostRow 
+                    post={post} 
+                    style={isVisible ? undefined : 'display: none;'}
+                  />
+                );
+              })}
+            </ul>
+
+          </section>
+        );
+      })}
+    </div>
+
+  </Container>
+</PageLayout>
+
+<script>
+  function setupTagFilters() {
+    const tagBtns = document.querySelectorAll('.tag-btn');
+    const yearSections = document.querySelectorAll('.year-section');
+    const globalCountLabel = document.getElementById('post-count-label');
+
+    tagBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Handle active state
+        tagBtns.forEach(b => {
+          b.classList.remove('active', 'bg-accent-color', 'text-white', 'border-accent-color');
+          b.classList.add('border-border', 'text-muted-foreground', 'bg-transparent');
+        });
+        
+        btn.classList.remove('border-border', 'text-muted-foreground', 'bg-transparent');
+        btn.classList.add('active', 'bg-accent-color', 'text-white', 'border-accent-color');
+
+        const selectedTag = btn.getAttribute('data-tag');
+        let totalVisibleCount = 0;
+
+        // Filter posts
+        yearSections.forEach(section => {
+          let visibleCount = 0;
+          const rows = section.querySelectorAll('.post-row');
+          
+          rows.forEach(row => {
+            const htmlRow = row as HTMLElement;
+            const tags = htmlRow.getAttribute('data-tags');
+            const tagsArray = tags ? tags.split(',') : [];
+            
+            if (selectedTag === 'all' || (selectedTag && tagsArray.includes(selectedTag))) {
+              htmlRow.style.display = '';
+              visibleCount++;
+            } else {
+              htmlRow.style.display = 'none';
+            }
+          });
+
+          // Update year count
+          const countLabel = section.querySelector('.year-count');
+          if (countLabel) {
+            countLabel.textContent = `${visibleCount} ${visibleCount === 1 ? 'entry' : 'entries'}`;
+          }
+
+          // Hide section if no posts
+          const htmlSection = section as HTMLElement;
+          if (visibleCount === 0) {
+            htmlSection.style.display = 'none';
+          } else {
+            htmlSection.style.display = '';
+          }
+
+          totalVisibleCount += visibleCount;
+        });
+
+        // Update global count
+        if (globalCountLabel) {
+          globalCountLabel.textContent = `${totalVisibleCount} ${totalVisibleCount === 1 ? 'entry' : 'entries'}`;
+        }
+      });
+    });
+
+    // Expand/Collapse logic
+    const toggleBtn = document.getElementById('toggle-tags-btn');
+    const toggleText = document.getElementById('toggle-tags-text');
+    const toggleIcon = document.getElementById('toggle-tags-icon');
+    const extraTags = document.querySelectorAll('.extra-tag');
+    let isExpanded = false;
+
+    if (toggleBtn) {
+      // Setup initial state count in case one tag is active/visible
+      const hiddenExtraTags = Array.from(extraTags).filter(tag => tag.classList.contains('hidden'));
+      if (toggleText) toggleText.textContent = `+${hiddenExtraTags.length} more`;
+
+      toggleBtn.addEventListener('click', () => {
+        isExpanded = !isExpanded;
+        
+        extraTags.forEach(tag => {
+          if (isExpanded) {
+            tag.classList.remove('hidden');
+          } else {
+            // Only hide if it's not the currently active tag
+            if (!tag.classList.contains('active')) {
+              tag.classList.add('hidden');
+            }
+          }
+        });
+
+        if (isExpanded) {
+          if (toggleText) toggleText.textContent = 'show less';
+          if (toggleIcon) toggleIcon.classList.add('rotate-180');
+        } else {
+          const hiddenExtraTagsAfter = Array.from(extraTags).filter(tag => !tag.classList.contains('active'));
+          if (toggleText) toggleText.textContent = `+${hiddenExtraTagsAfter.length} more`;
+          if (toggleIcon) toggleIcon.classList.remove('rotate-180');
+        }
+      });
+    }
+  }
+
+  // Run on initial load and after ViewTransitions
+  document.addEventListener('astro:page-load', setupTagFilters);
+</script>

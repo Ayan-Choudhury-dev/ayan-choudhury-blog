@@ -3,9 +3,10 @@ import type { CollectionEntry } from 'astro:content';
 
 type Props = {
   post: CollectionEntry<'blog'>;
+  style?: string;
 };
 
-const { post } = Astro.props;
+const { post, style } = Astro.props;
 
 function readTime(body: string | undefined): string {
   if (!body) return '1 min';
@@ -18,7 +19,7 @@ function formatDate(date: Date): string {
 }
 ---
 
-<li class="post-row border-b border-foreground/20 last:border-0" data-tags={post.data.tags?.join(',') || ''}>
+<li class="post-row border-b border-foreground/20 last:border-0" data-tags={post.data.tags?.join(',') || ''} style={style}>
   <a
     href={`/blog/${post.id}`}
     class="group relative grid grid-cols-[4rem_1fr_3.5rem] sm:grid-cols-[5rem_1fr_4rem] items-baseline gap-x-4 py-4 -mx-3 px-3 rounded-sm transition-colors duration-150 cursor-pointer hover:bg-accent-color/[0.04] no-underline"

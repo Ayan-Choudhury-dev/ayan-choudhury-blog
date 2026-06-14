@@ -1,41 +1,21 @@
 ---
-import { type CollectionEntry, getCollection } from "astro:content";
-import PageLayout from "@layouts/PageLayout.astro";
-import Container from "@components/Container.astro";
-import ArrowCard from "@components/ArrowCard.astro";
-import BackToPrev from "@components/BackToPrev.astro";
+import { getCollection } from 'astro:content';
+import BlogList from '@components/BlogList.astro';
 
 export async function getStaticPaths() {
-  const allPosts = (await getCollection("blog"))
-    .filter((post) => !post.data.draft)
-    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  const allPosts = (await getCollection('blog'))
+    .filter((post) => !post.data.draft);
+  
+  const allTags = Array.from(
+    new Set(allPosts.flatMap((post) => post.data.tags || []))
+  );
 
-  const allTags = new Set<string>();
-  allPosts.forEach((post) => {
-    post.data.tags?.forEach((tag) => allTags.add(tag));
-  });
-
-  return Array.from(allTags).map((tag) => ({
+  return allTags.map((tag) => ({
     params: { tag },
-    props: {
-      posts: allPosts.filter((post) => post.data.tags?.includes(tag)),
-    },
   }));
 }
 
-const params = Astro.params as { tag: string };
-const props = Astro.props as { posts: CollectionEntry<"blog">[] };
+const { tag } = Astro.params;
 ---
 
-<PageLayout title={params.tag} description={params.tag}>
-  <Container>
-    <p>Posts tagged "<span class="font-extrabold">{params.tag}</span>"</p>
-    <div class="mt-10 flex flex-col gap-2">
-      {props.posts.map((post) => <ArrowCard entry={post} />)}
-    </div>
-
-    <div class="animate mt-4">
-      <BackToPrev href="/"> Back to home </BackToPrev>
-    </div>
-  </Container>
-</PageLayout>
+<BlogList activeTag={tag} />
