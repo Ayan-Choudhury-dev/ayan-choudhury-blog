@@ -27,5 +27,18 @@ const { title, description, image } = Astro.props;
     </main>
     <Footer />
     <Analytics />
+
+    <script>
+      // oldpress — vintage print engine.
+      // Dev: always on (instant aging + switcher pill, bottom-right).
+      // Prod: opt-in only, via ?old=<theme>&ops=<seed>&opi=<intensity>
+      import { press, autoPress } from '@lib/oldpress';
+      if (import.meta.env.DEV) {
+        // ?old= works in dev too; plain letterpress otherwise.
+        autoPress() ?? press({ theme: 'letterpress' });
+      } else {
+        autoPress();
+      }
+    </script>
   </body>
 </html>
