@@ -1,0 +1,22 @@
+---
+/**
+ * Inline footnote citation, rendered from `{% footnote n="1" /%}`.
+ *
+ * The `<sup>` carries the return anchor (`id="fnref-1"`); the `<a>` points at
+ * the matching reference entry (`#ref-1`). `aria-label` carries the meaning:
+ * DPUB-ARIA (`role="doc-noteref"`) is excluded from the type-checked `role`
+ * union, so the label does the announcing instead.
+ *
+ * A source cited more than once passes `ref` ("b", "c", …) so every `id` stays
+ * unique — `fnref-2`, `fnref-2-b` — while all of them target the same entry.
+ */
+interface Props {
+  n: string;
+  ref?: string;
+}
+
+const { n, ref } = Astro.props;
+const anchor = ref ? `fnref-${n}-${ref}` : `fnref-${n}`;
+---
+
+<sup class="footnote-ref" id={anchor}><a href={`#ref-${n}`} aria-label={`Footnote ${n}`}>{n}</a></sup>

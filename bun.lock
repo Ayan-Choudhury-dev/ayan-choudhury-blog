@@ -54,6 +54,9 @@
       },
     },
   },
+  "patchedDependencies": {
+    "@keystatic/core@0.5.50": "patches/@keystatic%2Fcore@0.5.50.patch",
+  },
   "overrides": {
     "fast-xml-parser": "^5.5.9",
     "picomatch": "^4.0.4",

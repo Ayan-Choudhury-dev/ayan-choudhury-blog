@@ -1,0 +1,21 @@
+---
+/**
+ * Return link, rendered from `{% backlink n="1" /%}` and placed at the end of
+ * the matching entry in the References list.
+ *
+ * It is also the jump target for the citation mark: `id="ref-1"` sits here, so
+ * `#ref-1` from the text lands on this entry. The `aria-label` names the
+ * destination — DPUB-ARIA roles are excluded from the type-checked `role`
+ * union, so the label does the announcing.
+ *
+ * Always returns to the *first* citation of that source (`#fnref-1`); repeats
+ * keep their own ids but share this target.
+ */
+interface Props {
+  n: string;
+}
+
+const { n } = Astro.props;
+---
+
+<a href={`#fnref-${n}`} id={`ref-${n}`} class="footnote-back" aria-label={`Back to citation ${n}`}>↩</a>

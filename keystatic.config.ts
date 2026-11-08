@@ -1,5 +1,6 @@
 // keystatic.config.ts
 import { config, fields, collection } from "@keystatic/core";
+import { inline } from "@keystatic/core/content-components";
 
 export default config({
   // storage: {
@@ -89,6 +90,40 @@ export default config({
               // Use the @assets path alias
               publicPath: "@assets/images/posts/",
             },
+          },
+          // Footnote system. These two inline components serialize to the
+          // `{% footnote %}` / `{% backlink %}` Markdoc tags that
+          // `markdoc.config.mjs` renders. Keep the names and schemas in sync —
+          // the tag name is the component key, and the attribute names are the
+          // schema keys.
+          components: {
+            footnote: inline({
+              label: "Footnote reference",
+              description:
+                "Citation mark in the text. Add a matching backlink to the same entry in References.",
+              schema: {
+                n: fields.text({
+                  label: "Number",
+                  description: "The footnote number this mark cites, e.g. 2",
+                }),
+                ref: fields.text({
+                  label: "Repeat suffix",
+                  description:
+                    "Only when the same source is cited more than once: b, c, …",
+                }),
+              },
+            }),
+            backlink: inline({
+              label: "Footnote backlink",
+              description:
+                "Return link. Place it at the end of the matching entry in the References list.",
+              schema: {
+                n: fields.text({
+                  label: "Number",
+                  description: "The footnote number to return to, e.g. 2",
+                }),
+              },
+            }),
           },
         }),
 

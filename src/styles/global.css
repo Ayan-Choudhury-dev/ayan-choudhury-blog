@@ -159,6 +159,37 @@ article {
     @apply transition duration-500 ease-in-out;
     @apply underline-offset-4;
   }
+
+  /*
+   * Footnote system — see markdoc.config.mjs.
+   *
+   * The citation mark must read as a marker, not as body text, so it is
+   * superscripted and de-underlined. `:target` is the only styling hook a
+   * fragment link gives us: without it, jumping to a citation or back to the
+   * text looks like nothing happened (WCAG 2.4.7 for in-page navigation).
+   */
+  .prose .footnote-ref {
+    @apply font-normal;
+    font-size: 0.72em;
+    line-height: 0;
+    vertical-align: super;
+    margin-inline-start: 0.12em;
+  }
+
+  .prose .footnote-ref a {
+    @apply font-mono no-underline;
+  }
+
+  .prose .footnote-back {
+    @apply font-mono no-underline;
+    font-size: 0.72em;
+    padding-inline: 0.15em;
+  }
+
+  .prose .footnote-ref:target,
+  .prose .footnote-back:target {
+    @apply rounded-sm bg-accent-color/20;
+  }
 }
 
 /* Smooth theme transitions */
