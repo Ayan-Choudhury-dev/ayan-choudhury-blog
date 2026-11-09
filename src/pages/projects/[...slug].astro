@@ -29,15 +29,15 @@ const { Content } = await render(project);
     </div>
     <div class="space-y-1 my-10">
       <div class="animate flex items-center gap-1.5">
-        <div class="font-base text-sm">
+        <div class="text-sm">
           <FormattedDate date={project.data.date} />
         </div>
         &bull;
-        <div class="font-base text-sm">
+        <div class="text-sm">
           {readingTime(project.body ?? '')}
         </div>
       </div>
-      <div class="animate text-2xl font-semibold text-black dark:text-white">
+      <div class="animate text-2xl font-medium text-black dark:text-white">
         {project.data.title}
       </div>
       {

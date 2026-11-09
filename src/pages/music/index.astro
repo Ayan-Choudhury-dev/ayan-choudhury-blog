@@ -69,10 +69,10 @@ const serializedTracks = JSON.stringify(
     <div class="space-y-20">
       {/* Header section with title and year filter */}
       <div class="animate flex items-center justify-between">
-        <div class="font-bold text-xl text-black dark:text-white">
+        <h1 class="font-serif text-[1.1875rem] font-medium text-balance text-black dark:text-white">
           <AudioWaveform class="inline-block" />
           Playlist
-        </div>
+        </h1>
         <div class="relative w-32">
           <select
             id="year-select"
@@ -192,7 +192,7 @@ const serializedTracks = JSON.stringify(
                       />
                     </div>
                     <div class="flex-1 p-4 md:p-6">
-                      <h3 class="text-lg font-semibold text-black dark:text-white">${track.data.name}</h3>
+                      <h3 class="text-lg font-medium text-black dark:text-white">${track.data.name}</h3>
                       <p class="text-black/60 dark:text-white/60">${track.data.artist}</p>
                     </div>
                     <div class="absolute right-4 md:right-6 top-1/2 -translate-y-1/2">

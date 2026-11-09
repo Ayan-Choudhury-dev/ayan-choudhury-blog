@@ -1,8 +1,8 @@
 diff --git a/dist/keystatic-core-ui.js b/dist/keystatic-core-ui.js
-index 24d47136e7317bab8f460a8eab537a5bbd0072c0..139dc7df94c30980e4f0dcf68ef41f28ab6888bb 100644
+index 2f8809b7a3292d0c35cd7617b561195fec49f083..165df51848550f02d983ffd233ae1ffdd0a9de23 100644
 --- a/dist/keystatic-core-ui.js
 +++ b/dist/keystatic-core-ui.js
-@@ -1020,8 +1020,10 @@ function CollectionTable(props) {
+@@ -1031,8 +1031,10 @@ function CollectionTable(props) {
    let isLocalMode = isLocalConfig(props.config);
    let router = useRouter();
    let [sortDescriptor, setSortDescriptor] = useState({

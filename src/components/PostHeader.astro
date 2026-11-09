@@ -28,14 +28,14 @@ const useOptimizedImage =
               src={entry.data.cover}
               quality={'mid'}
               width={'800'}
-              class="motion-safe:animate-fade-up motion-safe:animate-duration-500 rounded-lg"
+              class="motion-safe:animate-fade-up rounded-lg"
               alt={entry.data.title}
             />
           ) : (
             <img
               src={entry.data.cover.src}
               width="800"
-              class="motion-safe:animate-fade-up motion-safe:animate-duration-500 rounded-lg w-full h-auto object-cover"
+              class="motion-safe:animate-fade-up rounded-lg w-full h-auto object-cover"
               alt={entry.data.title}
             />
           )}
@@ -45,28 +45,29 @@ const useOptimizedImage =
   }
 
   <div id="meta" class="pt-5 md:pt-8">
-    <div
-      class="title-accent mb-5 child:font-serif child:font-light text-2xl leading-[1.15] tracking-[-0.025em] md:text-3xl md:leading-[1.1]"
+    <h1
+      class="font-serif text-[1.75rem] font-light leading-[1.15] m-0 mb-4 text-accent-color text-balance"
     >
       <a href={`/${entry.collection}/${entry.id}`} class="no-underline !text-inherit">
         {entry.data.title}
       </a>
-    </div>
+    </h1>
 
     <!-- <div class="text-sm animate text-gray-400 italic mt-2 mb-3">
     {entry.data.description}
   </div> -->
 
     <div
-      class="flex items-center gap-3 text-black/60 dark:text-white/60 border-b border-dashed border-black/10 dark:border-white/10 pb-4"
+      class="flex items-center gap-3 text-meta text-xs"
     >
-      <div class="font-base text-sm">
+      <div>
         <FormattedDate date={entry.data.date} />
       </div>
       &bull;
-      <div class="font-base text-sm">
+      <div>
         {readingTime(entry.body ?? '')}
       </div>
+    </div>
   </div>
 </div>
 

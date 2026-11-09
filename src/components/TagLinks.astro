@@ -15,7 +15,7 @@ type Props = {
 const { post } = Astro.props;
 ---
 
-<div class="font-serif flex items-baseline font-base text-foreground mt-10">
+<div class="font-serif flex items-baseline text-foreground mt-10">
   {/* Check if the post has a 'tags' property */}
   {
     post.data.tags && Array.isArray(post.data.tags) && post.data.tags.length > 0 && (
@@ -31,7 +31,7 @@ const { post } = Astro.props;
   }
 </div>
 
-<!-- <div class="animate flex items-baseline font-base text-black mt-10 dark:text-white">
+<!-- <div class="animate flex items-baseline text-black mt-10 dark:text-white">
   { post.data.tags && post.data.tags.length > 0 && (
     <>
       <span class="pr-2">Tagged:</span>

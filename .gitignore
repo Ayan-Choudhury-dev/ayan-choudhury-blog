@@ -25,3 +25,4 @@ pnpm-debug.log*
 
 # Claude Code
 CLAUDE.md
+.wrangler/

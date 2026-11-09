@@ -42,7 +42,7 @@ const coverImage = post.data.cover?.src;
     <PostHeader entry={post} />
 
     <!-- Content of blog begins here -->
-    <article class="mb-16 prose-lg">
+    <article class="mb-16">
       <Content />
       <TagLinks post={post} />
     </article>
@@ -50,7 +50,7 @@ const coverImage = post.data.cover?.src;
     <div class="mt-8 mb-16 flex justify-center">
       <a
         href="/blog"
-        class="inline-flex items-center gap-2 font-mono text-sm text-foreground/80 hover:text-foreground/70 transition-colors duration-150 px-4 py-2 rounded-full border border-border hover:bg-muted/50"
+        class="inline-flex items-center gap-2 font-mono text-xs text-foreground transition-colors duration-150 px-4 py-2 rounded-full border border-border hover:bg-secondary"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

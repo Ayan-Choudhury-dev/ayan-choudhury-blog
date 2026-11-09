@@ -1,7 +1,7 @@
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
-import tailwind from "@astrojs/tailwind";
+import tailwindcss from "@tailwindcss/vite";
 import react from "@astrojs/react";
 import markdoc from "@astrojs/markdoc";
 import keystatic from '@keystatic/astro';
@@ -23,7 +23,7 @@ const canvaskitWasmDir = JSON.stringify(path.join(__dirname, 'node_modules/canva
 
 export default defineConfig({
   site: "https://blog.ayanchoudhury.in",
-  integrations: [mdx(), sitemap(), tailwind(), react({ experimentalReactChildren: true, }), markdoc(), keystatic()],
+  integrations: [mdx(), sitemap(), react({ experimentalReactChildren: true }), markdoc(), keystatic()],
 
   image: {
     service: {
@@ -38,10 +38,13 @@ export default defineConfig({
   },
 
   output: "static",
-  adapter: cloudflare(),
+  // Node prerendering: the OG image routes run canvaskit-wasm + fs, which
+  // cannot execute in workerd. Adapter 14 defaults to workerd.
+  adapter: cloudflare({ prerenderEnvironment: 'node' }),
 
   vite: {
     plugins: [
+      tailwindcss(),
       {
         name: 'inject-dirname',
         enforce: 'pre',

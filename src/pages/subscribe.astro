@@ -9,7 +9,7 @@ const rssUrl = new URL('/rss.xml', Astro.site || Astro.url.origin).toString();
 <PageLayout title="Subscribe" description="How to subscribe to Dada's Sketchbook">
   <Container>
     <div class="space-y-10">
-      <div class="animate font-semibold text-black dark:text-white">Subscribe</div>
+      <h1 class="animate font-serif text-[1.1875rem] font-medium text-balance text-black dark:text-white">Subscribe</h1>
 
       <div class="space-y-4">
         <p class="animate">
@@ -20,7 +20,7 @@ const rssUrl = new URL('/rss.xml', Astro.site || Astro.url.origin).toString();
         <div
           class="animate border border-black/15 dark:border-white/20 rounded-lg p-4 bg-black/5 dark:bg-white/5 space-y-2"
         >
-          <p class="text-sm font-semibold">Your Feed URL:</p>
+          <p class="text-sm font-medium">Your Feed URL:</p>
           <div class="flex gap-2 items-center">
             <code
               class="flex-1 bg-white/50 dark:bg-black/50 p-2 rounded text-sm font-mono overflow-x-auto whitespace-nowrap"
@@ -38,7 +38,7 @@ const rssUrl = new URL('/rss.xml', Astro.site || Astro.url.origin).toString();
         </div>
 
         <div class="animate space-y-2">
-          <h3 class="font-semibold text-black dark:text-white">How do I use this?</h3>
+          <h3 class="font-medium text-black dark:text-white">How do I use this?</h3>
           <p class="">
             If you’re using Telegram, there’s a nifty way:
             <br />
@@ -58,7 +58,7 @@ const rssUrl = new URL('/rss.xml', Astro.site || Astro.url.origin).toString();
               <a
                 href="https://netnewswire.com/"
                 target="_blank"
-                class="underline hover:text-black dark:hover:text-white transition-colors"
+                class="hover:text-black dark:hover:text-white transition-colors"
                 >NetNewsWire</a
               > (Mac/iOS)
             </li>
@@ -66,14 +66,14 @@ const rssUrl = new URL('/rss.xml', Astro.site || Astro.url.origin).toString();
               <a
                 href="https://feedly.com/"
                 target="_blank"
-                class="underline hover:text-black dark:hover:text-white transition-colors">Feedly</a
+                class="hover:text-black dark:hover:text-white transition-colors">Feedly</a
               > (Web/Mobile)
             </li>
             <li>
               <a
                 href="https://reederapp.com/"
                 target="_blank"
-                class="underline hover:text-black dark:hover:text-white transition-colors">Reeder</a
+                class="hover:text-black dark:hover:text-white transition-colors">Reeder</a
               > (Mac/iOS)
             </li>
           </ul>

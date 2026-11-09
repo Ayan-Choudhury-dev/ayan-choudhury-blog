@@ -41,11 +41,11 @@ const { entry } = Astro.props;
       </div>
 
       <div class="animate flex items-center gap-1.5 dark:text-gray-400 py-1">
-        <div class="font-base text-sm">
+        <div class="text-sm">
           <FormattedDate date={entry.data.date} />
         </div>
         &bull;
-        <div class="font-base text-sm animate">
+        <div class="text-sm animate">
           {readingTime(entry.body ?? '')}
         </div>
       </div>

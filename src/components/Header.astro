@@ -7,14 +7,14 @@ import { SITE } from '@consts';
 ---
 
 <header class="w-full py-6 mb-8 border-b border-border">
-  <Container class="w-full max-w-2xl mx-auto">
+  <Container class="w-full">
     <div class="flex flex-nowrap gap-y-2 justify-between items-center" id="hero_container">
-      <Link href="/" underline={false}>
-        <div class="font-semibold">
-          <span class="text-accent-color dark:text-accent-color">{SITE.NAME}</span>
+      <Link href="/">
+        <div class="font-medium ">
+          <span class="text-accent-color">{SITE.NAME}</span>
           <span
             id="tagline"
-            class="block text-sm font-normal text-foreground dark:text-foreground hidden sm:block"
+            class="text-sm font-normal text-foreground hidden sm:block"
           >
             {SITE.TAGLINE}
           </span>
@@ -26,7 +26,7 @@ import { SITE } from '@consts';
         <button
           id="light-theme-button"
           aria-label="Light theme"
-          class="group size-8 items-center justify-center rounded-full theme-toggle-btn hidden dark:flex border border-black/20 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/5 transition-colors duration-300 ease-in-out"
+          class="group size-8 items-center justify-center rounded-full theme-toggle-btn hidden dark:flex border border-current/20 hover:bg-secondary transition-colors duration-200 ease-out"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -55,7 +55,7 @@ import { SITE } from '@consts';
         <button
           id="dark-theme-button"
           aria-label="Dark theme"
-          class="group size-8 items-center justify-center rounded-full theme-toggle-btn flex dark:hidden border border-black/20 dark:border-white/20 hover:bg-black/5 dark:hover:bg-white/5 transition-colors duration-300 ease-in-out"
+          class="group size-8 items-center justify-center rounded-full theme-toggle-btn flex dark:hidden border border-current/20 hover:bg-secondary transition-colors duration-200 ease-out"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -76,10 +76,10 @@ import { SITE } from '@consts';
         <a
           href="/subscribe"
           aria-label="Subscribe to RSS"
-          class="relative inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg font-semibold text-sm tracking-tight transition duration-200 ease-out overflow-hidden group no-underline"
+          class="relative inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-lg font-medium text-sm transition duration-200 ease-out overflow-hidden group no-underline"
         >
           <div
-            class="absolute inset-0 bg-gradient-to-br from-accent-color/5 to-accent-color/10 dark:from-white/10 dark:to-white/5 border border-accent-color/30 dark:border-white/20 rounded-lg transition duration-200 group-hover:border-accent-color/60 dark:group-hover:border-white/40"
+            class="absolute inset-0 bg-linear-to-br from-accent-color/5 to-accent-color/10 dark:from-white/10 dark:to-white/5 border border-accent-color/30 dark:border-white/20 rounded-lg transition duration-200 group-hover:border-accent-color/60 dark:group-hover:border-white/40"
           >
           </div>
           <div
@@ -88,10 +88,10 @@ import { SITE } from '@consts';
           </div>
 
           <div class="relative flex items-center gap-1.5">
-            <span class="text-accent-color dark:text-white font-bold tracking-wide hidden sm:inline"
+            <span class="font-sans text-accent-color font-medium hidden sm:inline"
               >SUBSCRIBE</span
             >
-            <span class="text-accent-color dark:text-white font-bold sm:hidden">RSS</span>
+            <span class="font-sans text-accent-color font-medium sm:hidden">RSS</span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
@@ -102,7 +102,7 @@ import { SITE } from '@consts';
               stroke-width="2.5"
               stroke-linecap="round"
               stroke-linejoin="round"
-              class="text-accent-color dark:text-white transition duration-200 group-hover:scale-110 group-hover:rotate-12"
+              class="text-accent-color transition duration-200"
             >
               <path d="M4 11a9 9 0 0 1 9 9"></path>
               <path d="M4 4a16 16 0 0 1 16 16"></path>

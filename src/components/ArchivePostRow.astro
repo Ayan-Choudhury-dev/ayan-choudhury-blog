@@ -22,7 +22,7 @@ function formatDate(date: Date): string {
 <li class="post-row border-b border-foreground/20 last:border-0" data-tags={post.data.tags?.join(',') || ''} style={style}>
   <a
     href={`/blog/${post.id}`}
-    class="group relative grid grid-cols-[4rem_1fr_3.5rem] sm:grid-cols-[5rem_1fr_4rem] items-baseline gap-x-4 py-4 -mx-3 px-3 rounded-sm transition-colors duration-150 cursor-pointer hover:bg-accent-color/[0.04] no-underline"
+    class="group relative grid grid-cols-[4rem_1fr_3.5rem] sm:grid-cols-[5rem_1fr_4rem] items-baseline gap-x-4 py-4 -mx-3 px-3 rounded-sm transition-colors duration-150 cursor-pointer hover:bg-secondary no-underline"
   >
     <!-- Accent left border flash on hover -->
     <span
@@ -30,14 +30,14 @@ function formatDate(date: Date): string {
     ></span>
 
     <!-- Date -->
-    <span class="font-sans text-sm text-muted-foreground tabular-nums shrink-0 pt-0.5">
+    <span class="font-mono text-xs text-meta tabular-nums shrink-0 pt-0.5">
       {formatDate(new Date(post.data.date))}
     </span>
 
     <!-- Title + tags -->
     <span class="flex flex-col gap-1.5 min-w-0">
       <span
-        class="font-serif text-[0.95rem] leading-snug text-foreground group-hover:text-accent-color transition-colors duration-150"
+        class="font-serif text-[0.9375rem] font-medium leading-snug text-foreground group-hover:text-accent-color transition-colors duration-150"
       >
         {post.data.title}
       </span>
@@ -45,7 +45,7 @@ function formatDate(date: Date): string {
         post.data.tags && post.data.tags.length > 0 && (
           <span class="flex flex-wrap gap-4">
             {post.data.tags.slice(0, 4).map((tag) => (
-              <span class="font-mono text-sm font-mono text-accent-color/90 group-hover:text-accent-color transition-colors duration-150">
+              <span class="font-mono text-xs text-accent-color group-hover:text-accent-color/80 transition-colors duration-150">
                 #{tag}
               </span>
             ))}
@@ -55,7 +55,7 @@ function formatDate(date: Date): string {
     </span>
 
     <!-- Read time -->
-    <span class="font-mono text-xs text-muted-foreground text-right tabular-nums">
+    <span class="font-mono text-xs text-meta text-right tabular-nums">
       {readTime(post.body)}
     </span>
   </a>

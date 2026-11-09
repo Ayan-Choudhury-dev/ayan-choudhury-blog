@@ -8,16 +8,15 @@ const year = new Date().getFullYear();
 <footer class="animate">
   <Container>
     <div class="flex flex-col items-center gap-4">
-      <div class="font-semibold text-accent-color">
-        &copy; {year}
-        {SITE.AUTHOR}
+      <div class="font-medium text-accent-color">
+        &copy; {year}{' '}{SITE.AUTHOR}
       </div>
       <div class="flex items-center gap-4">
         <a
           href="https://pages.cloudflare.com/"
           target="_blank"
           rel="noopener noreferrer"
-          class="flex items-center gap-1.5 font-semibold fill-accent-color hover:text-foreground/80 transition-colors duration-300"
+          class="flex items-center gap-1.5 font-medium fill-current hover:text-foreground/70 transition-colors duration-200"
         >
           <svg
             width="20"
@@ -35,7 +34,7 @@ const year = new Date().getFullYear();
           href="https://astro.build"
           target="_blank"
           rel="noopener noreferrer"
-          class="flex items-center gap-1.5 font-semibold text-accent-color hover:text-foreground/80 transition-colors duration-300"
+          class="flex items-center gap-1.5 font-medium hover:text-foreground/70 transition-colors duration-200"
         >
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" class="w-6 h-6"
             ><defs

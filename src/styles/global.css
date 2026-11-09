@@ -1,8 +1,78 @@
 /* geist-latin-wght-normal */
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+/* v3 `darkMode: ['class']` */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* v3 `addVariant('child', '& > *')` / `child-hover` */
+@custom-variant child (& > *);
+@custom-variant child-hover (& > *:hover);
+
+/*
+ * Theme ported from the retired tailwind.config.mjs. Values stay as
+ * `rgb(var(--token))` so the palette keeps living in the `:root` / `.dark`
+ * blocks below — one source of truth for both themes.
+ *
+ * `accent` / `accent-foreground` from the old shadcn set are deliberately not
+ * ported: a `--color-accent` theme variable would collide with the runtime
+ * `--color-accent` RGB triple the whole palette is built on. The only file
+ * that used `bg-accent` is an unused shadcn button.
+ */
+@theme {
+  --font-sans: 'Geist Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+  --font-serif: 'Literata', ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+
+  --color-accent-color: rgb(var(--color-accent));
+  --color-accent-color-fg: rgb(var(--color-accent-fg));
+  --color-accent-color-subtle: rgb(var(--color-accent-subtle));
+
+  --color-terracotta-50: #fef8f7;
+  --color-terracotta-100: #fcf0ef;
+  --color-terracotta-200: #f8dad6;
+  --color-terracotta-300: #f3c4bd;
+  --color-terracotta-400: #ea988c;
+  --color-terracotta-500: #e16c5a;
+  --color-terracotta-600: #cb6151;
+  --color-terracotta-700: #a95144;
+  --color-terracotta-800: #874136;
+  --color-terracotta-900: #6e352c;
+
+  --color-background: rgb(var(--background));
+  --color-foreground: rgb(var(--foreground));
+  --color-card: rgb(var(--card));
+  --color-card-foreground: rgb(var(--card-foreground));
+  --color-popover: rgb(var(--popover));
+  --color-popover-foreground: rgb(var(--popover-foreground));
+  --color-primary: rgb(var(--primary));
+  --color-primary-foreground: rgb(var(--primary-foreground));
+  --color-secondary: rgb(var(--secondary));
+  --color-secondary-foreground: rgb(var(--secondary-foreground));
+  --color-muted: rgb(var(--muted));
+  --color-muted-foreground: rgb(var(--muted-foreground));
+  --color-destructive: rgb(var(--destructive));
+  --color-destructive-foreground: rgb(var(--destructive-foreground));
+  --color-border: rgb(var(--border));
+  --color-input: rgb(var(--input));
+  --color-ring: rgb(var(--ring));
+  --color-chart-1: rgb(var(--chart-1));
+  --color-chart-2: rgb(var(--chart-2));
+  --color-chart-3: rgb(var(--chart-3));
+  --color-chart-4: rgb(var(--chart-4));
+  --color-chart-5: rgb(var(--chart-5));
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  /* Used by post cover images; keyframes live in Head.astro's critical CSS. */
+  --animate-fade-up: fade-in-up 500ms ease-out both;
+
+  --shadow-glow-accent: inset 0 0 12px rgba(225, 119, 102, 0.1), 0 0 12px rgba(225, 119, 102, 0.15);
+  --shadow-glow-white: inset 0 0 12px rgba(255, 255, 255, 0.1), 0 0 12px rgba(255, 255, 255, 0.1);
+}
 
 @font-face {
   font-family: 'Geist Variable';
@@ -15,13 +85,25 @@
     U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
-/* merriweather-latin-wght-normal */
+/* literata-latin-wght-italic */
 @font-face {
-  font-family: 'Merriweather Variable';
+  font-family: 'Literata';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 200 900;
+  src: url(https://cdn.jsdelivr.net/fontsource/fonts/literata:vf@latest/latin-wght-italic.woff2)
+    format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
+    U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* literata-latin-wght-normal */
+@font-face {
+  font-family: 'Literata';
   font-style: normal;
   font-display: swap;
-  font-weight: 300 900;
-  src: url(https://cdn.jsdelivr.net/fontsource/fonts/merriweather:vf@latest/latin-wght-normal.woff2)
+  font-weight: 200 900;
+  src: url(https://cdn.jsdelivr.net/fontsource/fonts/literata:vf@latest/latin-wght-normal.woff2)
     format('woff2-variations');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304,
     U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
@@ -47,7 +129,8 @@ body {
 }
 
 body {
-  @apply font-sans antialiased;
+  /* Literata everywhere; components opt into mono/sans themselves. */
+  @apply font-serif antialiased;
   @apply flex flex-col;
 }
 
@@ -59,29 +142,124 @@ footer {
   @apply pb-10 text-sm;
 }
 
+/*
+ * Type system — reference: setwrite.in light mode.
+ *
+ * One text size. Hierarchy comes from weight (300 body / 900 headings) and
+ * vertical space, never from size steps: an h2 is the same size as the
+ * paragraph above it, it just sits 52px further down and is nine times heavier.
+ *
+ * 15px / 26px on a 36rem measure keeps the reference's proportions while
+ * staying comfortable for long-form reading (its literal 12.96px is tuned for
+ * short entries).
+ *
+ * Selectors use `article >` (specificity 0,0,2+) on purpose: Tailwind
+ * Typography's own child rules are compiled into `article :where(…)` at 0,0,1,
+ * and `:where()` zeroes them out — so anything at 0,0,1 ties or loses.
+ */
 article {
-  @apply max-w-full prose prose-img:mx-auto prose-img:my-auto;
-  @apply prose-headings:font-semibold prose-headings:tracking-[-0.015em];
-  @apply font-serif font-light leading-[1.78] tracking-normal space-y-6;
+  @apply prose prose-img:mx-auto;
 
-  strong {
-    @apply font-bold;
-  }
+  max-width: 36rem;
+  margin-inline: auto;
+  font-size: 0.9375rem; /* 15px */
+  line-height: 1.7333; /* 26px */
+  font-weight: 400;
+  text-wrap: pretty;
+  /* Typography's own link token — same accent, so its generated rule agrees. */
+  --tw-prose-links: rgb(var(--color-accent));
+}
 
-  img {
-    @apply rounded-lg;
-    /* @apply w-full; */
-  }
+/* Beat `.prose` / `.prose-lg` (each a single class, 0,1,0). */
+article,
+article.prose,
+article.prose-lg {
+  font-size: 0.9375rem;
+  line-height: 1.7333;
+  max-width: 36rem;
+  margin-inline: auto;
+  color: var(--foreground);
+}
 
-  hr {
-    @apply w-1/3;
-    @apply mx-auto;
-    @apply my-20;
-  }
+/*
+ * Replace prose's per-element margins with one rhythm.
+ *
+ * `:not(:first-child)` is not decoration — it lifts these selectors to 0,1,1,
+ * which is what it takes to beat prose's `article :where(p):not(…)` at 0,0,1.
+ * A plain `> * + *` ties and loses on source order.
+ */
+article > :not(:first-child) {
+  margin-top: 1.625rem; /* 26px */
+}
 
-  #Cover {
-    @apply mx-4 mb-4;
-  }
+article > :is(h1, h2, h3, h4, h5, h6) {
+  font-size: 1.1875rem; /* 19px — the skill's primary heading size */
+  font-weight: 500;
+  line-height: 1.35;
+  text-wrap: balance;
+  margin-bottom: 0.8125rem; /* 13px */
+}
+
+article > :is(h1, h2, h3, h4, h5, h6):not(:first-child) {
+  margin-top: 3.25rem; /* 52px */
+}
+
+article > :is(h1, h2, h3, h4, h5, h6) + :not(:first-child) {
+  margin-top: 0;
+}
+
+article > blockquote {
+  border-inline-start: 1px solid rgb(var(--foreground) / 0.2);
+  border-left-width: 1px;
+  padding-inline-start: 1rem;
+  font-style: normal;
+  font-weight: 300;
+  quotes: none;
+}
+
+article > blockquote :is(p, li) {
+  font-style: normal;
+  font-weight: 300;
+}
+
+/*
+ * Links inside a post.
+ *
+ * Selector is `article a`, not `.prose a` — the published post's wrapper is a
+ * bare `<article>` (prose comes from `@apply`), so `.prose a` matched nothing
+ * on post pages. These rules are deliberately unlayered: Tailwind v4 emits
+ * `@plugin` CSS outside any cascade layer, and unlayered beats layered no
+ * matter the specificity.
+ */
+article a {
+  color: rgb(var(--color-accent));
+  /* Keep links at body weight — the accent is the differentiator. */
+  font-weight: inherit;
+  /* No underline, ever. Colour alone separates a link from body copy; hover
+     shifts the hue rather than adding a rule underneath. */
+  text-decoration: none;
+  transition: color 150ms ease-out;
+}
+
+article a:hover {
+  color: rgb(var(--color-accent-subtle));
+}
+
+article small {
+  font-size: 67%;
+}
+
+article strong,
+article b {
+  font-weight: 500;
+}
+
+article img {
+  @apply rounded-lg;
+}
+
+article #Cover {
+  @apply mx-4 mb-4;
 }
 
 .tagged .tag::after {
@@ -104,14 +282,10 @@ article {
     color: rgb(var(--color-accent));
   }
 
-  .title-accent {
-    @apply text-accent-color;
-  }
-
-  .dark .title-accent {
-    color: rgb(var(--color-accent-subtle));
-  }
-
+  /*
+   * One ink for body copy, but anchors are excluded: `!important` here would
+   * outrank `.prose a` and strip the accent off every link in a post.
+   */
   article,
   article p,
   article li,
@@ -120,7 +294,7 @@ article {
   article strong,
   article em,
   article .prose,
-  article .prose * {
+  article .prose *:not(a) {
     color: var(--foreground) !important;
   }
 
@@ -145,21 +319,6 @@ article {
    * used as a layout wrapper in PostCardMini, which would underline the
    * "Continue reading" button.
    */
-  .prose a {
-    @apply font-bold;
-    @apply text-accent-color underline underline-offset-4;
-    @apply decoration-black/15 dark:decoration-white/30;
-    @apply transition-colors duration-500 ease-in-out;
-  }
-
-  .prose a:hover {
-    color: rgb(var(--color-accent-subtle));
-    @apply dark:text-accent-color;
-    @apply decoration-black/25 dark:decoration-white/50;
-    @apply transition duration-500 ease-in-out;
-    @apply underline-offset-4;
-  }
-
   /*
    * Footnote system — see markdoc.config.mjs.
    *
@@ -168,7 +327,7 @@ article {
    * fragment link gives us: without it, jumping to a citation or back to the
    * text looks like nothing happened (WCAG 2.4.7 for in-page navigation).
    */
-  .prose .footnote-ref {
+  article .footnote-ref {
     @apply font-normal;
     font-size: 0.72em;
     line-height: 0;
@@ -176,19 +335,24 @@ article {
     margin-inline-start: 0.12em;
   }
 
-  .prose .footnote-ref a {
+  article .footnote-ref a {
     @apply font-mono no-underline;
   }
 
-  .prose .footnote-back {
+  article .footnote-back {
     @apply font-mono no-underline;
     font-size: 0.72em;
     padding-inline: 0.15em;
   }
 
-  .prose .footnote-ref:target,
-  .prose .footnote-back:target {
+  article .footnote-ref:target,
+  article .footnote-back:target {
     @apply rounded-sm bg-accent-color/20;
+  }
+
+  /* Quiet text: dates, counts, read time, tag lists. */
+  .text-meta {
+    color: rgb(var(--meta-ink));
   }
 }
 
@@ -211,8 +375,10 @@ html.scrolled #back-to-top {
 }
 
 hr {
-  @apply border-[0.01px];
-  @apply border-gray-500;
+  border: none;
+  border-top: 1px solid rgb(var(--border));
+  max-width: 36rem;
+  margin: 2.7rem auto;
 }
 
 :root {
@@ -230,8 +396,50 @@ html.dark .postcard {
 
 /* Header styling for post card mini only */
 .postcard.rounded-2xl #header_container {
-  @apply pt-4;
   background-color: transparent;
+}
+
+/* Only a card WITHOUT a cover needs its title pushed off the top edge. With a
+   cover, any top padding shows as a strip of card background above the image. */
+.postcard.rounded-2xl #header_container > #meta:first-child {
+  padding-top: 1rem;
+}
+
+/*
+ * Card cover: a print mounted inside the card, not a bleed image.
+ *
+ * Inset 16px on three sides (4px grid), inner radius 12px against the card's
+ * 16px outer radius, so the two curves nest instead of fighting. The bottom
+ * inset is left to the title's own top margin, which keeps the photo-to-title
+ * gap on the same 26px rhythm as the rest of the page.
+ *
+ * `article #Cover` still insets post-body covers; these rules only override
+ * the card case, where the whole feed sits inside an <article>.
+ */
+.postcard #Cover {
+  /* Follows the card's own gutter (`#meta` is px-4 sm:px-12) so the photo,
+     title, text and button all share one left edge. */
+  margin: 1rem 1rem 0;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+@media (min-width: 640px) {
+  .postcard #Cover {
+    /* A narrower frame than the text gutter on purpose: the photo is the
+       card's hero, the text keeps its comfortable measure. Still inset, still
+       nested inside the card radius. */
+    margin: 1rem 1rem 0;
+  }
+}
+
+.postcard #Cover img {
+  display: block;
+  border-radius: 0.75rem;
+  /* Typography sets `img { margin-block: 2em }`, which floats the cover inside
+     its own rounded box. The card owns the spacing, not the image. */
+  margin-block: 0;
+  margin-inline: 0;
 }
 
 .postcard.rounded-2xl #header_container #meta {
@@ -279,6 +487,9 @@ html.dark .postcard.rounded-2xl #header_container {
     --color-accent: 225 119 102;
     --color-accent-fg: 250 250 250;
     --color-accent-subtle: 198 99 83;
+    /* Secondary text (dates, read time, counts). Darker than the accent so it
+       survives AA at 12–13px on the cream surface: 5.09:1. */
+    --meta-ink: 74 100 114;
   }
 
   .dark {
@@ -311,6 +522,7 @@ html.dark .postcard.rounded-2xl #header_container {
     --color-accent: 225 108 90;
     --color-accent-fg: 27 26 24;
     --color-accent-subtle: 192 112 96;
+    --meta-ink: 163 163 163;
   }
 }
 
@@ -323,20 +535,22 @@ html.dark .postcard.rounded-2xl #header_container {
     @apply bg-background text-foreground;
   }
 
-  /* Restore link styling after async CSS loads (critical CSS sets color:inherit / text-decoration:none)
-     NOTE: We do NOT restore text-decoration here — buttons/cards/nav-links should never underline.
-     Prose link underlines are handled by the more specific `article a { }` rule above.
-     Components that explicitly want underlines use the `underline` Tailwind utility. */
-  a {
-    @apply text-accent-color break-words;
-    text-decoration: none;
-  }
-
-  html.dark a {
-    text-decoration: none;
-  }
-
-  article a:visited {
-    color: var(--color-accent-subtle);
-  }
 }
+
+/*
+ * Anchors live OUTSIDE the layer stack on purpose.
+ *
+ * `Head.astro` emits critical CSS that styles `a` before the stylesheet loads.
+ * Unlayered CSS beats every `@layer`, so a rule inside `@layer base` can never
+ * win against it — that is exactly how every non-`article` link ended up
+ * inheriting the body ink. Unlayered and later in the document, this wins.
+ *
+ * No text-decoration here: buttons, cards and nav links must never underline.
+ * In-post links get theirs from the more specific `article a` rule above.
+ */
+a {
+  overflow-wrap: break-word;
+  color: rgb(var(--color-accent));
+  text-decoration: none;
+}
+

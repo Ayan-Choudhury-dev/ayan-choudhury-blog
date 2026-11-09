@@ -55,14 +55,14 @@ export const MagicalSnippet: React.FC<MagicalSnippetProps> = ({ texts }) => {
             </span>
           )}
 
-          <div className="absolute -inset-16 bg-gradient-to-tr from-accent-color/10 via-transparent to-accent-color/5 blur-3xl rounded-full pointer-events-none -z-10 opacity-40 group-hover:opacity-100 transition-opacity duration-1000" />
+          <div className="absolute -inset-16 bg-linear-to-tr from-accent-color/10 via-transparent to-accent-color/5 blur-3xl rounded-full pointer-events-none -z-10 opacity-40 group-hover:opacity-100 transition-opacity duration-1000" />
 
           <TextEffect
             per="word"
             as="h1"
             preset="blur"
             speedReveal={2}
-            className={`font-serif text-lg sm:text-xl tracking-tight leading-snug ${
+            className={`font-serif text-[1.1875rem] leading-snug text-balance ${
               parsed.type === 'quote'
                 ? 'text-foreground font-normal'
                 : 'text-foreground/85 font-medium'

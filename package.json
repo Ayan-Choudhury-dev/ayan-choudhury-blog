@@ -22,26 +22,25 @@
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,md,mdx,astro,json,css}\""
   },
   "dependencies": {
-    "@astrojs/check": "^0.9.8",
-    "@astrojs/cloudflare": "^12.0.0",
-    "@astrojs/markdoc": "^0.15.11",
-    "@astrojs/mdx": "^4.3.13",
-    "@astrojs/react": "^4.4.2",
-    "@astrojs/rss": "^4.0.18",
-    "@astrojs/sitemap": "^3.7.2",
-    "@astrojs/tailwind": "^6.0.2",
-    "@astrojs/ts-plugin": "^1.10.7",
-    "@keystatic/astro": "^5.0.0",
-    "@keystatic/core": "^0.5.26",
+    "@astrojs/check": "^0.9.12",
+    "@astrojs/cloudflare": "^14.4.6",
+    "@astrojs/markdoc": "^2.1.3",
+    "@astrojs/mdx": "^8.1.3",
+    "@astrojs/react": "^7.1.4",
+    "@astrojs/rss": "^4.0.19",
+    "@astrojs/sitemap": "^3.7.4",
+    "@astrojs/ts-plugin": "^1.10.12",
+    "@keystatic/astro": "^6.0.0",
+    "@keystatic/core": "^0.6.9",
     "@radix-ui/react-slot": "^1.2.3",
-    "@tailwindcss/typography": "^0.5.10",
+    "@tailwindcss/typography": "^0.5.20",
     "@tailwindcss/vite": "^4.2.4",
     "@types/react": "~18.3.28",
     "@types/react-dom": "~18.3.7",
     "@typescript-eslint/eslint-plugin": "~7.18.0",
     "@typescript-eslint/parser": "~7.18.0",
     "@vercel/analytics": "^1.6.1",
-    "astro": "^5.18.1",
+    "astro": "^7.4.7",
     "astro-og-canvas": "^0.11.1",
     "canvaskit-wasm": "^0.41.1",
     "class-variance-authority": "^0.7.1",
@@ -55,15 +54,15 @@
     "marked": "~15.0.12",
     "motion": "^12.38.0",
     "onchange": "^7.1.0",
+    "oxc-transform-react": "^0.145.0",
     "react": "~18.3.1",
     "react-dom": "~18.3.1",
     "sharp": "^0.34.5",
     "tailwind-merge": "~2.6.1",
-    "tailwindcss": "~3.4.19",
-    "tailwindcss-animate": "^1.0.7",
+    "tailwindcss": "^4.3.5",
     "tippy.js": "^6.3.7",
     "typescript": "~5.9.3",
-    "wrangler": "^4.98.0"
+    "wrangler": "^4.125.0"
   },
   "overrides": {
     "fast-xml-parser": "^5.5.9",
@@ -74,6 +73,6 @@
     "prettier-plugin-astro": "^0.14.1"
   },
   "patchedDependencies": {
-    "@keystatic/core@0.5.50": "patches/@keystatic%2Fcore@0.5.50.patch"
+    "@keystatic/core@0.6.9": "patches/@keystatic%2Fcore@0.6.9.patch"
   }
 }

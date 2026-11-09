@@ -46,8 +46,8 @@ const totalVisibleCount = activeTag === 'all'
 
     <!-- Header -->
     <div class="mb-8 space-y-1">
-      <p class="text-lg uppercase text-foreground font-bold">All posts</p>
-      <p class="text-sm font-mono text-muted-foreground" id="post-count-label">{totalVisibleCount} {totalVisibleCount === 1 ? 'entry' : 'entries'}</p>
+      <h1 class="font-serif text-[1.1875rem] font-medium m-0 text-balance">All posts</h1>
+      <p class="text-xs font-mono text-meta" id="post-count-label">{totalVisibleCount} {totalVisibleCount === 1 ? 'entry' : 'entries'}</p>
     </div>
 
     <!-- Tags filter -->
@@ -55,7 +55,7 @@ const totalVisibleCount = activeTag === 'all'
       <div class="mb-16">
         <div class="flex flex-wrap gap-2" id="tag-filters">
           <button
-            class={`tag-btn px-3 py-1 text-xs font-mono rounded-full border transition-colors ${activeTag === 'all' ? 'active bg-accent-color text-white border-accent-color hover:bg-accent-color/90' : 'border-border text-muted-foreground bg-transparent hover:text-foreground hover:bg-muted/50'}`}
+            class={`tag-btn px-3 py-1 text-xs font-mono rounded-full border transition-colors ${activeTag === 'all' ? 'active bg-accent-color text-white border-accent-color' : 'border-border text-meta bg-transparent hover:text-foreground hover:bg-secondary'}`}
             data-tag="all"
           >
             all
@@ -64,7 +64,7 @@ const totalVisibleCount = activeTag === 'all'
             const isActive = tag === activeTag;
             return (
               <button
-                class={`tag-btn px-3 py-1 text-xs font-mono rounded-full border transition-colors ${isActive ? 'active bg-accent-color text-white border-accent-color hover:bg-accent-color/90' : 'border-border text-muted-foreground bg-transparent hover:text-foreground hover:bg-muted/50'} ${i >= 5 && !isActive ? 'extra-tag hidden' : ''}`}
+                class={`tag-btn px-3 py-1 text-xs font-mono rounded-full border transition-colors ${isActive ? 'active bg-accent-color text-white border-accent-color' : 'border-border text-meta bg-transparent hover:text-foreground hover:bg-secondary'} ${i >= 5 && !isActive ? 'extra-tag hidden' : ''}`}
                 data-tag={tag}
               >
                 {tag}
@@ -75,7 +75,7 @@ const totalVisibleCount = activeTag === 'all'
           {allTags.length > 5 && (
             <button
               id="toggle-tags-btn"
-              class="px-3 py-1 text-xs font-mono rounded-full border border-dashed border-border text-muted-foreground bg-transparent hover:text-foreground transition-colors flex items-center gap-1"
+              class="px-3 py-1 text-xs font-mono rounded-full border border-dashed border-border text-meta bg-transparent hover:text-foreground transition-colors flex items-center gap-1"
             >
               <span id="toggle-tags-text">
                 {activeTag !== 'all' && allTags.indexOf(activeTag) >= 5 
@@ -106,9 +106,9 @@ const totalVisibleCount = activeTag === 'all'
 
             <!-- Year row -->
             <div class="flex items-center gap-4 mb-4">
-              <span class="font-serif font-semibold text-xl text-accent-color">{year}</span>
-              <div class="flex-1 border-t border-gray-300 dark:border-gray-700" />
-              <span class="year-count text-xs font-mono text-muted-foreground">
+              <h2 class="font-serif font-medium text-[0.9375rem] m-0 text-accent-color">{year}</h2>
+              <div class="flex-1 border-t border-border" />
+              <span class="year-count text-xs font-mono text-meta">
                 {visibleCount} {visibleCount === 1 ? 'entry' : 'entries'}
               </span>
             </div>
@@ -145,10 +145,10 @@ const totalVisibleCount = activeTag === 'all'
         // Handle active state
         tagBtns.forEach(b => {
           b.classList.remove('active', 'bg-accent-color', 'text-white', 'border-accent-color');
-          b.classList.add('border-border', 'text-muted-foreground', 'bg-transparent');
+          b.classList.add('border-border', 'text-meta', 'bg-transparent');
         });
         
-        btn.classList.remove('border-border', 'text-muted-foreground', 'bg-transparent');
+        btn.classList.remove('border-border', 'text-meta', 'bg-transparent');
         btn.classList.add('active', 'bg-accent-color', 'text-white', 'border-accent-color');
 
         const selectedTag = btn.getAttribute('data-tag');
