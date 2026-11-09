@@ -46,7 +46,7 @@ const useOptimizedImage =
 
   <div id="meta" class="px-4 sm:px-12">
     <div
-      class="font-serif text-[1.1875rem] font-medium leading-snug mt-6 text-accent-color text-balance"
+      class="font-serif text-2xl font-light leading-[1.15] mt-6 mb-2 text-accent-color text-balance"
     >
       <a href={`/${entry.collection}/${entry.id}`} class="no-underline !text-inherit">
         {entry.data.title}
@@ -57,18 +57,15 @@ const useOptimizedImage =
     {entry.data.description}
   </div> -->
 
-    <div
-      class="flex items-center gap-2 font-mono text-meta text-xs pb-4"
-    >
-      <div class="text-sm">
+    <div class="flex items-center gap-2 text-meta text-xs pb-4">
+      <div>
         <FormattedDate date={entry.data.date} />
       </div>
       &bull;
-      <div class="text-sm">
+      <div>
         {readingTime(entry.body ?? '')}
       </div>
     </div>
-
   </div>
 </div>
 

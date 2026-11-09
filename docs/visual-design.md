@@ -25,13 +25,18 @@ Three roles. Nothing else may appear.
 |---|---|---|
 | Prose + headings | **Literata** (`font-serif`) | article body, every heading, card titles, site name, nav, footer |
 | UI chrome | **Geist** (`font-sans`) | subscribe CTA label only |
-| Metadata | `ui-monospace` (`font-mono`) | dates, read time, entry counts, tags, filter chips, footnote marks |
+| Metadata | mix, see below | post/card meta is serif; archive rows, chips and footnote marks are mono |
 
 Rules:
 
 - Body prose is never sans. Controls that sit inside prose (e.g. "Continue
   reading") stay serif — they are content, not chrome.
-- Metadata is always mono. Never split a row between mono and sans.
+- Metadata splits by context, never within a row:
+  - **Post page and card meta** (date · read time) are **serif**, matching the
+    body — the reader is inside a text, not a table.
+  - **Archive rows, filter chips, footnote marks** stay **mono** — they are
+    tabular and benefit from `tabular-nums` alignment.
+  - Never mix two faces inside one meta row.
 - Italic **must** have its own `@font-face`. Without it the browser synthesises
   an oblique from the upright face and both Merriweather and Literata look broken.
 - Two variable faces load from `cdn.jsdelivr.net/fontsource`: `normal` + `italic`,
@@ -54,9 +59,10 @@ Miss any one and you get a flash of fallback serif, or silent faux italics.
 | Body | 15px | 400 | 26px (1.733) | `text-wrap: pretty` |
 | Post title (`h1`) | 28px | **300** | 1.15 | big + thin, `text-wrap: balance` |
 | Article `h2`–`h6` | 19px | 500 | 1.35 | `text-wrap: balance` |
-| Card title | 19px | 500 | snug | same as `h2` |
+| Card title | 28px | 300 | 1.15 | matches the post title exactly |
 | Archive row title | 15px | 500 | snug | list, not a heading |
-| Metadata | 12–14px | 400 | — | mono, `tabular-nums` |
+| Meta (post/card) | 12px | 400 | — | serif |
+| Meta (archive/chips) | 12px | 400 | — | mono, `tabular-nums` |
 
 - Weights in use: **300, 400, 500**. Do not introduce 600/700/900.
 - Measure: `36rem` (576px). `Container` is `max-w-[38.5rem]` (616px) + `px-5` (20px).
