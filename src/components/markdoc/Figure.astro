@@ -1,0 +1,46 @@
+---
+/**
+ * Image node renderer for `.mdoc` content.
+ *
+ * Astro resolves markdown image paths to `ImageMetadata` before this runs, so
+ * `<Image>` keeps the optimizer, the hashed `/_astro/*.webp` output and the
+ * width/height attributes (no layout shift).
+ *
+ * The alt text is also printed as a caption. That is the point: an author writes
+ * `![a bridge in Kyoto](image.jpg)` and gets a marked-up image plus an italic
+ * caption underneath, without a second syntax to learn.
+ *
+ * Everything is inline elements (`<span>`), because a markdown image lives
+ * inside a `<p>` — a `<figure>` there would be invalid markup. The wrapper
+ * shrinks to the image, so the caption aligns to the photo's left edge, not the
+ * text column's.
+ */
+import { Image } from 'astro:assets';
+
+interface Props {
+  src: ImageMetadata | string;
+  alt?: string | null;
+  title?: string | null;
+}
+
+const { src, alt, title } = Astro.props;
+const caption = (alt ?? '').trim();
+const isLocal = typeof src === 'object' && src !== null;
+---
+
+<span class="img-figure">
+  {
+    isLocal ? (
+      <Image src={src as ImageMetadata} alt={caption} title={title ?? undefined} />
+    ) : (
+      <img
+        src={src as string}
+        alt={caption}
+        title={title ?? undefined}
+        loading="lazy"
+        decoding="async"
+      />
+    )
+  }
+  {caption && <span class="img-caption">{caption}</span>}
+</span>

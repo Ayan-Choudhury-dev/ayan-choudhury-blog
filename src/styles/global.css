@@ -258,6 +258,40 @@ article img {
   @apply rounded-lg;
 }
 
+/*
+ * Image + caption — rendered by `src/components/markdoc/Figure.astro`.
+ *
+ * All inline elements: a markdown image lives inside a `<p>`, so a `<figure>`
+ * there would be invalid markup. The wrapper shrinks to the image so the
+ * caption aligns to the photo's left edge rather than the text column's, and
+ * the paragraph is centred to keep the image where `prose-img:mx-auto` put it.
+ */
+article .img-figure {
+  display: inline-block;
+  max-width: 100%;
+  text-align: left;
+}
+
+article p:has(> .img-figure) {
+  text-align: center;
+}
+
+article .img-figure > img {
+  display: block;
+  margin: 0;
+}
+
+article .img-caption {
+  display: block;
+  margin-top: 0.5rem;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 0.8125rem; /* 13px */
+  line-height: 1.5;
+  color: rgb(var(--meta-ink));
+  text-wrap: pretty;
+}
+
 article #Cover {
   @apply mx-4 mb-4;
 }

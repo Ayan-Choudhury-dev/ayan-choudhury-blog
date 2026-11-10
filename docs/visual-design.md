@@ -129,9 +129,29 @@ utilities through `rgb(var(--token))`, so both themes stay driven by one block.
 - Card without a cover: `#meta:first-child` gets `padding-top: 1rem`.
 - Cards are never edge-to-edge media; they are mounted prints.
 
+## Images and captions
+
+- Authored as ordinary markdown: `![caption text](@assets/images/posts/x.jpg)`.
+- The alt text is printed as an italic caption under the image, at 13px in
+  `--meta-ink`. Empty alt = no caption, image unchanged.
+- Implemented as a Markdoc `image` node override —
+  `src/components/markdoc/Figure.astro`. Astro resolves the path to
+  `ImageMetadata` *before* the renderer runs, so `<Image>` keeps the optimizer,
+  the hashed `/_astro/*.webp` output and width/height (no layout shift).
+- Markup is inline (`<span class="img-figure">` → `<img>` + `<span class="img-caption">`).
+  A `<figure>` inside a markdown `<p>` is invalid, which is why it is not used.
+- The wrapper shrinks to the image, so the caption aligns to the photo's left
+  edge; `p:has(> .img-figure)` is centred to keep the image where
+  `prose-img:mx-auto` put it.
+
 ## Footnotes
 
-- Authored as Markdoc tags: `{% footnote n="2" ref="b" /%}` and `{% backlink n="2" /%}`.
+- Authored in the editor through Keystatic `/footnote` and `/backlink` inline
+  components, which serialize to `{% footnote n="2" ref="b" /%}` and
+  `{% backlink n="2" /%}`.
+- The editor shows them as a small superscript chip (`2`, `↩2`) via `ContentView`,
+  not as an opaque component block. `n` is an integer field (min 1); `ref` is
+  capped at one character.
 - Rendered by `FootnoteRef.astro` / `FootnoteBacklink.astro`; both id and aria-label
   derive from `n`.
 - Mark: `<sup>` at `0.72em`, `vertical-align: super`, mono, no underline.

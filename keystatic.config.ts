@@ -1,5 +1,6 @@
 // keystatic.config.ts
 import { config, fields, collection } from "@keystatic/core";
+import { createElement } from "react";
 import { inline } from "@keystatic/core/content-components";
 
 export default config({
@@ -100,29 +101,58 @@ export default config({
             footnote: inline({
               label: "Footnote reference",
               description:
-                "Citation mark in the text. Add a matching backlink to the same entry in References.",
+                "Citation mark in the text. Its number must match a backlink in the References list.",
               schema: {
-                n: fields.text({
+                n: fields.integer({
                   label: "Number",
-                  description: "The footnote number this mark cites, e.g. 2",
+                  description: "Same number as its entry in References.",
+                  validation: { min: 1 },
                 }),
                 ref: fields.text({
                   label: "Repeat suffix",
                   description:
-                    "Only when the same source is cited more than once: b, c, …",
+                    "Leave blank on the first citation. Add b, c, … only when the same source is cited again.",
+                  validation: { length: { max: 1 } },
                 }),
               },
+              // Shown inside the editor document as a superscript chip, so the
+              // author sees "2" rather than an opaque component block.
+              ContentView: ({ value }) =>
+                createElement(
+                  "sup",
+                  {
+                    style: {
+                      fontFamily: "monospace",
+                      fontSize: "0.8em",
+                      color: "var(--accent, #c66353)",
+                    },
+                  },
+                  value.n ?? "?",
+                ),
             }),
             backlink: inline({
               label: "Footnote backlink",
               description:
-                "Return link. Place it at the end of the matching entry in the References list.",
+                "Return link. Place it at the end of the matching entry in References — one per entry.",
               schema: {
-                n: fields.text({
+                n: fields.integer({
                   label: "Number",
-                  description: "The footnote number to return to, e.g. 2",
+                  description: "Same number as the citation it returns to.",
+                  validation: { min: 1 },
                 }),
               },
+              ContentView: ({ value }) =>
+                createElement(
+                  "span",
+                  {
+                    style: {
+                      fontFamily: "monospace",
+                      fontSize: "0.8em",
+                      color: "var(--accent, #c66353)",
+                    },
+                  },
+                  `↩${value.n ?? "?"}`,
+                ),
             }),
           },
         }),

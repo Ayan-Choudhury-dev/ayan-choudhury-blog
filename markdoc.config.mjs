@@ -1,4 +1,4 @@
-import { defineMarkdocConfig, component } from '@astrojs/markdoc/config';
+import { defineMarkdocConfig, component, nodes } from '@astrojs/markdoc/config';
 
 /**
  * Footnote system.
@@ -22,6 +22,12 @@ import { defineMarkdocConfig, component } from '@astrojs/markdoc/config';
  * in `keystatic.config.ts` → `fields.markdoc({ components })`.
  */
 export default defineMarkdocConfig({
+  nodes: {
+    image: {
+      ...nodes.image,
+      render: component('./src/components/markdoc/Figure.astro'),
+    },
+  },
   tags: {
     footnote: {
       attributes: {
