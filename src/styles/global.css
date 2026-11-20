@@ -544,7 +544,9 @@ html.dark .postcard.rounded-2xl #header_container {
     --accent-foreground: 250 250 250;
     --destructive: 127 29 29;
     --destructive-foreground: 250 250 250;
-    --border: 38 38 38;
+    /* #46423d. The old #262626 sat at 1.09:1 on --background and 1.04:1 on
+       --card — a hairline that disappeared. This clears ~1.5:1 on both. */
+    --border: 70 66 61;
     --input: 38 38 38;
     --ring: 231 153 141;
     --chart-1: 231 153 141;

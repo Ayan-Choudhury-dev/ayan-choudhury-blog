@@ -82,7 +82,7 @@ utilities through `rgb(var(--token))`, so both themes stay driven by one block.
 | `--card` | `#f7eee3` | `#2b2927` | cards |
 | `--color-accent` | `#e17766` | `#e16c5a` | links, titles, tags |
 | `--meta-ink` | `#4a6472` | `#a3a3a3` | secondary text (AA at 12–13px) |
-| `--border` | `#d3cec5` | `#262626` | hairlines |
+| `--border` | `#d3cec5` | `#46423d` | hairlines (~1.5:1 on both dark surfaces) |
 
 - One ink for text; accent only for links, titles, tags.
 - Accent is identity, not decoration — never set body copy in it.
