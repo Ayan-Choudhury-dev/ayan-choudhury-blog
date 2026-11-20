@@ -103,10 +103,20 @@ export default config({
               description:
                 "Citation mark in the text. Its number must match a backlink in the References list.",
               schema: {
-                n: fields.integer({
+                // Markdoc stores tag attributes as strings, so the source
+                // (`{% footnote n="1" /%}`) reads back as "1". An integer
+                // field rejects that with "Must be a number", so this is a
+                // text field constrained to digits instead.
+                n: fields.text({
                   label: "Number",
                   description: "Same number as its entry in References.",
-                  validation: { min: 1 },
+                  validation: {
+                    isRequired: true,
+                    pattern: {
+                      regex: /^[1-9]\d*$/,
+                      message: "Use a positive whole number",
+                    },
+                  },
                 }),
                 ref: fields.text({
                   label: "Repeat suffix",
@@ -135,10 +145,18 @@ export default config({
               description:
                 "Return link. Place it at the end of the matching entry in References — one per entry.",
               schema: {
-                n: fields.integer({
+                // See the footnote component above: Markdoc attributes are
+                // strings, so an integer field would fail to load the entry.
+                n: fields.text({
                   label: "Number",
                   description: "Same number as the citation it returns to.",
-                  validation: { min: 1 },
+                  validation: {
+                    isRequired: true,
+                    pattern: {
+                      regex: /^[1-9]\d*$/,
+                      message: "Use a positive whole number",
+                    },
+                  },
                 }),
               },
               ContentView: ({ value }) =>
